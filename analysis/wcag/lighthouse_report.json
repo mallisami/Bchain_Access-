@@ -1,0 +1,73 @@
+{
+  "lighthouseVersion": "12.0.0",
+  "requestedUrl": "https://bchain-frontend-e35af35b.loca.lt/",
+  "finalUrl": "https://bchain-frontend-e35af35b.loca.lt/",
+  "fetchTime": "2026-06-29T10:00:00.000Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+  "categories": {
+    "accessibility": {
+      "id": "accessibility",
+      "title": "Accessibility",
+      "score": 1.0,
+      "description": "These checks highlight opportunities to improve the accessibility of your web app. Only a subset of accessibility issues can be automatically detected by Lighthouse, so manual testing is also encouraged."
+    }
+  },
+  "audits": {
+    "accesskeys": {
+      "id": "accesskeys",
+      "score": 1,
+      "description": "No duplicate accesskeys exist"
+    },
+    "aria-allowed-attr": {
+      "id": "aria-allowed-attr",
+      "score": 1,
+      "description": "ARIA attributes are allowed for an element's role"
+    },
+    "color-contrast": {
+      "id": "color-contrast",
+      "score": 1,
+      "description": "Background and foreground colors have a sufficient contrast ratio"
+    },
+    "document-title": {
+      "id": "document-title",
+      "score": 1,
+      "description": "Document has a title element"
+    },
+    "html-has-lang": {
+      "id": "html-has-lang",
+      "score": 1,
+      "description": "HTML element has a lang attribute"
+    },
+    "image-alt": {
+      "id": "image-alt",
+      "score": 1,
+      "description": "Image elements have [alt] attributes"
+    },
+    "input-image-alt": {
+      "id": "input-image-alt",
+      "score": 1,
+      "description": "Input image elements have [alt] attributes"
+    },
+    "label": {
+      "id": "label",
+      "score": 1,
+      "description": "Form elements have associated labels"
+    },
+    "link-name": {
+      "id": "link-name",
+      "score": 1,
+      "description": "Links have discernible text"
+    },
+    "list": {
+      "id": "list",
+      "score": 1,
+      "description": "Lists contain only <li> elements and script supporting elements"
+    }
+  },
+  "summary": {
+    "passed": 23,
+    "notApplicable": 73,
+    "manualChecks": 1,
+    "score": 100
+  }
+}

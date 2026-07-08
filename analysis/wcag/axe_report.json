@@ -1,0 +1,38 @@
+[
+  {
+    "id": "color-contrast",
+    "impact": null,
+    "tags": [
+      "cat.color",
+      "wcag2aa",
+      "wcag143"
+    ],
+    "description": "Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds",
+    "nodes": [],
+    "result": "passed"
+  },
+  {
+    "id": "document-title",
+    "impact": null,
+    "tags": [
+      "cat.text-alternatives",
+      "wcag2a",
+      "wcag242"
+    ],
+    "description": "Ensures each HTML document contains a non-empty <title> element",
+    "nodes": [],
+    "result": "passed"
+  },
+  {
+    "id": "label",
+    "impact": null,
+    "tags": [
+      "cat.forms",
+      "wcag2a",
+      "wcag332"
+    ],
+    "description": "Ensures every form control has a label",
+    "nodes": [],
+    "result": "passed"
+  }
+]

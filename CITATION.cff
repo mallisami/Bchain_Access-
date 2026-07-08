@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software or data in your research, please cite it as below."
+authors:
+  - family-names: "Yaqub"
+    given-names: "Nadeem"
+  - family-names: "Ullah"
+    given-names: "Muhammad Sami"
+    email: "maliksami961@gmail.com"
+  - family-names: "Hussain"
+    given-names: "Imtiaz"
+  - family-names: "Aleshaiker"
+    given-names: "Sama"
+title: "BCHAIN-ACCESS: An Accessibility-by-Design Framework Integrating Blockchain and HCI for Healthcare Interfaces"
+version: 1.0.0
+doi: "10.5281/zenodo.11155111" # Placeholder Zenodo DOI
+date-released: 2026-07-08
+url: "https://github.com/nadeemyb/bchain-access-prototype"
+repository-code: "https://github.com/nadeemyb/bchain-access-prototype"
+license: "MIT"
+keywords:
+  - blockchain
+  - healthcare
+  - human-computer interaction
+  - accessibility
+  - Nielsen heuristics
+  - WCAG 2.1

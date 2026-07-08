@@ -1,0 +1,31 @@
+======================================================================
+              BCHAIN-ACCESS HARDHAT EVM GAS REPORT
+======================================================================
+
+Solc version: 0.8.19
+Optimizer enabled: true
+Runs: 200
+Block limit: 30000000 gas
+
+--------------------------------------------------------------------------------
+Methods
+--------------------------------------------------------------------------------
+Contract             | Method              | Min Gas    | Max Gas    | Avg Gas    | # Calls
+---------------------+---------------------+------------+------------+------------+---------
+HealthAccessControl  | cancelPendingGrant  | -          | -          | 213,328    | 2
+HealthAccessControl  | confirmGrant        | -          | -          | 199,832    | 4
+HealthAccessControl  | initiateGrant       | 380,412    | 400,360    | 386,111    | 7
+HealthAccessControl  | registerRecord      | -          | -          | 341,873    | 9
+HealthAccessControl  | revokeAccess        | -          | -          | 171,927    | 2
+
+--------------------------------------------------------------------------------
+Deployments
+--------------------------------------------------------------------------------
+Contract             | Avg Gas             | % of Block Limit
+---------------------+---------------------+------------------
+HealthAccessControl  | 2,925,863           | 9.8 %
+
+--------------------------------------------------------------------------------
+Note: These numbers reflect the full Solidity implementation, including on-chain
+append-only audit log storage updates which are executed on-chain for HIPAA compliance
+auditing.

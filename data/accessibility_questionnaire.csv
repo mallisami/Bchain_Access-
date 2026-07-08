@@ -1,0 +1,101 @@
+EvaluatorID,QuestionID,Statement,Rating
+E1,Q1,I found the navigation consistent and predictable,5
+E1,Q2,I found the instructions and labels easy to understand,4
+E1,Q3,I was able to access all features using only the keyboard,5
+E1,Q4,I found the colour contrast adequate for reading,5
+E1,Q5,I found the error messages helpful and clear,4
+E1,Q6,I felt in control while using the system,5
+E1,Q7,I would feel comfortable using this system independently,4
+E1,Q8,I found the system forgiving if I made a mistake,5
+E1,Q9,I understood the information presented to me,4
+E1,Q10,I found the system responsive and fast enough,4
+E2,Q1,I found the navigation consistent and predictable,5
+E2,Q2,I found the instructions and labels easy to understand,5
+E2,Q3,I was able to access all features using only the keyboard,4
+E2,Q4,I found the colour contrast adequate for reading,5
+E2,Q5,I found the error messages helpful and clear,4
+E2,Q6,I felt in control while using the system,5
+E2,Q7,I would feel comfortable using this system independently,4
+E2,Q8,I found the system forgiving if I made a mistake,5
+E2,Q9,I understood the information presented to me,4
+E2,Q10,I found the system responsive and fast enough,5
+E3,Q1,I found the navigation consistent and predictable,5
+E3,Q2,I found the instructions and labels easy to understand,4
+E3,Q3,I was able to access all features using only the keyboard,4
+E3,Q4,I found the colour contrast adequate for reading,5
+E3,Q5,I found the error messages helpful and clear,4
+E3,Q6,I felt in control while using the system,4
+E3,Q7,I would feel comfortable using this system independently,4
+E3,Q8,I found the system forgiving if I made a mistake,5
+E3,Q9,I understood the information presented to me,4
+E3,Q10,I found the system responsive and fast enough,5
+E4,Q1,I found the navigation consistent and predictable,5
+E4,Q2,I found the instructions and labels easy to understand,5
+E4,Q3,I was able to access all features using only the keyboard,4
+E4,Q4,I found the colour contrast adequate for reading,5
+E4,Q5,I found the error messages helpful and clear,4
+E4,Q6,I felt in control while using the system,5
+E4,Q7,I would feel comfortable using this system independently,4
+E4,Q8,I found the system forgiving if I made a mistake,5
+E4,Q9,I understood the information presented to me,4
+E4,Q10,I found the system responsive and fast enough,5
+E5,Q1,I found the navigation consistent and predictable,5
+E5,Q2,I found the instructions and labels easy to understand,5
+E5,Q3,I was able to access all features using only the keyboard,5
+E5,Q4,I found the colour contrast adequate for reading,5
+E5,Q5,I found the error messages helpful and clear,5
+E5,Q6,I felt in control while using the system,5
+E5,Q7,I would feel comfortable using this system independently,5
+E5,Q8,I found the system forgiving if I made a mistake,5
+E5,Q9,I understood the information presented to me,4
+E5,Q10,I found the system responsive and fast enough,5
+E6,Q1,I found the navigation consistent and predictable,5
+E6,Q2,I found the instructions and labels easy to understand,4
+E6,Q3,I was able to access all features using only the keyboard,5
+E6,Q4,I found the colour contrast adequate for reading,5
+E6,Q5,I found the error messages helpful and clear,4
+E6,Q6,I felt in control while using the system,5
+E6,Q7,I would feel comfortable using this system independently,4
+E6,Q8,I found the system forgiving if I made a mistake,5
+E6,Q9,I understood the information presented to me,4
+E6,Q10,I found the system responsive and fast enough,4
+E7,Q1,I found the navigation consistent and predictable,5
+E7,Q2,I found the instructions and labels easy to understand,4
+E7,Q3,I was able to access all features using only the keyboard,4
+E7,Q4,I found the colour contrast adequate for reading,5
+E7,Q5,I found the error messages helpful and clear,4
+E7,Q6,I felt in control while using the system,4
+E7,Q7,I would feel comfortable using this system independently,4
+E7,Q8,I found the system forgiving if I made a mistake,4
+E7,Q9,I understood the information presented to me,4
+E7,Q10,I found the system responsive and fast enough,4
+E8,Q1,I found the navigation consistent and predictable,5
+E8,Q2,I found the instructions and labels easy to understand,5
+E8,Q3,I was able to access all features using only the keyboard,5
+E8,Q4,I found the colour contrast adequate for reading,5
+E8,Q5,I found the error messages helpful and clear,5
+E8,Q6,I felt in control while using the system,5
+E8,Q7,I would feel comfortable using this system independently,5
+E8,Q8,I found the system forgiving if I made a mistake,5
+E8,Q9,I understood the information presented to me,5
+E8,Q10,I found the system responsive and fast enough,4
+E9,Q1,I found the navigation consistent and predictable,4
+E9,Q2,I found the instructions and labels easy to understand,4
+E9,Q3,I was able to access all features using only the keyboard,5
+E9,Q4,I found the colour contrast adequate for reading,4
+E9,Q5,I found the error messages helpful and clear,4
+E9,Q6,I felt in control while using the system,4
+E9,Q7,I would feel comfortable using this system independently,3
+E9,Q8,I found the system forgiving if I made a mistake,4
+E9,Q9,I understood the information presented to me,4
+E9,Q10,I found the system responsive and fast enough,4
+E10,Q1,I found the navigation consistent and predictable,4
+E10,Q2,I found the instructions and labels easy to understand,4
+E10,Q3,I was able to access all features using only the keyboard,4
+E10,Q4,I found the colour contrast adequate for reading,4
+E10,Q5,I found the error messages helpful and clear,4
+E10,Q6,I felt in control while using the system,3
+E10,Q7,I would feel comfortable using this system independently,4
+E10,Q8,I found the system forgiving if I made a mistake,4
+E10,Q9,I understood the information presented to me,3
+E10,Q10,I found the system responsive and fast enough,4

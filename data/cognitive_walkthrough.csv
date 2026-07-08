@@ -1,0 +1,81 @@
+EvaluatorID,TaskID,TaskName,TimeSeconds,Errors,Difficulty,Notes
+E1,T1,Unlock,5,0,1,No notes
+E1,T2,View Record,3,0,1,No notes
+E1,T3,Check Access,8,0,1,No notes
+E1,T4,Grant Access,15,0,2,No notes
+E1,T5,Review,12,0,1,No notes
+E1,T6,Confirm,20,0,2,No notes
+E1,T7,Revoke,5,0,1,No notes
+E1,T8,FAQ,10,0,2,No notes
+E2,T1,Unlock,5,0,1,No notes
+E2,T2,View Record,3,0,1,No notes
+E2,T3,Check Access,5,0,1,No notes
+E2,T4,Grant Access,10,0,2,No notes
+E2,T5,Review,8,0,1,No notes
+E2,T6,Confirm,12,0,2,No notes
+E2,T7,Revoke,8,0,2,No notes
+E2,T8,FAQ,5,0,1,No notes
+E3,T1,Unlock,5,0,1,No notes
+E3,T2,View Record,3,0,1,No notes
+E3,T3,Check Access,5,0,1,No notes
+E3,T4,Grant Access,10,0,2,No notes
+E3,T5,Review,8,0,1,No notes
+E3,T6,Confirm,12,0,2,No notes
+E3,T7,Revoke,5,0,1,No notes
+E3,T8,FAQ,5,0,1,No notes
+E4,T1,Unlock,3,0,1,No notes
+E4,T2,View Record,3,0,1,No notes
+E4,T3,Check Access,5,0,1,No notes
+E4,T4,Grant Access,10,0,2,No notes
+E4,T5,Review,8,0,1,No notes
+E4,T6,Confirm,12,0,2,No notes
+E4,T7,Revoke,5,0,1,No notes
+E4,T8,FAQ,8,0,2,No notes
+E5,T1,Unlock,3,0,1,No notes
+E5,T2,View Record,3,0,1,No notes
+E5,T3,Check Access,3,0,1,No notes
+E5,T4,Grant Access,8,0,2,No notes
+E5,T5,Review,5,0,1,No notes
+E5,T6,Confirm,10,0,2,No notes
+E5,T7,Revoke,3,0,1,No notes
+E5,T8,FAQ,8,0,2,No notes
+E6,T1,Unlock,7,0,2,1|Fingerprint unlock has excellent keyboard support. ARIA live region announces state change clearly. Skip-to-content link is well-implemented. The biometric button is large enough for motor-impaired users and has clear keyboard instructions.
+E6,T2,View Record,4,0,2,"1|MRI Brain Scan card is clearly structured with semantic HTML. Screen reader announces the heading, date, and status badge in logical order. High contrast between text and background meets WCAG 2.1 AA."
+E6,T3,Check Access,6,0,2,1|Access list is well-organized with clear headings. Each provider entry has proper semantic structure. The 'Remove Access' button is clearly associated with its provider via proximity and ARIA.
+E6,T4,Grant Access,16,0,3,2|Three-step wizard is excellent for cognitive accessibility. Step indicators provide strong wayfinding. Provider dropdown has clear labels. Minor suggestion: add ARIA live region announcement when step changes.
+E6,T5,Review,10,0,2,1|Review page is exemplary for accessibility. Plain language explanation is clear. The 'What this means' callout helps users understand consequences. Semantic structure supports screen reader navigation.
+E6,T6,Confirm,18,0,3,2|60-second countdown is accessible with ARIA live announcements. The timer updates every 10 seconds for screen reader users. Could benefit from a pause/resume option for users who need more processing time.
+E6,T7,Revoke,7,0,2,1|Revoke button is clearly visible with appropriate semantic color. The confirmation dialog prevents accidental activation. Screen reader announces the removal immediately.
+E6,T8,FAQ,12,0,2,2|FAQ accordion uses proper ARIA patterns. The 'What is blockchain' explanation uses plain language effectively. Minor: could add a 'Back to Top' link for keyboard users navigating long FAQ sections.
+E7,T1,Unlock,8,0,2,1|Unlock interaction is straightforward with clear affordances. The keyboard hint ('Press Enter or Space') is helpful for users who cannot use a mouse. Success feedback is immediate and clear.
+E7,T2,View Record,5,0,2,1|Record cards have excellent information hierarchy. Visual weight guides the eye to the most important information. The 'Active' status badge provides immediate recognition of record state.
+E7,T3,Check Access,7,0,2,"1|Access list is transparent and informative. Each provider entry includes specialty, which helps users verify they are sharing with the correct person. Permission levels are clearly stated."
+E7,T4,Grant Access,20,0,3,"2|Grant workflow follows established wizard patterns. The three-step process (Select > Review > Confirm) reduces cognitive load. However, the provider dropdown could benefit from a search function for larger provider lists."
+E7,T5,Review,12,0,3,1|Review page provides excellent summary information. The structured format makes it easy to scan and verify details. The 'What this means' explanation is particularly helpful for users unfamiliar with access control concepts.
+E7,T6,Confirm,22,0,3,"2|Countdown timer is a thoughtful safety feature. The 60-second window provides adequate time for reconsideration. However, some users with processing delays may find this stressful. Consider adding an option to extend the countdown."
+E7,T7,Revoke,9,0,2,1|Revoke functionality is clearly accessible. The 'Remove Access' button uses semantic color coding (red/danger) which is universally understood. Confirmation dialog prevents accidental revocations.
+E7,T8,FAQ,15,0,3,"2|FAQ section uses standard accordion pattern with good accessibility. The blockchain explanation is approachable. However, the FAQ is located at the bottom of the page; a 'Help' link in the header would improve discoverability."
+E8,T1,Unlock,5,0,1,1|Excellent semantic HTML structure. The fingerprint button uses proper button element with aria-label. The keyboard activation hint is programmatically associated. CSS animations respect prefers-reduced-motion.
+E8,T2,View Record,3,0,1,1|Record cards use proper heading hierarchy (h3). The status badge is implemented as a span with appropriate ARIA role. Date and facility information is programmatically associated with the record title.
+E8,T3,Check Access,5,0,1,1|Access list is implemented as a semantic list (ul/li). Each provider entry has proper heading structure. The 'Remove Access' button has a descriptive aria-label including the provider name.
+E8,T4,Grant Access,12,0,2,1|Grant workflow uses proper form semantics. The step indicator uses aria-current for the active step. Provider select has proper label association. Checkbox group uses fieldset and legend for grouping.
+E8,T5,Review,8,0,2,"1|Review page uses semantic definition list pattern (dl/dt/dd). The 'What this means' callout uses role='note' with aria-label. Buttons are implemented as actual button elements, not styled divs."
+E8,T6,Confirm,14,0,2,1|Countdown timer uses aria-live='polite' with aria-atomic='true'. The timer updates at appropriate intervals. The visual countdown uses semantic time element. The pause/resume logic is keyboard accessible.
+E8,T7,Revoke,6,0,1,1|Revoke button uses button element with type='button'. The confirmation dialog traps focus properly using aria-modal. Focus returns to the trigger button after dialog dismissal. Screen reader announces success.
+E8,T8,FAQ,8,0,2,1|FAQ accordion uses proper button controls with aria-expanded state. The panel content uses aria-hidden for visibility state. Focus management moves into the expanded panel. The blockchain explanation uses simple vocabulary.
+E9,T1,Unlock,12,0,2,"2|Unlock button is large and easy to activate. However, users with severe motor impairments may need dwell-click or switch access. The button is large enough for target accuracy but could be larger for some users."
+E9,T2,View Record,6,0,3,2|Record card information is clear but text size may be small for users with low vision. The contrast is good but could be enhanced with a larger font option. Motor-impaired users may need more spacing between clickable elements.
+E9,T3,Check Access,9,0,2,2|Access list is informative but requires scrolling for users with limited range of motion. The 'Remove Access' buttons are well-spaced but could benefit from larger touch targets for tablet users with tremors.
+E9,T4,Grant Access,22,0,3,3|Three-step wizard is good but may be challenging for users with cognitive impairments. The step indicator is helpful but the 'Review' and 'Confirm' steps could benefit from more visual differentiation. Consider adding progress percentage.
+E9,T5,Review,15,0,3,2|Review page is clear but the text density is high. Users with reading difficulties may benefit from a simplified summary mode. The 'What this means' explanation is helpful but could use simpler vocabulary.
+E9,T6,Confirm,25,0,3,"3|60-second countdown may be too short for some users with motor impairments. Users with tremor or slow switch access may need 90-120 seconds. The countdown timer is visible but not adjustable, which is a significant concern for OT perspective."
+E9,T7,Revoke,10,0,3,2|Revoke button is accessible but the confirmation dialog may be confusing for users with cognitive impairments. The text is clear but could use a visual icon alongside the text for better comprehension.
+E9,T8,FAQ,18,0,3,3|FAQ is comprehensive but the accordion pattern requires precise clicking. Users with motor impairments may have difficulty with the small expand/collapse buttons. Consider making the entire question header clickable.
+E10,T1,Unlock,15,0,3,3|Unlock button works with NVDA but the ARIA announcement could be more descriptive. The 'Session secured' message is announced but doesn't specify which user is logged in. Keyboard navigation is good but focus indicator could be more prominent.
+E10,T2,View Record,7,0,3,2|Record card works with screen reader but the date information is not clearly separated from the title. NVDA reads 'MRI Brain Scan June 2026' as one string. Consider using a visual separator or semantic markup to distinguish title from metadata.
+E10,T3,Check Access,10,0,3,2|Access list works with screen reader but the 'Remove Access' button lacks context about which provider it applies to. The button should announce 'Remove access for Dr. Sarah Chen' rather than just 'Remove Access'.
+E10,T4,Grant Access,25,0,3,"3|Grant workflow is functional but the step indicator doesn't announce state changes to screen reader. When moving from Step 1 to Step 2, the user is not informed via ARIA live region. This is a critical gap for screen reader users."
+E10,T5,Review,18,0,3,2|Review page is clear but the structured box layout may confuse screen reader users who navigate by heading. The content is accessible but the visual grouping doesn't translate well to audio representation.
+E10,T6,Confirm,28,0,3,3|Countdown timer is announced but not at consistent intervals. The first few announcements are clear but later updates may be missed if the screen reader is busy with other content. The timer should have higher priority in the speech queue.
+E10,T7,Revoke,12,0,3,2|Revoke button is accessible but the confirmation dialog doesn't move focus to the dialog content automatically. Screen reader users may not realize a dialog has appeared. The dialog should use aria-modal and manage focus properly.
+E10,T8,FAQ,20,0,3,"3|FAQ accordion works but the expand/collapse buttons are small for switch users. Each button requires a separate switch activation, which is inefficient for users with limited switch access. Consider a 'Expand All' option for switch users."

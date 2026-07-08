@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1152pt" height="676.8pt" viewBox="0 0 1152 676.8" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-03T20:49:10.272954</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 676.8 
+L 1152 676.8 
+L 1152 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 292.16736 131.240809 
+L 302.1264 125.340706 
+L 302.1264 130.323016 
+L 295.72416 130.323016 
+L 295.72416 132.158603 
+L 302.1264 132.158603 
+L 302.1264 137.140913 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 562.48416 131.240809 
+L 552.52512 137.140913 
+L 552.52512 132.158603 
+L 558.92736 132.158603 
+L 558.92736 130.323016 
+L 552.52512 130.323016 
+L 552.52512 125.340706 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 811.46016 131.240809 
+L 821.4192 125.340706 
+L 821.4192 130.323016 
+L 815.01696 130.323016 
+L 815.01696 132.158603 
+L 821.4192 132.158603 
+L 821.4192 137.140913 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 292.16736 262.354221 
+L 302.1264 256.454118 
+L 302.1264 261.436427 
+L 295.72416 261.436427 
+L 295.72416 263.272015 
+L 302.1264 263.272015 
+L 302.1264 268.254325 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 562.48416 262.354221 
+L 552.52512 268.254325 
+L 552.52512 263.272015 
+L 558.92736 263.272015 
+L 558.92736 261.436427 
+L 552.52512 261.436427 
+L 552.52512 256.454118 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 811.46016 262.354221 
+L 821.4192 256.454118 
+L 821.4192 261.436427 
+L 815.01696 261.436427 
+L 815.01696 263.272015 
+L 821.4192 263.272015 
+L 821.4192 268.254325 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 292.16736 393.467633 
+L 302.1264 387.567529 
+L 302.1264 392.549839 
+L 295.72416 392.549839 
+L 295.72416 394.385427 
+L 302.1264 394.385427 
+L 302.1264 399.367736 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 562.48416 393.467633 
+L 552.52512 399.367736 
+L 552.52512 394.385427 
+L 558.92736 394.385427 
+L 558.92736 392.549839 
+L 552.52512 392.549839 
+L 552.52512 387.567529 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 811.46016 393.467633 
+L 821.4192 387.567529 
+L 821.4192 392.549839 
+L 815.01696 392.549839 
+L 815.01696 394.385427 
+L 821.4192 394.385427 
+L 821.4192 399.367736 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 292.16736 524.581045 
+L 302.1264 518.680941 
+L 302.1264 523.663251 
+L 295.72416 523.663251 
+L 295.72416 525.498839 
+L 302.1264 525.498839 
+L 302.1264 530.481148 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 562.48416 524.581045 
+L 552.52512 530.481148 
+L 552.52512 525.498839 
+L 558.92736 525.498839 
+L 558.92736 523.663251 
+L 552.52512 523.663251 
+L 552.52512 518.680941 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 811.46016 524.581045 
+L 821.4192 518.680941 
+L 821.4192 523.663251 
+L 815.01696 523.663251 
+L 815.01696 525.498839 
+L 821.4192 525.498839 
+L 821.4192 530.481148 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #aeb6be"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 28.2528 618.982701 
+L 1123.7472 618.982701 
+" clip-path="url(#p1be7982d1c)" style="fill: none; stroke: #d5dae0; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 247.35168 662.250127 
+L 247.35168 628.16064 
+" clip-path="url(#p1be7982d1c)" style="fill: none; stroke: #d5dae0; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 466.45056 662.250127 
+L 466.45056 628.16064 
+" clip-path="url(#p1be7982d1c)" style="fill: none; stroke: #d5dae0; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 685.54944 662.250127 
+L 685.54944 628.16064 
+" clip-path="url(#p1be7982d1c)" style="fill: none; stroke: #d5dae0; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 904.64832 662.250127 
+L 904.64832 628.16064 
+" clip-path="url(#p1be7982d1c)" style="fill: none; stroke: #d5dae0; stroke-width: 0.8; stroke-linecap: square"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 31.8096 55.195031 
+L 287.8992 55.195031 
+Q 291.456 55.195031 291.456 51.917195 
+L 291.456 16.516574 
+Q 291.456 13.238739 287.8992 13.238739 
+L 31.8096 13.238739 
+Q 28.2528 13.238739 28.2528 16.516574 
+L 28.2528 51.917195 
+Q 28.2528 55.195031 31.8096 55.195031 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #2b3e52"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 305.6832 55.195031 
+L 551.1024 55.195031 
+Q 554.6592 55.195031 554.6592 51.917195 
+L 554.6592 16.516574 
+Q 554.6592 13.238739 551.1024 13.238739 
+L 305.6832 13.238739 
+Q 302.1264 13.238739 302.1264 16.516574 
+L 302.1264 51.917195 
+Q 302.1264 55.195031 305.6832 55.195031 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #2b3e52"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 576 55.195031 
+L 807.192 55.195031 
+Q 810.7488 55.195031 810.7488 51.917195 
+L 810.7488 16.516574 
+Q 810.7488 13.238739 807.192 13.238739 
+L 576 13.238739 
+Q 572.4432 13.238739 572.4432 16.516574 
+L 572.4432 51.917195 
+Q 572.4432 55.195031 576 55.195031 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #2b3e52"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 824.976 55.195031 
+L 1120.1904 55.195031 
+Q 1123.7472 55.195031 1123.7472 51.917195 
+L 1123.7472 16.516574 
+Q 1123.7472 13.238739 1120.1904 13.238739 
+L 824.976 13.238739 
+Q 821.4192 13.238739 821.4192 16.516574 
+L 821.4192 51.917195 
+Q 821.4192 55.195031 824.976 55.195031 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #2b3e52"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 31.45392 189.586278 
+L 288.25488 189.586278 
+Q 291.456 189.586278 291.456 186.636226 
+L 291.456 75.845393 
+Q 291.456 72.895341 288.25488 72.895341 
+L 31.45392 72.895341 
+Q 28.2528 72.895341 28.2528 75.845393 
+L 28.2528 186.636226 
+Q 28.2528 189.586278 31.45392 189.586278 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #eaf0f5; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 10.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="49.5936" y="99.001625" transform="rotate(-0 49.5936 99.001625)">Authentication Complexity</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="122.773408" transform="rotate(-0 51.01632 122.773408)">B1  Key-management burden</text>
+   </g>
+   <g id="text_3">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="145.062688" transform="rotate(-0 51.01632 145.062688)">B2  Multi-factor complexity</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="167.351968" transform="rotate(-0 51.01632 167.351968)">B3  No authentication alternatives</text>
+   </g>
+   <g id="patch_19">
+    <path d="M 305.32752 189.586278 
+L 551.45808 189.586278 
+Q 554.6592 189.586278 554.6592 186.636226 
+L 554.6592 75.845393 
+Q 554.6592 72.895341 551.45808 72.895341 
+L 305.32752 72.895341 
+Q 302.1264 72.895341 302.1264 75.845393 
+L 302.1264 186.636226 
+Q 302.1264 189.586278 305.32752 189.586278 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #ffffff; stroke: #3e6e93; stroke-width: 1.3; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 10.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="323.4672" y="99.305563" transform="rotate(-0 323.4672 99.305563)">P1 · AAD</text>
+   </g>
+   <g id="text_6">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="323.4672" y="121.338597" transform="rotate(-0 323.4672 121.338597)">Abstracted Authentication Design</text>
+   </g>
+   <g id="text_7">
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 141.708868)">Abstract cryptographic auth via</text>
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 151.338987)">accessible mechanisms.</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7b838c" x="323.4672" y="173.500052" transform="rotate(-0 323.4672 173.500052)">Nielsen H5, H6 · WCAG 2.2.1, 3.3.4</text>
+   </g>
+   <g id="patch_20">
+    <path d="M 575.64432 189.586278 
+L 807.54768 189.586278 
+Q 810.7488 189.586278 810.7488 186.636226 
+L 810.7488 75.845393 
+Q 810.7488 72.895341 807.54768 72.895341 
+L 575.64432 72.895341 
+Q 572.4432 72.895341 572.4432 75.845393 
+L 572.4432 186.636226 
+Q 572.4432 189.586278 575.64432 189.586278 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #eaf0f5; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="593.784" y="111.710904" transform="rotate(-0 593.784 111.710904)">–</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="111.462561" transform="rotate(-0 610.85664 111.462561)">Reduce cognitive effort</text>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="593.784" y="137.933587" transform="rotate(-0 593.784 137.933587)">–</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="137.685243" transform="rotate(-0 610.85664 137.685243)">Inclusive authentication</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="593.784" y="164.156269" transform="rotate(-0 593.784 164.156269)">–</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="163.907925" transform="rotate(-0 610.85664 163.907925)">Adaptive sessions</text>
+   </g>
+   <g id="patch_21">
+    <path d="M 824.62032 189.586278 
+L 1120.54608 189.586278 
+Q 1123.7472 189.586278 1123.7472 186.636226 
+L 1123.7472 75.845393 
+Q 1123.7472 72.895341 1120.54608 72.895341 
+L 824.62032 72.895341 
+Q 821.4192 72.895341 821.4192 75.845393 
+L 821.4192 186.636226 
+Q 821.4192 189.586278 824.62032 189.586278 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #dce7f0; stroke: #3e6e93; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="844.18272" y="98.089813" transform="rotate(-0 844.18272 98.089813)">P1 · AAD  implements</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="845.60544" y="118.09433" transform="rotate(-0 845.60544 118.09433)">▪</text>
+   </g>
+   <g id="text_17">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="118.591017" transform="rotate(-0 861.25536 118.591017)">Biometric key binding</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="845.60544" y="141.694744" transform="rotate(-0 845.60544 141.694744)">▪</text>
+   </g>
+   <g id="text_19">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="142.191431" transform="rotate(-0 861.25536 142.191431)">Guardian-delegated access</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3e6e93" x="845.60544" y="165.295158" transform="rotate(-0 845.60544 165.295158)">▪</text>
+   </g>
+   <g id="text_21">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="165.791845" transform="rotate(-0 861.25536 165.791845)">Adjustable session timeouts</text>
+   </g>
+   <g id="patch_22">
+    <path d="M 31.45392 320.699689 
+L 288.25488 320.699689 
+Q 291.456 320.699689 291.456 317.749638 
+L 291.456 206.958805 
+Q 291.456 204.008753 288.25488 204.008753 
+L 31.45392 204.008753 
+Q 28.2528 204.008753 28.2528 206.958805 
+L 28.2528 317.749638 
+Q 28.2528 320.699689 31.45392 320.699689 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #e9f2ee; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_22">
+    <text style="font-weight: 700; font-size: 10.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="49.5936" y="230.115037" transform="rotate(-0 49.5936 230.115037)">Interface Transparency</text>
+   </g>
+   <g id="text_23">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="253.886819" transform="rotate(-0 51.01632 253.886819)">B4  Invisible system status</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="276.176099" transform="rotate(-0 51.01632 276.176099)">B5  Technical jargon</text>
+   </g>
+   <g id="text_25">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="298.465379" transform="rotate(-0 51.01632 298.465379)">B6  Opaque data ownership</text>
+   </g>
+   <g id="patch_23">
+    <path d="M 305.32752 320.699689 
+L 551.45808 320.699689 
+Q 554.6592 320.699689 554.6592 317.749638 
+L 554.6592 206.958805 
+Q 554.6592 204.008753 551.45808 204.008753 
+L 305.32752 204.008753 
+Q 302.1264 204.008753 302.1264 206.958805 
+L 302.1264 317.749638 
+Q 302.1264 320.699689 305.32752 320.699689 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #ffffff; stroke: #3f8a6e; stroke-width: 1.3; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_26">
+    <text style="font-weight: 700; font-size: 10.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="323.4672" y="230.418974" transform="rotate(-0 323.4672 230.418974)">P2 · PTD</text>
+   </g>
+   <g id="text_27">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="323.4672" y="252.452009" transform="rotate(-0 323.4672 252.452009)">Progressive Transparency Design</text>
+   </g>
+   <g id="text_28">
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 272.82228)">Disclose blockchain complexity</text>
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 282.452399)">progressively.</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7b838c" x="323.4672" y="304.613464" transform="rotate(-0 323.4672 304.613464)">Nielsen H1, H2 · WCAG 3.1.5</text>
+   </g>
+   <g id="patch_24">
+    <path d="M 575.64432 320.699689 
+L 807.54768 320.699689 
+Q 810.7488 320.699689 810.7488 317.749638 
+L 810.7488 206.958805 
+Q 810.7488 204.008753 807.54768 204.008753 
+L 575.64432 204.008753 
+Q 572.4432 204.008753 572.4432 206.958805 
+L 572.4432 317.749638 
+Q 572.4432 320.699689 575.64432 320.699689 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #e9f2ee; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="593.784" y="242.824316" transform="rotate(-0 593.784 242.824316)">–</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="242.575972" transform="rotate(-0 610.85664 242.575972)">Improve system transparency</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="593.784" y="269.046999" transform="rotate(-0 593.784 269.046999)">–</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="268.798655" transform="rotate(-0 610.85664 268.798655)">Reduce cognitive load</text>
+   </g>
+   <g id="text_34">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="593.784" y="295.269681" transform="rotate(-0 593.784 295.269681)">–</text>
+   </g>
+   <g id="text_35">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="295.021337" transform="rotate(-0 610.85664 295.021337)">Transparent consent</text>
+   </g>
+   <g id="patch_25">
+    <path d="M 824.62032 320.699689 
+L 1120.54608 320.699689 
+Q 1123.7472 320.699689 1123.7472 317.749638 
+L 1123.7472 206.958805 
+Q 1123.7472 204.008753 1120.54608 204.008753 
+L 824.62032 204.008753 
+Q 821.4192 204.008753 821.4192 206.958805 
+L 821.4192 317.749638 
+Q 821.4192 320.699689 824.62032 320.699689 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #d8ece3; stroke: #3f8a6e; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_36">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="844.18272" y="229.203224" transform="rotate(-0 844.18272 229.203224)">P2 · PTD  implements</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="845.60544" y="249.207741" transform="rotate(-0 845.60544 249.207741)">▪</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="249.704429" transform="rotate(-0 861.25536 249.704429)">Plain-language status</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="845.60544" y="272.808155" transform="rotate(-0 845.60544 272.808155)">▪</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="273.304843" transform="rotate(-0 861.25536 273.304843)">Inline terminology glossary</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #3f8a6e" x="845.60544" y="296.40857" transform="rotate(-0 845.60544 296.40857)">▪</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="296.905257" transform="rotate(-0 861.25536 296.905257)">Data-ownership dashboard</text>
+   </g>
+   <g id="patch_26">
+    <path d="M 31.45392 451.813101 
+L 288.25488 451.813101 
+Q 291.456 451.813101 291.456 448.863049 
+L 291.456 338.072216 
+Q 291.456 335.122165 288.25488 335.122165 
+L 31.45392 335.122165 
+Q 28.2528 335.122165 28.2528 338.072216 
+L 28.2528 448.863049 
+Q 28.2528 451.813101 31.45392 451.813101 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #f4eee2; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_43">
+    <text style="font-weight: 700; font-size: 10.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="49.5936" y="361.228449" transform="rotate(-0 49.5936 361.228449)">Feedback Adequacy</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="385.000231" transform="rotate(-0 51.01632 385.000231)">B7  Unclear error messages</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="407.289511" transform="rotate(-0 51.01632 407.289511)">B8  No confirmation feedback</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="429.578791" transform="rotate(-0 51.01632 429.578791)">B9  No undo / reversal</text>
+   </g>
+   <g id="patch_27">
+    <path d="M 305.32752 451.813101 
+L 551.45808 451.813101 
+Q 554.6592 451.813101 554.6592 448.863049 
+L 554.6592 338.072216 
+Q 554.6592 335.122165 551.45808 335.122165 
+L 305.32752 335.122165 
+Q 302.1264 335.122165 302.1264 338.072216 
+L 302.1264 448.863049 
+Q 302.1264 451.813101 305.32752 451.813101 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #ffffff; stroke: #a9772f; stroke-width: 1.3; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_47">
+    <text style="font-weight: 700; font-size: 10.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="323.4672" y="361.532386" transform="rotate(-0 323.4672 361.532386)">P3 · CID</text>
+   </g>
+   <g id="text_48">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="323.4672" y="383.565421" transform="rotate(-0 323.4672 383.565421)">Confirmatory Interaction Design</text>
+   </g>
+   <g id="text_49">
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 403.935692)">Structured confirmation for irreversible</text>
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 413.56581)">actions.</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7b838c" x="323.4672" y="435.726876" transform="rotate(-0 323.4672 435.726876)">Nielsen H3, H5, H9 · WCAG 3.3.1, 3.3.2</text>
+   </g>
+   <g id="patch_28">
+    <path d="M 575.64432 451.813101 
+L 807.54768 451.813101 
+Q 810.7488 451.813101 810.7488 448.863049 
+L 810.7488 338.072216 
+Q 810.7488 335.122165 807.54768 335.122165 
+L 575.64432 335.122165 
+Q 572.4432 335.122165 572.4432 338.072216 
+L 572.4432 448.863049 
+Q 572.4432 451.813101 575.64432 451.813101 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #f4eee2; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="593.784" y="373.937728" transform="rotate(-0 593.784 373.937728)">–</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="373.689384" transform="rotate(-0 610.85664 373.689384)">Prevent irreversible errors</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="593.784" y="400.16041" transform="rotate(-0 593.784 400.16041)">–</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="399.912067" transform="rotate(-0 610.85664 399.912067)">Improve user control</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="593.784" y="426.383093" transform="rotate(-0 593.784 426.383093)">–</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="426.134749" transform="rotate(-0 610.85664 426.134749)">Clear recovery guidance</text>
+   </g>
+   <g id="patch_29">
+    <path d="M 824.62032 451.813101 
+L 1120.54608 451.813101 
+Q 1123.7472 451.813101 1123.7472 448.863049 
+L 1123.7472 338.072216 
+Q 1123.7472 335.122165 1120.54608 335.122165 
+L 824.62032 335.122165 
+Q 821.4192 335.122165 821.4192 338.072216 
+L 821.4192 448.863049 
+Q 821.4192 451.813101 824.62032 451.813101 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #ede1cb; stroke: #a9772f; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_57">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="844.18272" y="360.316636" transform="rotate(-0 844.18272 360.316636)">P3 · CID  implements</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="845.60544" y="380.321153" transform="rotate(-0 845.60544 380.321153)">▪</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="380.817841" transform="rotate(-0 861.25536 380.817841)">Two-stage confirmation</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="845.60544" y="403.921567" transform="rotate(-0 845.60544 403.921567)">▪</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="404.418255" transform="rotate(-0 861.25536 404.418255)">Time-locked pending state</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #a9772f" x="845.60544" y="427.521981" transform="rotate(-0 845.60544 427.521981)">▪</text>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="428.018669" transform="rotate(-0 861.25536 428.018669)">Actionable error messages</text>
+   </g>
+   <g id="patch_30">
+    <path d="M 31.45392 582.926513 
+L 288.25488 582.926513 
+Q 291.456 582.926513 291.456 579.976461 
+L 291.456 469.185628 
+Q 291.456 466.235576 288.25488 466.235576 
+L 31.45392 466.235576 
+Q 28.2528 466.235576 28.2528 469.185628 
+L 28.2528 579.976461 
+Q 28.2528 582.926513 31.45392 582.926513 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #efebf3; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_64">
+    <text style="font-weight: 700; font-size: 10.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="49.5936" y="492.34186" transform="rotate(-0 49.5936 492.34186)">Assistive-Technology Compatibility</text>
+   </g>
+   <g id="text_65">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="516.113643" transform="rotate(-0 51.01632 516.113643)">B10  Screen-reader gaps</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="538.402923" transform="rotate(-0 51.01632 538.402923)">B11  Keyboard-navigation failures</text>
+   </g>
+   <g id="text_67">
+    <text style="font-size: 8.7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #4a515a" x="51.01632" y="560.692203" transform="rotate(-0 51.01632 560.692203)">B12  Low colour contrast</text>
+   </g>
+   <g id="patch_31">
+    <path d="M 305.32752 582.926513 
+L 551.45808 582.926513 
+Q 554.6592 582.926513 554.6592 579.976461 
+L 554.6592 469.185628 
+Q 554.6592 466.235576 551.45808 466.235576 
+L 305.32752 466.235576 
+Q 302.1264 466.235576 302.1264 469.185628 
+L 302.1264 579.976461 
+Q 302.1264 582.926513 305.32752 582.926513 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #ffffff; stroke: #6e5c8a; stroke-width: 1.3; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_68">
+    <text style="font-weight: 700; font-size: 10.6px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="323.4672" y="492.645798" transform="rotate(-0 323.4672 492.645798)">P4 · UAC</text>
+   </g>
+   <g id="text_69">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="323.4672" y="514.678832" transform="rotate(-0 323.4672 514.678832)">Universal Assistive Compatibility</text>
+   </g>
+   <g id="text_70">
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 535.049103)">Compatibility with all assistive</text>
+    <text style="font-style: italic; font-size: 8.6px; font-family: 'DejaVu Sans'; fill: #4a515a" transform="translate(323.4672 544.679222)">technologies.</text>
+   </g>
+   <g id="text_71">
+    <text style="font-size: 8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #7b838c" x="323.4672" y="566.840288" transform="rotate(-0 323.4672 566.840288)">Nielsen H4, H7 · WCAG 2.1.1, 2.4.7, 4.1.3</text>
+   </g>
+   <g id="patch_32">
+    <path d="M 575.64432 582.926513 
+L 807.54768 582.926513 
+Q 810.7488 582.926513 810.7488 579.976461 
+L 810.7488 469.185628 
+Q 810.7488 466.235576 807.54768 466.235576 
+L 575.64432 466.235576 
+Q 572.4432 466.235576 572.4432 469.185628 
+L 572.4432 579.976461 
+Q 572.4432 582.926513 575.64432 582.926513 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #efebf3; stroke: #d5dae0; stroke-width: 0.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="593.784" y="505.05114" transform="rotate(-0 593.784 505.05114)">–</text>
+   </g>
+   <g id="text_73">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="504.802796" transform="rotate(-0 610.85664 504.802796)">Universal accessibility</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="593.784" y="531.273822" transform="rotate(-0 593.784 531.273822)">–</text>
+   </g>
+   <g id="text_75">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="531.025478" transform="rotate(-0 610.85664 531.025478)">WCAG 2.1 AA compliance</text>
+   </g>
+   <g id="text_76">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="593.784" y="557.496504" transform="rotate(-0 593.784 557.496504)">–</text>
+   </g>
+   <g id="text_77">
+    <text style="font-size: 9.1px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="610.85664" y="557.248161" transform="rotate(-0 610.85664 557.248161)">Assistive-technology support</text>
+   </g>
+   <g id="patch_33">
+    <path d="M 824.62032 582.926513 
+L 1120.54608 582.926513 
+Q 1123.7472 582.926513 1123.7472 579.976461 
+L 1123.7472 469.185628 
+Q 1123.7472 466.235576 1120.54608 466.235576 
+L 824.62032 466.235576 
+Q 821.4192 466.235576 821.4192 469.185628 
+L 821.4192 579.976461 
+Q 821.4192 582.926513 824.62032 582.926513 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #e4dcec; stroke: #6e5c8a; stroke-width: 1.1; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_78">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="844.18272" y="491.430048" transform="rotate(-0 844.18272 491.430048)">P4 · UAC  implements</text>
+   </g>
+   <g id="text_79">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="845.60544" y="511.434565" transform="rotate(-0 845.60544 511.434565)">▪</text>
+   </g>
+   <g id="text_80">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="511.931252" transform="rotate(-0 861.25536 511.931252)">ARIA live regions</text>
+   </g>
+   <g id="text_81">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="845.60544" y="535.034979" transform="rotate(-0 845.60544 535.034979)">▪</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="535.531666" transform="rotate(-0 861.25536 535.531666)">Full keyboard operability</text>
+   </g>
+   <g id="text_83">
+    <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #6e5c8a" x="845.60544" y="558.635393" transform="rotate(-0 845.60544 558.635393)">▪</text>
+   </g>
+   <g id="text_84">
+    <text style="font-size: 8.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #20242a" x="861.25536" y="559.132081" transform="rotate(-0 861.25536 559.132081)">AA contrast + high-contrast</text>
+   </g>
+   <g id="text_85">
+    <text style="font-weight: 700; font-size: 9.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #8a7327" x="576" y="608.465173" transform="rotate(-0 576 608.465173)">FOUNDATIONS  &amp;  STANDARDS  GUIDING  THE  MAPPING</text>
+   </g>
+   <g id="text_86">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #20242a" x="137.80224" y="639.166449" transform="rotate(-0 137.80224 639.166449)">HCI Literature</text>
+   </g>
+   <g id="text_87">
+    <text style="font-size: 8.1px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7b838c" x="137.80224" y="656.618416" transform="rotate(-0 137.80224 656.618416)">Usability · Accessibility · UI/UX</text>
+   </g>
+   <g id="text_88">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #20242a" x="356.90112" y="639.131293" transform="rotate(-0 356.90112 639.131293)">Accessibility Standards</text>
+   </g>
+   <g id="text_89">
+    <text style="font-size: 8.1px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7b838c" x="356.90112" y="656.618416" transform="rotate(-0 356.90112 656.618416)">WCAG 2.1 AA · EN 301 549</text>
+   </g>
+   <g id="text_90">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #20242a" x="576" y="639.131293" transform="rotate(-0 576 639.131293)">Regulatory Frameworks</text>
+   </g>
+   <g id="text_91">
+    <text style="font-size: 8.1px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7b838c" x="576" y="656.618416" transform="rotate(-0 576 656.618416)">GDPR · HIPAA</text>
+   </g>
+   <g id="text_92">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #20242a" x="795.09888" y="639.131293" transform="rotate(-0 795.09888 639.131293)">Usability Heuristics</text>
+   </g>
+   <g id="text_93">
+    <text style="font-size: 8.1px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7b838c" x="795.09888" y="656.618416" transform="rotate(-0 795.09888 656.618416)">Nielsen’s 10 Heuristics</text>
+   </g>
+   <g id="text_94">
+    <text style="font-weight: 700; font-size: 9px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #20242a" x="1014.19776" y="639.131293" transform="rotate(-0 1014.19776 639.131293)">PwD-Centered Design</text>
+   </g>
+   <g id="text_95">
+    <text style="font-size: 8.1px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #7b838c" x="1014.19776" y="656.618416" transform="rotate(-0 1014.19776 656.618416)">Needs · Context · Inclusion</text>
+   </g>
+   <g id="text_96">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="159.8544" y="31.490062" transform="rotate(-0 159.8544 31.490062)">1.  BARRIER DIMENSIONS</text>
+   </g>
+   <g id="text_97">
+    <text style="font-style: italic; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #bcc7d2" x="159.8544" y="48.990534" transform="rotate(-0 159.8544 48.990534)">Section IV  (B1–B12)</text>
+   </g>
+   <g id="text_98">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="428.3928" y="31.490062" transform="rotate(-0 428.3928 31.490062)">2.  HCI INTEGRATION PRINCIPLES</text>
+   </g>
+   <g id="text_99">
+    <text style="font-style: italic; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #bcc7d2" x="428.3928" y="48.990534" transform="rotate(-0 428.3928 48.990534)">Section V</text>
+   </g>
+   <g id="text_100">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="691.596" y="31.490062" transform="rotate(-0 691.596 31.490062)">3.  DESIGN OBJECTIVES</text>
+   </g>
+   <g id="text_101">
+    <text style="font-style: italic; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #bcc7d2" x="691.596" y="48.990534" transform="rotate(-0 691.596 48.990534)">What each principle achieves</text>
+   </g>
+   <g id="text_102">
+    <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="972.5832" y="31.490062" transform="rotate(-0 972.5832 31.490062)">4.  FRAMEWORK IMPLEMENTATION</text>
+   </g>
+   <g id="text_103">
+    <text style="font-style: italic; font-size: 8.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #bcc7d2" x="972.5832" y="48.990534" transform="rotate(-0 972.5832 48.990534)">Section VI</text>
+   </g>
+   <g id="patch_34">
+    <path d="M 28.2528 189.586278 
+L 34.65504 189.586278 
+L 34.65504 72.895341 
+L 28.2528 72.895341 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3e6e93"/>
+   </g>
+   <g id="patch_35">
+    <path d="M 302.1264 189.586278 
+L 308.52864 189.586278 
+L 308.52864 72.895341 
+L 302.1264 72.895341 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3e6e93"/>
+   </g>
+   <g id="patch_36">
+    <path d="M 821.4192 189.586278 
+L 829.95552 189.586278 
+L 829.95552 72.895341 
+L 821.4192 72.895341 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3e6e93"/>
+   </g>
+   <g id="patch_37">
+    <path d="M 28.2528 320.699689 
+L 34.65504 320.699689 
+L 34.65504 204.008753 
+L 28.2528 204.008753 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3f8a6e"/>
+   </g>
+   <g id="patch_38">
+    <path d="M 302.1264 320.699689 
+L 308.52864 320.699689 
+L 308.52864 204.008753 
+L 302.1264 204.008753 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3f8a6e"/>
+   </g>
+   <g id="patch_39">
+    <path d="M 821.4192 320.699689 
+L 829.95552 320.699689 
+L 829.95552 204.008753 
+L 821.4192 204.008753 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #3f8a6e"/>
+   </g>
+   <g id="patch_40">
+    <path d="M 28.2528 451.813101 
+L 34.65504 451.813101 
+L 34.65504 335.122165 
+L 28.2528 335.122165 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #a9772f"/>
+   </g>
+   <g id="patch_41">
+    <path d="M 302.1264 451.813101 
+L 308.52864 451.813101 
+L 308.52864 335.122165 
+L 302.1264 335.122165 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #a9772f"/>
+   </g>
+   <g id="patch_42">
+    <path d="M 821.4192 451.813101 
+L 829.95552 451.813101 
+L 829.95552 335.122165 
+L 821.4192 335.122165 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #a9772f"/>
+   </g>
+   <g id="patch_43">
+    <path d="M 28.2528 582.926513 
+L 34.65504 582.926513 
+L 34.65504 466.235576 
+L 28.2528 466.235576 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #6e5c8a"/>
+   </g>
+   <g id="patch_44">
+    <path d="M 302.1264 582.926513 
+L 308.52864 582.926513 
+L 308.52864 466.235576 
+L 302.1264 466.235576 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #6e5c8a"/>
+   </g>
+   <g id="patch_45">
+    <path d="M 821.4192 582.926513 
+L 829.95552 582.926513 
+L 829.95552 466.235576 
+L 821.4192 466.235576 
+z
+" clip-path="url(#p1be7982d1c)" style="fill: #6e5c8a"/>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p1be7982d1c">
+   <rect x="6.912" y="4.0608" width="1138.176" height="668.6784"/>
+  </clipPath>
+ </defs>
+</svg>

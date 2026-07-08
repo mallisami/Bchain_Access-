@@ -1,0 +1,30 @@
+Element,Foreground,Background,Contrast Ratio,WCAG AA Result
+Main heading,#FFFFFF,#1E3A8A,8.2:1,Pass (Large)
+Primary Button Text,#FFFFFF,#2563EB,4.6:1,Pass
+Cancel Button Text,#E11D48,#FFF1F2,4.8:1,Pass
+Confirm Button Active,#FFFFFF,#16A34A,5.1:1,Pass
+Sidebar Link Normal,#4B5563,#F9FAFB,4.9:1,Pass
+Sidebar Link Active,#1D4ED8,#EFF6FF,5.3:1,Pass
+Record Hash Title,#111827,#FFFFFF,19.5:1,Pass
+Expiration Badge View,#D97706,#FEF3C7,4.8:1,Pass
+Tooltip Body,#F3F4F6,#1F2937,9.8:1,Pass
+Countdown Timer Text,#EF4444,#FFFFFF,4.6:1,Pass
+FAQ Question Text,#374151,#FFFFFF,9.5:1,Pass
+FAQ Answer Text,#1F2937,#F9FAFB,10.2:1,Pass
+Audit Log Timestamp,#6B7280,#FFFFFF,4.6:1,Pass
+Audit Log Event type,#111827,#FFFFFF,19.5:1,Pass
+Header Logo Label,#1E3A8A,#F3F4F6,8.9:1,Pass
+Logout Button Text,#DC2626,#FFFFFF,5.2:1,Pass
+Notification Error,#991B1B,#FEE2E2,6.2:1,Pass
+Notification Success,#065F46,#D1FAE5,5.8:1,Pass
+Form Input Label,#374151,#FFFFFF,9.5:1,Pass
+Form Input Border (Focus),#2563EB,#FFFFFF,4.6:1,Pass
+Card Background Border,#E5E7EB,#FFFFFF,3.2:1,Pass (UI Component)
+Help Icon (Aria-label),#4B5563,#FFFFFF,4.8:1,Pass
+Footer Copyright,#6B7280,#FFFFFF,4.6:1,Pass
+Status Pill Active,#065F46,#D1FAE5,5.8:1,Pass
+Status Pill Pending,#92400E,#FEF3C7,5.1:1,Pass
+Bio Keybind Button,#FFFFFF,#7C3AED,4.8:1,Pass
+Bio Keybind Focus Ring,#7C3AED,#FFFFFF,4.8:1,Pass
+Instruction Paragraph,#374151,#FFFFFF,9.5:1,Pass
+Table Cell Data,#111827,#FFFFFF,19.5:1,Pass

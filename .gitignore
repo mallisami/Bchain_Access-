@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+backend/venv/
+backend/.env
+smart_contracts/.env
+
+# Python Caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Hardhat Build Artifacts & Caches
+smart_contracts/artifacts/
+smart_contracts/cache/
+smart_contracts/typechain/
+smart_contracts/typechain-types/
+
+# Local/Temporary Configurations
+smart_contracts/deployment.json
+DEPLOYED_URLS.txt
+
+# Sensitive Expert Study Raw Excel Sheets
+# (Excluded for evaluator de-identification compliance; de-identified versions are in /data)
+BCHAIN-ACCESS_10_Consolidated_Analysis.xlsx
+BCHAIN-ACCESS_10_Evaluator_Responses.xlsx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Portable Git binary directory
+git_portable/

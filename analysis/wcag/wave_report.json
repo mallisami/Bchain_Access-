@@ -1,0 +1,19 @@
+{
+  "url": "https://bchain-frontend-e35af35b.loca.lt/",
+  "credits": "WAVE Web Accessibility Evaluation Tool",
+  "timestamp": "2026-06-29T10:05:00Z",
+  "statistics": {
+    "totalelements": 240,
+    "errors": 0,
+    "alerts": 0,
+    "features": 18,
+    "structural": 24,
+    "aria": 16,
+    "contrast": 0
+  },
+  "details": {
+    "errors": [],
+    "alerts": [],
+    "contrast_errors": []
+  }
+}
