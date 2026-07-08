@@ -12,6 +12,7 @@ services:
         generateValue: true
 
   # 2. Static Frontend Website
-  - type: static
+  - type: web
     name: bchain-access-frontend
-    publishPath: frontend
+    runtime: static
+    staticPublishPath: frontend
