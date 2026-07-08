@@ -942,12 +942,16 @@ def revoke_access():
     # Add to audit log
     if record_id not in audit_logs_db:
         audit_logs_db[record_id] = []
+    
+    record = records_db.get(record_id, {})
+    record_type = record.get("record_type", "Medical Record")
+    
     audit_logs_db[record_id].append({
         "actor": patient_wallet.address,
         "target_provider": provider_address,
         "action": "REVOKE",
         "timestamp": time.time(),
-        "details": f"Access revoked from {provider.get('name', provider_id)} for {grant['record_type']}",
+        "details": f"Access revoked from {provider.get('name', provider_id)} for {record_type}",
         "tx_hash": tx.tx_hash,
     })
 
@@ -958,8 +962,8 @@ def revoke_access():
         "tx_hash": tx.tx_hash,
         "block_number": blockchain.get_latest_block().index,
         "provider_name": provider.get("name", provider_id),
-        "record_type": grant["record_type"],
-        "message": f"Access revoked from {provider.get('name', provider_id)} for {grant['record_type']}",
+        "record_type": record_type,
+        "message": f"Access revoked from {provider.get('name', provider_id)} for {record_type}",
     })
 
 
