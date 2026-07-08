@@ -1,10 +1,6 @@
-import "@nomicfoundation/hardhat-toolbox";
-import "dotenv/config";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const path = require("path");
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv/config");
 
 subtask("compile:solidity:solc:get-build", async (args, hre, runSuper) => {
   if (args.solcVersion === "0.8.19") {
@@ -18,7 +14,7 @@ subtask("compile:solidity:solc:get-build", async (args, hre, runSuper) => {
   return runSuper();
 });
 
-export default {
+module.exports = {
   solidity: {
     version: "0.8.19",
     settings: {
