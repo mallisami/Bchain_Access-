@@ -1,0 +1,17 @@
+services:
+  # 1. Flask Backend Web Service
+  - type: web
+    name: bchain-access-backend
+    env: python
+    buildCommand: "pip install -r backend/requirements.txt"
+    startCommand: "gunicorn -w 4 --chdir backend app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+
+  # 2. Static Frontend Website
+  - type: static
+    name: bchain-access-frontend
+    publishPath: frontend
