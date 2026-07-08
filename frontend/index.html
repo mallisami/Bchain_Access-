@@ -308,7 +308,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 // BCHAIN-ACCESS FRONTEND WITH BLOCKCHAIN BACKEND INTEGRATION
 // =========================================================================
 
-const CONFIG = { API_BASE_URL: "http://localhost:5000/api", POLL_INTERVAL_MS: 5000, FETCH_TIMEOUT_MS: 10000, MAX_RETRIES: 2 };
+const CONFIG = { API_BASE_URL: "https://bchain-access-backend.onrender.com/api", POLL_INTERVAL_MS: 5000, FETCH_TIMEOUT_MS: 10000, MAX_RETRIES: 2 };
 
 const state = { session: { active: false, token: null }, blockchain: { connected: false, latestBlock: null, chainId: null }, pollIntervalId: null, pendingGrant: null, countdownIntervalId: null };
 
