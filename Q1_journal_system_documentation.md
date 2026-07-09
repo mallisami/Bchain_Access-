@@ -20,10 +20,10 @@ graph TD
         Flask[app.py REST API]
         Config[config.py Config Loader]
         Web3Py[Web3.py Client API]
-        Mempool[Fallback Ledger Engine]
+        Mempool[Fallback & Metadata Engine (blockchain_engine.py)]
     end
 
-    subgraph Decentralized Ledger Layer (EVM)
+    subgraph Decentralized Ledger Layer (EVM Node in Background)
         Hardhat[Hardhat Local Node - Port 8545]
         Contract[HealthAccessControl.sol Smart Contract]
     end
@@ -497,25 +497,32 @@ To achieve full operational integration, three critical issues in the frontend c
 
 ---
 
-## 7. Live Tunnel Architecture (Public Deployment Setup)
+## 7. Render Production Blueprint Deployment Architecture
 
-For demonstration, remote testing, and external audits, the local servers were exposed to the web using **Localtunnel** background processes.
+To host BCHAIN-ACCESS in a robust cloud production environment, the system is deployed to **Render** using a multi-service Blueprint configuration.
 
-### 7.1 Local Port Mappings & Subdomain Routing:
-* **EVM Web3 Backend Server (Port 5000):** Exposed via subdomain `bchain-backend-e35af35b.loca.lt`
-* **Static Frontend Web Client (Port 3000):** Exposed via subdomain `bchain-frontend-e35af35b.loca.lt`
+### 7.1 Static vs. Dynamic Framework Separation
+* **Static Frontend Website (`bchain-access-frontend`):** 
+  - Deployed as a **Static Web Service** published directly from the `/frontend` directory.
+  - Serves pure client-side assets (HTML/CSS/JS) via a global CDN.
+  - Configured with `API_BASE_URL` pointing dynamically to the live backend URL on Render.
+  - URL: `https://bchain-access-frontend.onrender.com`
+* **Dynamic Backend Container (`bchain-access-backend`):**
+  - Deployed as a **Docker Service** (built from the root `Dockerfile`).
+  - Executes a dual-process stack: a background **Hardhat node** (running a real local EVM blockchain on `127.0.0.1:8545`) and a **Gunicorn + Flask API gateway** (`1 worker` to respect the Free tier 512 MB RAM constraint).
+  - URL: `https://bchain-access-backend.onrender.com/api`
 
-### 7.2 Connection Commands:
-```powershell
-# Expose backend API
-$env:PATH = "C:\Program Files\nodejs;" + $env:PATH; & "C:\Program Files\nodejs\npx.cmd" -y localtunnel --port 5000 --subdomain bchain-backend-e35af35b
+### 7.2 Containerized Orchestration (`start.sh`)
+When the backend container boots:
+1. A local Hardhat node is initialized in the background (`npx hardhat node --hostname 127.0.0.1 --port 8545`).
+2. A Python loop waits for the JSON-RPC interface to become healthy.
+3. The `HealthAccessControl.sol` smart contract is compiled and deployed to the local Hardhat instance.
+4. The deployment details and new address are parsed from `deployment.json`, and environment variables are exported.
+5. Gunicorn launches the Flask app, binding to Render's assigned dynamic port (`PORT`).
 
-# Expose frontend UI
-$env:PATH = "C:\Program Files\nodejs;" + $env:PATH; & "C:\Program Files\nodejs\npx.cmd" -y localtunnel --port 3000 --subdomain bchain-frontend-e35af35b
-```
-
-### 7.3 Localtunnel Security Landing Page Bypass Instruction:
-When accessing the tunnels for the first time on a new client device, Localtunnel serves a landing page requesting a tunnel password. Submit the hosting machine's public IPv4 address (`223.123.73.178`) into the input box and click **"Click to Submit"** (on both frontend and backend tabs) to load the bypassed operational environment.
+### 7.3 Zero-Downtime Rolling Deploys
+- The Blueprint is configured with `healthCheckPath: /api/health` to prevent default path crashes.
+- Every push to the GitHub repository automatically triggers a Docker build and rolling deployment on Render, swapping out the previous active container once the new container's health check returns `200 OK`.
 
 ---
 
@@ -559,6 +566,8 @@ The following empirical gas measurements were logged on the local Hardhat Node d
 | **Consent Confirmation** | $47,210$ | $944,200$ Gwei |
 | **Consent Revocation** | $42,504$ | $850,080$ Gwei |
 | **Consent Query (View)** | $0$ (Off-chain Local execution) | $0$ Gwei |
+
+*Note: In the live Render deployment, the backend extracts the actual gas consumption and transaction details dynamically from the real EVM receipts (e.g. `receipt.gasUsed`) instead of relying on static mock values. The gas price is fetched dynamically from the network oracle (resolving to approximately `1.79 gwei` or dynamic local values).*
 
 ---
 
