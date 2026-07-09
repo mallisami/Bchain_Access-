@@ -27,8 +27,8 @@ import json
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 
-# Import the local educational fallback ledger engine
-from blockchain_simulator import (
+# Import the local fallback ledger engine
+from blockchain_engine import (
     Blockchain, Wallet, Transaction, Block,
     TxType, build_merkle_root, current_timestamp, sha256_hash
 )
@@ -276,7 +276,11 @@ def create_blockchain_transaction(
     tx_type: TxType,
     from_addr: str,
     to_addr: str,
-    data: Dict[str, Any]
+    data: Dict[str, Any],
+    real_tx_hash: Optional[str] = None,
+    real_gas_used: Optional[int] = None,
+    real_gas_price: Optional[float] = None,
+    real_block_number: Optional[int] = None
 ) -> Transaction:
     """
     Create a signed transaction and add it to the blockchain mempool.
@@ -292,9 +296,25 @@ def create_blockchain_transaction(
         signature="",
         nonce=tx_nonce_counter,
     )
-    tx.tx_hash = tx.compute_hash()
-    tx.gas_price = 20  # gwei (simulated)
-    tx.estimate_gas()
+    if real_tx_hash:
+        tx.tx_hash = real_tx_hash
+    else:
+        tx.tx_hash = tx.compute_hash()
+
+    if real_gas_used is not None:
+        tx.gas_used = real_gas_used
+        tx.gas_limit = int(real_gas_used * 1.1)  # Buffer
+    else:
+        tx.estimate_gas()
+
+    if real_gas_price is not None:
+        tx.gas_price = int(real_gas_price)
+    else:
+        tx.gas_price = 20  # gwei
+
+    if real_block_number is not None:
+        tx.block_number = real_block_number
+        tx.status = "confirmed"
 
     # Sign with the appropriate wallet
     if from_addr == patient_wallet.address:
@@ -630,15 +650,25 @@ def grant_access():
         record = records_db[record_id]
 
         # Send Solidity transaction for initiateGrant
+        real_tx_hash = None
+        real_gas_used = None
+        real_gas_price = None
+        real_block_number = None
+
         if w3.is_connected() and contract:
             record_hash_bytes = w3.to_bytes(hexstr=record["record_hash"])
             try:
-                send_contract_tx(contract.functions.initiateGrant(
+                receipt = send_contract_tx(contract.functions.initiateGrant(
                     provider["address"],
                     record_hash_bytes,
                     int(access_level),
                     int(expiration)
                 ))
+                if receipt:
+                    real_tx_hash = receipt.transactionHash.hex()
+                    real_gas_used = receipt.gasUsed
+                    real_gas_price = receipt.get('effectiveGasPrice', w3.eth.gas_price) / 1e9
+                    real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity initiateGrant: {e}")
 
@@ -657,7 +687,11 @@ def grant_access():
                 "access_level": access_level,
                 "pending_until": pending_until,
                 "expiration": expiration,
-            }
+            },
+            real_tx_hash=real_tx_hash,
+            real_gas_used=real_gas_used,
+            real_gas_price=real_gas_price,
+            real_block_number=real_block_number
         )
 
         # Mine a block to confirm the transaction
@@ -753,13 +787,23 @@ def confirm_access():
         provider = provider_registry[provider_id]
 
         # Send Solidity transaction for confirmGrant
+        real_tx_hash = None
+        real_gas_used = None
+        real_gas_price = None
+        real_block_number = None
+
         if w3.is_connected() and contract:
             record_hash_bytes = w3.to_bytes(hexstr=record["record_hash"])
             try:
-                send_contract_tx(contract.functions.confirmGrant(
+                receipt = send_contract_tx(contract.functions.confirmGrant(
                     provider["address"],
                     record_hash_bytes
                 ))
+                if receipt:
+                    real_tx_hash = receipt.transactionHash.hex()
+                    real_gas_used = receipt.gasUsed
+                    real_gas_price = receipt.get('effectiveGasPrice', w3.eth.gas_price) / 1e9
+                    real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity confirmGrant: {e}")
 
@@ -790,7 +834,11 @@ def confirm_access():
                 "record_hash": entry["record_hash"],
                 "access_level": entry["access_level"],
                 "grant_timestamp": time.time(),
-            }
+            },
+            real_tx_hash=real_tx_hash,
+            real_gas_used=real_gas_used,
+            real_gas_price=real_gas_price,
+            real_block_number=real_block_number
         )
         tx_hashes.append(tx.tx_hash)
 
@@ -847,6 +895,11 @@ def cancel_access():
         return jsonify({"success": False, "error": "Pending period has already expired"}), 400
 
     # Send Solidity transaction for cancelPendingGrant
+    real_tx_hash = None
+    real_gas_used = 0
+    real_gas_price = None
+    real_block_number = None
+
     if w3.is_connected() and contract:
         for entry in pending["entries"]:
             record_id = entry["record_id"]
@@ -854,10 +907,15 @@ def cancel_access():
             provider = provider_registry[pending["provider_id"]]
             record_hash_bytes = w3.to_bytes(hexstr=record["record_hash"])
             try:
-                send_contract_tx(contract.functions.cancelPendingGrant(
+                receipt = send_contract_tx(contract.functions.cancelPendingGrant(
                     provider["address"],
                     record_hash_bytes
                 ))
+                if receipt:
+                    real_tx_hash = receipt.transactionHash.hex()
+                    real_gas_used += receipt.gasUsed
+                    real_gas_price = receipt.get('effectiveGasPrice', w3.eth.gas_price) / 1e9
+                    real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity cancelPendingGrant: {e}")
 
@@ -871,7 +929,11 @@ def cancel_access():
             "provider_id": pending["provider_id"],
             "record_ids": pending["record_ids"],
             "reason": "Patient cancelled before confirmation",
-        }
+        },
+        real_tx_hash=real_tx_hash,
+        real_gas_used=real_gas_used if real_gas_used > 0 else None,
+        real_gas_price=real_gas_price,
+        real_block_number=real_block_number
     )
     mine_if_needed()
 
@@ -916,13 +978,23 @@ def revoke_access():
     grant["revoked_at"] = time.time()
 
     # Send Solidity transaction for revokeAccess
+    real_tx_hash = None
+    real_gas_used = None
+    real_gas_price = None
+    real_block_number = None
+
     if w3.is_connected() and contract:
         record_hash_bytes = w3.to_bytes(hexstr=grant["record_hash"])
         try:
-            send_contract_tx(contract.functions.revokeAccess(
+            receipt = send_contract_tx(contract.functions.revokeAccess(
                 provider_address,
                 record_hash_bytes
             ))
+            if receipt:
+                real_tx_hash = receipt.transactionHash.hex()
+                real_gas_used = receipt.gasUsed
+                real_gas_price = receipt.get('effectiveGasPrice', w3.eth.gas_price) / 1e9
+                real_block_number = receipt.blockNumber
         except Exception as e:
             print(f"Error on Solidity revokeAccess: {e}")
 
@@ -936,7 +1008,11 @@ def revoke_access():
             "record_id": record_id,
             "record_hash": grant["record_hash"],
             "reason": "Patient revoked access",
-        }
+        },
+        real_tx_hash=real_tx_hash,
+        real_gas_used=real_gas_used,
+        real_gas_price=real_gas_price,
+        real_block_number=real_block_number
     )
 
     # Add to audit log
@@ -1143,7 +1219,7 @@ def blockchain_status():
             "size": len(blockchain.mempool),
             "transactions": [tx.to_dict() for tx in blockchain.mempool],
         },
-        "gas_price": "20 gwei",
+        "gas_price": f"{round(w3.eth.gas_price / 1e9, 2)} gwei" if w3.is_connected() else "20 gwei",
         "patient_wallet": patient_wallet.address,
     })
 

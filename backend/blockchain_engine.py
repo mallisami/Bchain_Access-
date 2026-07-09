@@ -538,8 +538,10 @@ class Blockchain:
         # Update transaction statuses
         for tx in block_transactions:
             tx.status = "confirmed"
-            tx.block_hash = new_block.hash
-            tx.block_number = new_block.index
+            if not tx.block_hash:
+                tx.block_hash = new_block.hash
+            if tx.block_number is None:
+                tx.block_number = new_block.index
             tx.confirmations = 1
 
         self.chain.append(new_block)
@@ -694,7 +696,7 @@ class Blockchain:
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("BLOCKCHAIN SIMULATOR - DEMONSTRATION")
+    print("LOCAL BLOCKCHAIN LEDGER ENGINE - DEMONSTRATION")
     print("=" * 60)
 
     # Create wallets
