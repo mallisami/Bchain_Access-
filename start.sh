@@ -41,4 +41,4 @@ export FLASK_DEBUG="False"
 # Start the Flask app
 echo "Starting Flask API backend on port ${PORT:-5000}..."
 cd /app/backend
-exec gunicorn -w 4 -b 0.0.0.0:${PORT:-5000} app:app
+exec gunicorn -w1 -b 0.0.0.0:${PORT:-5000} app:app
