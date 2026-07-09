@@ -11,7 +11,7 @@ WORKDIR /app
 COPY smart_contracts/package*.json /app/smart_contracts/
 
 # Install Node.js dependencies
-RUN cd /app/smart_contracts && npm ci
+RUN cd /app/smart_contracts && npm install
 
 # Copy requirements file first for caching
 COPY backend/requirements.txt /app/backend/
