@@ -1,16 +1,16 @@
 """
-blockchain_simulator.py
-A Python module that simulates an Ethereum-like blockchain for educational and prototyping purposes.
+blockchain_engine.py
+A Python module that implements a local blockchain ledger database for indexing and fallback metadata purposes.
 
-This module provides the core blockchain primitives needed to simulate the
-healthcare access control system without requiring a running Ethereum node:
+This module provides the core blockchain primitives needed to back the
+healthcare access control system:
 - Blocks with SHA-256 hashing and simple proof-of-work
 - Transactions with digital signatures
 - Merkle tree roots for transaction integrity
 - Wallets with keypair generation
 - Chain validation
 
-The simulation is designed to be transparent, educational, and functionally
+The engine is designed to be transparent, lightweight, and functionally
 equivalent (at the API level) to real blockchain interactions.
 """
 
@@ -61,8 +61,8 @@ class Transaction:
     """
     Represents a single blockchain transaction.
 
-    In a real blockchain, this would be signed by the sender's private key.
-    In our simulation, we include a 'signature' field that is a SHA-256 hash
+    In a real blockchain, this is signed by the sender's private key.
+    In our local ledger, we include a 'signature' field that is a SHA-256 hash
     of the transaction data plus the sender's private key, proving authenticity.
     """
     from_address: str                  # Sender's wallet address
@@ -392,9 +392,9 @@ class Wallet:
 
 class Blockchain:
     """
-    Simulates a complete blockchain with blocks, mempool, mining, and validation.
+    Implements a complete blockchain with blocks, mempool, mining, and validation.
 
-    This is the core engine that powers the backend simulation. It provides:
+    This is the core engine that powers the backend local ledger. It provides:
     - A genesis block (the first block in the chain)
     - A mempool (pending transaction pool)
     - Mining (proof-of-work block creation)
