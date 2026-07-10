@@ -16,19 +16,19 @@ and positioning claims. Cells marked \conf{} indicate values the authors should 
 own audit logs and the public deposit (see the project repository).
 
 \section*{S1. Development-Network Gas Benchmarks}
-Recorded on a local Hardhat EVM node (no congestion). ETH costs illustrative at 20~Gwei; \emph{not}
-representative of mainnet, public-testnet, or Layer-2 costs.
+Recorded on a local Hardhat EVM node (Solidity~0.8.19, optimizer enabled, 200 runs; 30{,}000{,}000~gas block limit; no congestion). Values are average \texttt{gasUsed} from the full reference implementation, in which the append-only audit log is written on-chain for HIPAA-style traceability; costs are correspondingly higher than a hash-only design would incur and are \emph{not} representative of mainnet, public-testnet, or Layer-2 costs. ETH estimates are illustrative at 20~Gwei.
 \begin{center}\small\begin{tabular}{|l|r|r|l|}
 \hline\textbf{Contract Function} & \textbf{EVM Gas} & \textbf{Est.\ ETH} & \textbf{Category}\\\hline
-\texttt{registerRecord} & 85{,}412 & $\approx$0.0017 & Write (storage init)\\\hline
-\texttt{initiateGrant} & 112{,}654 & $\approx$0.0022 & Write (struct setup)\\\hline
-\texttt{confirmGrant} & 47{,}210 & $\approx$0.0009 & Modify (storage update)\\\hline
-\texttt{cancelPendingGrant}$^\dagger$ & 24{,}198 & $\approx$0.0005 & Modify (pending cleared)\\\hline
-\texttt{revokeAccess} & 42{,}504 & $\approx$0.0008 & Modify (de-activation)\\\hline
+\texttt{registerRecord} & 341{,}873 & $\approx$0.0068 & Write (storage init + audit)\\\hline
+\texttt{initiateGrant} & 386{,}111 & $\approx$0.0077 & Write (struct setup + audit)\\\hline
+\texttt{confirmGrant} & 199{,}832 & $\approx$0.0040 & Modify (storage update + audit)\\\hline
+\texttt{cancelPendingGrant} & 213{,}328 & $\approx$0.0043 & Modify (pending cleared + audit)\\\hline
+\texttt{revokeAccess} & 171{,}927 & $\approx$0.0034 & Modify (de-activation + audit)\\\hline
 \texttt{checkAccess} & 0 & 0 (free) & Read (\texttt{view})\\\hline
 \texttt{getAuditLog} & 0 & 0 (free) & Read (\texttt{view})\\\hline
+\textit{(deployment)} & 2{,}925{,}863 & $\approx$0.0585 & Deploy (9.8\% of block limit)\\\hline
 \end{tabular}\end{center}
-{\footnotesize $^\dagger$Backend-mediated reset of off-chain pending state, not an on-chain transaction; do not sum with on-chain rows. Only 32-byte hashes are stored on-chain.}
+{\footnotesize Figures are average \texttt{gasUsed} over the evaluation workload and reflect the full Solidity implementation, including the on-chain append-only audit-log writes that accompany every state-changing call; \texttt{initiateGrant} varied across calls (380{,}412--400{,}360, avg.\ 386{,}111). Only 32-byte record hashes are stored on-chain; sensitive records remain off-chain.}
 
 \section*{S2. Threat-Vector-to-Mitigation Matrix}
 \begin{center}\small\begin{tabular}{|l|l|}
@@ -125,15 +125,16 @@ Status: \yes{} = implemented with the stated mechanism; \na{} = not applicable (
 currently fixed and is flagged in the main paper as requiring user-configurability; two evaluators (E7, E9)
 independently raised it. It is the top remediation item for the next iteration.}
 
-\section*{S6. Static Analysis (Slither) --- Results}
-A static analysis of \texttt{HealthAccessControl.sol} was performed using the Slither static analysis framework on 2026-07-08. The compiler used was Solidity v0.8.19 and Slither version was v0.11.5. No high- or medium-severity issues were found. The full analysis report is deposited in the public repository at \texttt{analysis/slither\_report.json}.
+\section*{S6. Static Analysis (Slither)}
+\texttt{slither} was run against \texttt{HealthAccessControl.sol} (solc~0.8.19); the full JSON report is deposited at \texttt{analysis/slither\_report.json}. All High and Medium findings were reviewed and determined to be false positives for this contract's usage; no change to contract behaviour was required.
 \begin{center}\small
-\begin{tabular}{|l|c|c|p{5.2cm}|}
-\hline\textbf{Detector / severity} & \textbf{Count} & \textbf{Status} & \textbf{Resolution}\\\hline
-High & 0 & Pass & No high-severity vulnerabilities found.\\\hline
-Medium & 0 & Pass & No medium-severity vulnerabilities found.\\\hline
-Low / Informational & 52 & Reviewed & Reviewed: 36 naming conventions, 10 block.timestamp comparisons for deliberate time-lock (acceptable), 2 string conversion helpers (false positives), 1 shadowing, 1 boolean comparison, 1 missing event, 1 solc version.\\\hline
-Optimization & 0 & Pass & None.\\\hline
+\begin{tabular}{|l|c|l|p{6.0cm}|}
+\hline\textbf{Severity} & \textbf{Count} & \textbf{Detector(s)} & \textbf{Resolution}\\\hline
+High & 1 & \texttt{weak-prng} & False positive: \texttt{block.timestamp} is used only for the 60\,s consent time-lock and for audit-log timestamps, never as a source of randomness; no value or branch depends on unpredictable entropy.\\\hline
+Medium & 1 & \texttt{incorrect-equality} & Reviewed: strict equality is applied only to explicit sentinel checks (e.g.\ \texttt{grant.expiration == 0}, denoting ``no expiry''), never to balances or block timestamps; no exploitable path.\\\hline
+Low & 10 & \texttt{timestamp}, \texttt{shadowing-local}, \texttt{events-access} & \texttt{block.timestamp} dependence is intrinsic to the documented time-lock design (L7); local shadowing and missing ownership events are non-security style items.\\\hline
+Informational & 38 & \texttt{solc-version}, \texttt{naming-convention}, \texttt{boolean-equal} & Style/versioning only; no functional or security impact.\\\hline
 \end{tabular}
 \end{center}
+{\footnotesize Static analysis is a floor, not a substitute for professional audit; the contract remains unaudited by an independent third party (Limitation~L8). Record the exact Slither and solc versions and run date alongside the deposited report.}
 \end{document}
