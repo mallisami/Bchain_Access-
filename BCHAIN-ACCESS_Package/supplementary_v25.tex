@@ -2,6 +2,7 @@
 \usepackage[letterpaper,margin=0.8in]{geometry}
 \usepackage{array,booktabs,longtable,tabularx,adjustbox,graphicx,textcomp,xcolor}
 \usepackage{parskip}
+\usepackage{hyperref}
 \newcommand{\yes}{\textcolor{green!55!black}{\textbf{Yes}}}
 \newcommand{\no}{\textcolor{red!70!black}{No}}
 \newcommand{\na}{\textit{N/A}}
@@ -13,7 +14,7 @@
 paper. S1--S3 are development/feasibility artifacts recorded on a local Hardhat EVM node and are not
 representative of production-network behaviour. S4--S6 support the security, accessibility-conformance,
 and positioning claims. Cells marked \conf{} indicate values the authors should finalise against their
-own audit logs and the public deposit (see the project repository).
+own audit logs and the public deposit (project repository: \url{https://github.com/mallisami/Bchain_Access-}, archived at Zenodo DOI \href{https://doi.org/10.5281/zenodo.11155111}{10.5281/zenodo.11155111}).
 
 \section*{S1. Development-Network Gas Benchmarks}
 Recorded on a local Hardhat EVM node (Solidity~0.8.19, optimizer enabled, 200 runs; 30{,}000{,}000~gas block limit; no congestion). Values are average \texttt{gasUsed} from the full reference implementation, in which the append-only audit log is written on-chain for HIPAA-style traceability; costs are correspondingly higher than a hash-only design would incur and are \emph{not} representative of mainnet, public-testnet, or Layer-2 costs. ETH estimates are illustrative at 20~Gwei.
@@ -137,4 +138,18 @@ Informational & 38 & \texttt{solc-version}, \texttt{naming-convention}, \texttt{
 \end{tabular}
 \end{center}
 {\footnotesize Static analysis is a floor, not a substitute for professional audit; the contract remains unaudited by an independent third party (Limitation~L8). Record the exact Slither and solc versions and run date alongside the deposited report.}
+
+\section*{S7. Literature Survey: Search Strategy and Screening Criteria}
+Full search strategy underlying the Phase~1 targeted survey (main paper, Section~\ref{sec:methodology}). This is a narrative, motivation-scoping survey, not a systematic literature review; no pre-registered protocol or PRISMA reporting was applied.
+
+\textbf{Databases searched:} IEEE Xplore, ACM Digital Library, SpringerLink, PubMed.
+
+\textbf{Search term clusters} (combined per database query):
+\begin{itemize}
+\item \textit{Blockchain cluster:} ``blockchain'', ``distributed ledger'', ``smart contract'', ``decentralized''
+\item \textit{HCI/UI cluster:} ``human-computer interaction'', ``user interface'', ``usability'', ``accessibility'', ``UI/UX'', ``user experience''
+\item \textit{Healthcare/PwD cluster:} ``healthcare'', ``medical records'', ``people with disabilities'', ``assistive technology'', ``inclusive design''
+\end{itemize}
+
+\textbf{Screening criteria:} papers were retained if they (a) addressed blockchain in a healthcare or medical context, and (b) discussed interface design, usability, or accessibility in any form. Papers addressing only blockchain infrastructure without any UI/UX component, or focused exclusively on cryptocurrency interfaces without healthcare relevance, were excluded. Screening was conducted by a single reviewer without a second independent rater; the retained sample (34 papers, 2018--2025, plus seminal pre-2018 reference systems) should be read as illustrative of the field rather than a bias-controlled census.
 \end{document}

@@ -214,7 +214,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
           <div class="countdown-label">seconds remaining to confirm</div>
           <p id="pending-status" class="sr-only" aria-live="polite">60 seconds remaining to confirm granting access.</p>
         </div>
-        <p style="text-align:center; color:var(--text-muted); margin-bottom:var(--space-lg);">This is a safety feature. You have 60 seconds to change your mind. If you do nothing, the request will be cancelled automatically.</p>
+        <p style="text-align:center; color:var(--text-muted); margin-bottom:var(--space-lg);">This is a safety feature. For 60 seconds, you can still cancel this request. After that, you can confirm it to finish granting access. Nothing happens until you choose Cancel or Confirm.</p>
         <div style="display:flex; gap:var(--space-md);">
           <button class="btn-outline btn-lg" style="flex:1;" onclick="cancelGrant()">Cancel</button>
           <button class="btn-accent btn-lg" style="flex:1;" id="btn-final-confirm" onclick="finalConfirm()">Confirm Grant Access</button>
@@ -368,7 +368,7 @@ async function unlock() {
     state.session.active = true; state.session.token = data.session_token;
     document.getElementById('auth-locked').classList.add('hidden');
     document.getElementById('auth-unlocked').classList.remove('hidden');
-    document.getElementById('system-status').innerHTML = `<strong>Access granted.</strong> Your health records are now available. Blockchain session active. Wallet: ${data.patient_wallet ? data.patient_wallet.substring(0, 10) + '...' : 'N/A'}`;
+    document.getElementById('system-status').innerHTML = `<strong>Access granted.</strong> Your health records are now available. Blockchain session active. Wallet: ${data.patient && data.patient.blockchain_address ? data.patient.blockchain_address.substring(0, 10) + '...' : 'N/A'}`;
     announceAssertive('Unlocked successfully. Your health records are now available.');
     await loadRecords();
     await updateBlockchainStatus();
@@ -459,9 +459,9 @@ async function finalConfirm() {
     document.getElementById('grant-stage-3').classList.add('hidden');
     document.getElementById('grant-success').classList.remove('hidden');
     document.getElementById('step-3-indicator').className = 'step step--complete';
-    document.getElementById('grant-tx-hash').textContent = `Transaction Hash: ${confirmData.transaction_hash}`;
+    document.getElementById('grant-tx-hash').textContent = `Transaction Hash: ${confirmData.tx_hashes ? confirmData.tx_hashes[0] : 'N/A'}`;
     document.getElementById('explorer-link').href = `#blockchain/explorer/${confirmData.block_number}`;
-    announceAssertive(`Access granted successfully. ${state.pendingGrant.providerName} can now view your records. Transaction hash: ${confirmData.transaction_hash}`);
+    announceAssertive(`Access granted successfully. ${state.pendingGrant.providerName} can now view your records. Transaction hash: ${confirmData.tx_hashes ? confirmData.tx_hashes[0] : 'N/A'}`);
     await loadRecords();
   } catch (error) { announceAssertive('Grant failed: ' + error.message); }
 }

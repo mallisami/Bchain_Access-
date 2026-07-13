@@ -1,21 +1,3 @@
-% Version: v21 -- Figure 5 integration pass
-% Changes since v20: replaced the external-image placeholder for Figure 5
-% (images/fig_perspectives.png, previously unrenderable/unverifiable without the asset)
-% with a native TikZ diagram of the four BCHAIN-ACCESS perspectives and their intersection
-% design obligations, resolving Reviewer 3's minor comment to verify Figure 5 renders
-% correctly, since the figure is now generated directly by the LaTeX source with no
-% external dependency.
-%
-% Version: v20 -- Reviewer 3 (Senior Associate Editor) revision pass
-% Changes: softened non-systematic-survey equity claim (X-B); added self-constructed-rubric
-% caveat to Table VII comparison (VI-E); added substantive methodological response to the
-% zero-variance heuristic result and aligned it with L6 (IX-D, X-E); de-emphasized the
-% feasibility-evidence contribution's evidentiary weight (I-A); added reading-guide sentence
-% for cross-reference density (I); made the expert-vs-PwD caveat more prominent in the
-% abstract; added explicit companion-study timeline for the PwD protocol (X-F); added an
-% explicit "Scope and gating" paragraph acknowledging the editor's PwD-pilot-gating and
-% paper-splitting options (X-C); fixed a pre-existing bibtex-breaking stray "@" in three
-% ref.bib comments. See accompanying revision summary for the full comment-by-comment audit.
 \documentclass[journal,onecolumn]{IEEEtran}
 \IEEEoverridecommandlockouts
 % columnsep removed for onecolumn journal format
@@ -59,18 +41,6 @@ nadeem.yb@gmail.com}
 \textit{Gujrat Institute of Management Sciences (GIMS), Arid University}\\
 Pakistan\\
 maliksami961@gmail.com}
-\and
-\IEEEauthorblockN{Imtiaz Hussain}
-\IEEEauthorblockA{\textit{Department of Computer Science}\\
-\textit{University of Management \& Technology, Sialkot Campus}\\
-Pakistan\\
-khan.imtiaz.ly@gmail.com}
-\and
-\IEEEauthorblockN{Sama Aleshaiker}
-\IEEEauthorblockA{\textit{School of Computing and Engineering}\\
-\textit{University of West London}\\
-United Kingdom\\
-sama.aleshaiker@uwl.ac.uk}
 }
 
 
@@ -103,9 +73,9 @@ To answer these questions, we conduct a targeted literature survey of Blockchain
 
 \subsection{Contributions}
 This work makes one primary contribution, supported by three further contributions. These are not of equal evidentiary weight: the primary framework and the two foundational/principle contributions rest on standards-based analysis, while the feasibility-evidence contribution rests on expert-layer testing only and should be read as the weakest, most provisional of the four, since it does not yet include the population the framework is designed to serve. A single-point summary of exactly what has, and has not, been evaluated is given in Table~\ref{tab:validation-summary} (Section~\ref{sec:feasibility}).
-The \textbf{primary contribution} is the BCHAIN-ACCESS framework itself: an accessibility-driven HCI design model, incorporating disability-inclusive design principles, that integrates four interconnected perspectives (Healthcare, blockchain, Governance, and HCI) with measurable, standards-derived compliance criteria for the interface layer. Three further contributions establish, motivate, and demonstrate it. The first is a \textbf{foundational barrier synthesis}: a structured, survey-informed account of the usability and accessibility barriers that WCAG~2.1, Nielsen's heuristics, and prior HCI literature predict for PwDs in blockchain healthcare interfaces, organised across four dimensions (authentication complexity, interface transparency, feedback adequacy, and assistive-technology compatibility) and accompanied by a document-based mapping of existing interface patterns that identifies systematic design failures. The second is a set of \textbf{four HCI design principles} (AAD, PTD, CID, UAC) derived from this taxonomy, each mapped to specific barriers and standards, which operationalise the framework at the interface layer. The third is \textbf{expert-layer feasibility evidence}, the weakest and most provisional of the four: a two-component reference implementation comprising a WCAG~2.1 Level~AA compliant UI-layer prototype assessed by ten independent expert evaluators (Figure~\ref{fig:expert-eval}; mean SUS 87.5, 100\% expert task success, ACS 100\%) and a working blockchain backend realising the framework's technical architecture (Section~\ref{subsec:blockchain-architecture}). The two components were evaluated separately and should not be conflated: the expert assessment covers the UI-layer prototype only, whereas the blockchain backend is demonstrated but not itself independently audited or user-tested. Table~\ref{tab:prototype-vs-full} (Section~\ref{sec:implementation}) gives the full component-by-component scope breakdown against a hypothetical production system and is the clearest reference point for what has, and has not, been evaluated. A pre-specified protocol for the essential next step of PwD user validation is also provided.
+The \textbf{primary contribution} is the BCHAIN-ACCESS framework itself: an accessibility-driven HCI design model, incorporating disability-inclusive design principles, that integrates four interconnected perspectives (Healthcare, blockchain, Governance, and Accessibility) with measurable, standards-derived compliance criteria for the interface layer. Within this framework, the principal \emph{novel} technical mechanism is the time-locked consent pending-state (Principle CID): a user-controllable cancellation window layered over otherwise-irreversible on-chain consent actions, realised on-chain via \texttt{cancelPendingGrant}. The remaining elements integrate and operationalise established standards (WCAG~2.1, Nielsen's heuristics, GDPR, EN~301~549) for the blockchain healthcare setting rather than introducing new accessibility requirements; the contribution lies in their systematic integration and traceable operationalisation for this domain. Three further contributions establish, motivate, and demonstrate it. The first is a \textbf{foundational barrier synthesis}: a structured, survey-informed account of the usability and accessibility barriers that WCAG~2.1, Nielsen's heuristics, and prior HCI literature predict for PwDs in blockchain healthcare interfaces, organised across four dimensions (authentication complexity, interface transparency, feedback adequacy, and assistive-technology compatibility) and accompanied by a document-based mapping of existing interface patterns that identifies systematic design failures. The second is a set of \textbf{four HCI design principles} (AAD, PTD, CID, UAC) derived from this taxonomy, each mapped to specific barriers and standards, which operationalise the framework at the interface layer. The third is \textbf{expert-layer feasibility evidence}, the weakest and most provisional of the four: a two-component reference implementation comprising a WCAG~2.1 Level~AA compliant UI-layer prototype assessed by ten independent expert evaluators (Section~\ref{sec:feasibility}; mean SUS 87.5, 100\% expert task success, ACS 100\%) and a working blockchain backend realising the framework's technical architecture (Section~\ref{subsec:blockchain-architecture}). The two components were evaluated separately and should not be conflated: the expert assessment covers the UI-layer prototype only, whereas the blockchain backend is demonstrated but not itself independently audited or user-tested. Table~\ref{tab:prototype-vs-full} (Section~\ref{sec:implementation}) gives the full component-by-component scope breakdown against a hypothetical production system and is the clearest reference point for what has, and has not, been evaluated. A pre-specified protocol for the essential next step of PwD user validation is also provided.
 
-The remainder of this paper is structured as follows. Section~\ref{sec:background} provides background on blockchain, HCI, and healthcare accessibility. Section~\ref{sec:methodology} presents our methodology. Section~\ref{sec:barriers} identifies and categorizes predicted usability and accessibility barriers (RQ1). Section~\ref{sec:principles} proposes HCI integration principles (RQ2). Section~\ref{sec:framework} presents the BCHAIN-ACCESS framework (RQ3), which Section~\ref{sec:operationalization} operationalizes into measurable criteria and Section~\ref{sec:implementation} realizes as a two-component reference implementation. Section~\ref{sec:feasibility} reports the expert feasibility assessment. Section~\ref{sec:discussion} discusses findings, limitations, and presents a pre-specified methodology for future PwD validation (Section~\ref{sec:pwd-validation}). Section~\ref{sec:conclusion} concludes. Given the density of cross-referencing this scope requires (barriers B1--B12, principles AAD/PTD/CID/UAC, perspectives P1--P4, validation criteria VC1--VC5), two tables are provided as navigation aids and can be consulted independently of a linear read: Table~\ref{tab:traceability} (Section~\ref{sec:framework}) traces each barrier through to its validation criterion, and Table~\ref{tab:validation-summary} (Section~\ref{sec:feasibility}) gives a single-point summary of what is, and is not, confirmed by this paper's evidence.
+The remainder of this paper is structured as follows. Section~\ref{sec:background} provides background on blockchain, HCI, and healthcare accessibility. Section~\ref{sec:methodology} presents our methodology. Section~\ref{sec:barriers} identifies and categorizes predicted usability and accessibility barriers (RQ1). Section~\ref{sec:principles} proposes HCI integration principles (RQ2). Section~\ref{sec:framework} presents the BCHAIN-ACCESS framework (RQ3), which Section~\ref{sec:operationalization} operationalizes into measurable criteria and Section~\ref{sec:implementation} realizes as a two-component reference implementation. Section~\ref{sec:feasibility} reports the expert feasibility assessment. Section~\ref{sec:discussion} discusses findings, limitations, and presents a pre-specified methodology for future PwD validation (Section~\ref{sec:pwd-validation}). Section~\ref{sec:conclusion} concludes. Given the density of cross-referencing this scope requires (barriers B1--B12, principles AAD/PTD/CID/UAC, perspectives P1--P4, validation criteria VC1--VC5), two tables are provided as navigation aids and can be consulted independently of a linear read. Table~\ref{tab:traceability} (Section~\ref{sec:framework}) traces each barrier through to its validation criterion, and Table~\ref{tab:validation-summary} (Section~\ref{sec:feasibility}) gives a single-point summary of what is, and is not, confirmed by this paper's evidence.
 
 \subsection{Abbreviations}
 Table~\ref{tab:abbreviations} summarizes the recurring abbreviations used throughout this paper for reference.
@@ -160,7 +130,7 @@ DSR & Design Science Research \\
 \label{sec:background}
 
 \subsection{Blockchain Technology in Healthcare}
-Blockchain is a distributed, decentralized, and cryptographically secured digital ledger in which data is stored in chronologically linked blocks, each containing a cryptographic hash of the preceding block, a timestamp, and transaction data \cite{taherdoost2023role}, properties that ensure immutability, transparency, and auditability, valuable in healthcare where data integrity and authorized access are paramount \cite{ehsan2022integrating}.
+Blockchain is a distributed, decentralized, and cryptographically secured digital ledger in which data is stored in chronologically linked blocks, each containing a cryptographic hash of the preceding block, a timestamp, and transaction data \cite{taherdoost2023role}. These properties ensure immutability, transparency, and auditability, valuable in healthcare where data integrity and authorized access are paramount \cite{ehsan2022integrating}.
 
 Of the three deployment types relevant to healthcare, \textit{Public Blockchains} are permissionless but offer limited scalability and privacy for sensitive patient data; \textit{Private Blockchains} trade decentralization for throughput and access control; \textit{Consortium Blockchains}, governed by a predefined group of authorized participants, are a commonly adopted healthcare architecture, balancing data privacy with distributed governance \cite{yaqub2025blockchain}. Smart contracts, self-executing code deployed on the blockchain, automate consent management, data access permissions, and audit logging \cite{kim2022blockchain}; consensus mechanisms such as Practical Byzantine Fault Tolerance (PBFT), common in permissioned healthcare blockchains, determine transaction validity without central authority.
 
@@ -171,14 +141,41 @@ Human-Computer Interaction (HCI) is the interdisciplinary study of the design, e
 
 Usability, a core HCI construct, is defined by ISO 9241-11 \cite{iso9241} as the extent to which a product can be used by specified users to achieve specified goals with effectiveness, efficiency, and satisfaction in a specified context of use. Nielsen's five usability components operationalize this definition as: learnability, efficiency, memorability, error prevention, and user satisfaction \cite{tharatipyakul2021user}.
 
-Accessibility extends usability to users with disabilities, requiring that systems be perceivable, operable, understandable, and robust, the four principles of the Web Content Accessibility Guidelines (WCAG 2.1) \cite{wcag21}. WCAG 2.1 defines three conformance levels (A, AA, AAA), with Level AA representing the internationally recognized minimum standard for public-facing digital services. We adopt WCAG 2.1 as the stable Level~AA baseline that was in force throughout the study period; the more recent WCAG 2.2 (W3C Recommendation, October 2023) is backward-compatible with 2.1 and adds criteria (e.g., focus appearance, dragging alternatives, accessible authentication) that are directly relevant to this domain. We flag this as a specific limitation rather than a routine footnote: WCAG 2.2's new Success Criterion 3.3.8 (Accessible Authentication) speaks directly to this paper's most severe predicted barrier cluster, authentication complexity (B1--B3, Section~\ref{sec:barriers}), which the AAD principle (Section~\ref{sec:principles}) is designed to address. Re-auditing the baseline systems and the prototype against WCAG 2.2, rather than 2.1, would likely sharpen rather than weaken the paper's authentication-barrier findings, and is identified as the most immediately valuable direction for future standards migration, ahead of the broader relabeling implied by ``future work.'' Key WCAG 2.1 success criteria relevant to blockchain healthcare interfaces include: sufficient color contrast (1.4.3), keyboard accessibility (2.1.1), error identification (3.3.1), and authentication alternatives (3.3.4).
+Accessibility extends usability to users with disabilities, requiring that systems be perceivable, operable, understandable, and robust, the four principles of the Web Content Accessibility Guidelines (WCAG 2.1) \cite{wcag21}. WCAG 2.1 defines three conformance levels (A, AA, AAA), with Level AA representing the internationally recognized minimum standard for public-facing digital services. We adopt WCAG 2.1 as the stable Level~AA baseline that was in force throughout the study period; the more recent WCAG 2.2 (W3C Recommendation, October 2023) is backward-compatible with 2.1 and adds criteria (e.g., focus appearance, dragging alternatives, accessible authentication) that are directly relevant to this domain. We flag this as a specific limitation rather than a routine footnote: WCAG 2.2's new Success Criterion 3.3.8 (Accessible Authentication) speaks directly to this paper's most severe predicted barrier cluster, authentication complexity (B1--B3, Section~\ref{sec:barriers}), which the AAD principle (Section~\ref{sec:principles}) is designed to address. Re-auditing the baseline systems and the prototype against WCAG 2.2, rather than 2.1, would likely sharpen rather than weaken the paper's authentication-barrier findings. It is the most immediately valuable direction for future standards migration, ahead of the broader relabeling implied by ``future work.'' Key WCAG 2.1 success criteria relevant to blockchain healthcare interfaces include: sufficient color contrast (1.4.3), keyboard accessibility (2.1.1), error identification (3.3.1), and error prevention for consequential actions (3.3.4). WCAG 2.1 itself has no dedicated authentication-alternative criterion; as just noted, that gap is closed only in WCAG 2.2 (SC~3.3.8).
 
 For PwDs, digital healthcare interfaces present compounded barriers. Motor impairments limit interaction with complex authentication workflows. Visual impairments require screen-reader compatibility and adequate contrast ratios. Cognitive impairments demand simplified navigation, plain language, and consistent feedback. These needs are systematically unaddressed in current blockchain healthcare interface designs \cite{khalid2023blockchain}.
 
 \subsection{HCI in Blockchain Applications}
 The application of HCI principles to blockchain systems is an emerging but underdeveloped research area. Elsden et al.~\cite{elsden2018making} provided the foundational typology of blockchain applications from an HCI perspective, identifying six application types and noting that most blockchain deployments prioritize technical infrastructure over user experience. Recent work has further examined digital empowerment as a driver of improved user experience in interactive system design frameworks \cite{wang2025digital}, reinforcing the case for human-centered approaches in blockchain interface development. Frohlich et al.~\cite{frohlich2022blockchain} examined trust models in blockchain systems, distinguishing social, technological, and institutional trust and concluding that current blockchain interfaces inadequately support user trust formation. Tharani et al.~\cite{tharani2022ui} conducted a systematic review of UI/UX research in blockchain applications, finding that fewer than 15\% of reviewed blockchain studies addressed interface design, and none provided accessibility evaluation for PwDs.
 
-In the healthcare domain specifically, Jang et al.~\cite{jang2020user} studied user experience in blockchain health record systems, identifying authentication complexity and transaction feedback as primary usability barriers. Glomann et al.~\cite{Glomann2019ImprovingTB} proposed interface improvements for blockchain wallet applications, demonstrating that simplified key management workflows significantly improved task completion rates. However, neither study addressed accessibility requirements for PwDs, nor evaluated designs against established accessibility standards. This body of work indicates that the specific intersection of blockchain, healthcare, and disability-inclusive design remains a largely unaddressed gap, the gap this paper directly targets.
+In the healthcare domain specifically, Jang et al.~\cite{jang2020user} studied user experience in blockchain health record systems, identifying authentication complexity and transaction feedback as primary usability barriers. Glomann et al.~\cite{Glomann2019ImprovingTB} proposed interface improvements for blockchain wallet applications, demonstrating that simplified key management workflows significantly improved task completion rates. However, neither study addressed accessibility requirements for PwDs, nor evaluated designs against established accessibility standards. This body of work indicates that the specific intersection of blockchain, healthcare, and disability-inclusive design remains a largely unaddressed gap, the gap this paper directly targets. Table~\ref{tab:related-comparison} positions BCHAIN-ACCESS against this prior work across the dimensions this paper targets: to our knowledge, no prior framework in this space jointly addresses the healthcare setting, disability-oriented accessibility, WCAG conformance, a consent-cancellation (time-lock) mechanism, and regulatory integration.
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Positioning of BCHAIN-ACCESS relative to prior HCI work on blockchain interfaces. \checkmark~= addressed; $\sim$~= partially addressed; $\times$~= not addressed.}
+\label{tab:related-comparison}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{|p{3.2cm}|c|c|c|c|c|p{2.8cm}|}
+\hline
+\textbf{Work} & \textbf{Health-care} & \textbf{PwD access.} & \textbf{WCAG conform.} & \textbf{Consent time-lock} & \textbf{Reg. integ.} & \textbf{Evaluation} \\
+\hline
+Elsden et al.~\cite{elsden2018making} & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & Conceptual typology \\
+\hline
+Frohlich et al.~\cite{frohlich2022blockchain} & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & Trust-model analysis \\
+\hline
+Tharani et al.~\cite{tharani2022ui} & $\sim$ & $\times$ & $\times$ & $\times$ & $\times$ & Systematic UI/UX review \\
+\hline
+Glomann et al.~\cite{Glomann2019ImprovingTB} & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & Wallet usability study \\
+\hline
+Jang et al.~\cite{jang2020user} & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ & Health-record user study \\
+\hline
+\textbf{BCHAIN-ACCESS (this work)} & \checkmark & \checkmark$^{\dagger}$ & \checkmark & \checkmark & \checkmark & Expert-layer feasibility$^{\dagger}$ \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\begin{flushleft}\footnotesize $^{\dagger}$Accessibility orientation is standards-derived, and the evaluation is expert-layer only; validation with PwD participants is pre-specified but not yet conducted (Section~\ref{sec:pwd-validation}).\end{flushleft}
+\end{table*}
 
 
 % ============================================================
@@ -213,7 +210,7 @@ We selected three systems through purposive maximum-variation sampling to identi
 
 Because the evaluation was conducted on documentation rather than live systems, the severity ratings reported in Tables~\ref{tab:heuristic} and~\ref{tab:wcag} are proxy estimates based on documented interface patterns, not live interaction data. Barriers recurring across all three diverse contexts (e.g., universal WCAG~3.3.4 failure) are unlikely to be artifacts of any single design lineage. We acknowledge this as a purposive, non-exhaustive sample of three systems (L3), including one academic prototype (MedRec, 2016) and two commercial products evaluated through documentation from 2022--2024 and treat broader sampling as future work.
 
-The evaluation employed two complementary frameworks. \textbf{Nielsen's Ten Usability Heuristics}~\cite{nielsen1994usability}: each application's documented interface patterns were assessed against all ten heuristics, rated on a severity scale of 0 (not a problem) to 4 (usability catastrophe). \textbf{WCAG 2.1 Level AA Criteria}: interface patterns were evaluated against the four WCAG 2.1 principles at Level AA conformance, focusing on criteria directly relevant to blockchain authentication and data interaction: color contrast (1.4.3), keyboard navigation (2.1.1), focus visibility (2.4.7), error identification (3.3.1), labels and instructions (3.3.2), and authentication alternatives (3.3.4).
+The evaluation employed two complementary frameworks. \textbf{Nielsen's Ten Usability Heuristics}~\cite{nielsen1994usability}: each application's documented interface patterns were assessed against all ten heuristics, rated on a severity scale of 0 (not a problem) to 4 (usability catastrophe). \textbf{WCAG 2.1 Level AA Criteria}: interface patterns were evaluated against the four WCAG 2.1 principles at Level AA conformance, focusing on criteria directly relevant to blockchain authentication and data interaction: color contrast (1.4.3), keyboard navigation (2.1.1), focus visibility (2.4.7), error identification (3.3.1), labels and instructions (3.3.2), and error prevention for consequential actions (3.3.4).
 
 Evaluation was conducted by two independent evaluators using published interface documentation, user reviews, and prior usability study reports.\footnote{Primary sources per system: MedRec, original conference paper and MIT Media Lab interface specification; Patientory, official whitepaper (v2.0, 2022) and App/Play Store reviews (2022--2024); BurstIQ, product documentation portal (accessed 2024) and usability data reported in prior work.} Inter-rater disagreements were resolved through discussion and consensus. Results are reported in Section~\ref{sec:barriers}.
 
@@ -240,7 +237,7 @@ This section addresses \textbf{RQ1} by presenting a structured taxonomy of barri
 
 \textbf{B2, Multi-Factor Authentication Complexity:} Blockchain healthcare applications frequently layer cryptographic authentication with additional verification steps. For users with motor impairments, completing multi-step authentication within session timeouts is predicted to violate WCAG 2.1 criterion 2.2.1 (Timing Adjustable).
 
-\textbf{B3, Absence of Authentication Alternatives:} No evaluated system provided alternative authentication pathways (biometric, delegated access, or guardian-assisted authentication) compliant with WCAG 2.1 criterion 3.3.4.
+\textbf{B3, Absence of Authentication Alternatives:} No evaluated system provided alternative authentication pathways (biometric, delegated access, or guardian-assisted authentication). WCAG 2.1 has no dedicated success criterion for this; the gap is addressed only in WCAG 2.2 (SC~3.3.8, Accessible Authentication; Section~\ref{sec:background}), which post-dates the 2.1 baseline adopted for this evaluation.
 
 \noindent\textbf{Dimension~2: Interface Transparency.}\ Blockchain's underlying processes, transaction verification, consensus, block confirmation, are invisible to users yet directly affect system responsiveness \cite{frohlich2022blockchain}.
 
@@ -335,7 +332,6 @@ H10: Help \& Documentation & 3 & 2 & 3 \\
 \end{adjustbox}
 \end{center}
 \end{table}
-
 \begin{table}[htbp]
 \caption{WCAG 2.1 Level AA Compliance Evaluation}
 \label{tab:wcag}
@@ -350,17 +346,17 @@ H10: Help \& Documentation & 3 & 2 & 3 \\
 \hline
 2.1.1 Keyboard Access & Fail & Partial & Fail & B11 \\
 \hline
-2.2.1 Timing Adjustable & Fail & Partial & Partial & B2 \\
+2.2.1 Timing Adjustable & Fail & Partial & Fail & B2 \\
 \hline
-2.4.7 Focus Visible & Partial & Pass & Partial & B11 \\
+2.4.7 Focus Visible & Fail & Pass & Partial & B11 \\
 \hline
 3.1.5 Reading Level & Fail & Fail & Fail & B5 \\
 \hline
 3.3.1 Error Identification & Fail & Partial & Fail & B7 \\
 \hline
-3.3.2 Labels \& Instructions & Partial & Pass & Partial & B7 \\
+3.3.2 Labels \& Instructions & Fail & Pass & Partial & B7 \\
 \hline
-3.3.4 Auth Alternatives & Fail & Fail & Fail & B3 \\
+3.3.4 Error Prevention (Data) & Fail & Fail & Fail & B8, B9 \\
 \hline
 4.1.3 Status Messages & Fail & Fail & Fail & B10 \\
 \hline
@@ -369,6 +365,9 @@ H10: Help \& Documentation & 3 & 2 & 3 \\
 \textbf{ACS (weighted)} & \textbf{0\%} & \textbf{38.9\%} & \textbf{11.1\%} & --- \\
 \hline
 \end{tabular}
+\end{adjustbox}
+\end{center}
+\end{table}
 \end{adjustbox}
 \end{center}
 {\footnotesize ACS = Accessibility Compliance Score (Eq.~\ref{eq:acs}): weighted formula giving 0.5 credit for Partial. Strict pass rate counts only full Pass.}
@@ -382,7 +381,7 @@ H10: Help \& Documentation & 3 & 2 & 3 \\
 \end{figure}
 
 \subsection{Summary of Findings}
-\label{sec:gap-analysis} \textbf{Finding~1, Systematic WCAG failure:} None of the three evaluated systems achieve WCAG 2.1 Level AA compliance. MedRec and BurstIQ pass zero of nine evaluated criteria (strict ACS = 0\%); Patientory achieves a strict pass rate of 22.2\% (2 of 9 criteria) and a weighted ACS of 38.9\% when partial conformance is credited. Since WCAG 2.1 criteria are specifically designed to ensure access for PwDs, these failures constitute strong standards-based evidence of predicted accessibility barriers for this population. \textbf{Finding~2, Critical severity in immutability-related heuristics:} Heuristics H3 and H9 receive catastrophic ratings (4/4) in two of three systems, reflecting structural consequences of Blockchain's immutability that standard HCI solutions cannot directly address and that are predicted to be particularly harmful for users with cognitive or motor disabilities who may be more susceptible to irreversible errors. \textbf{Finding~3, Universal authentication barrier:} All three systems fail WCAG 2.1 criterion 3.3.4 (Authentication Alternatives), indicating that, across all three evaluated systems, cryptographic key-based authentication is a barrier indicated by the standards.
+\label{sec:gap-analysis} \textbf{Finding~1, Systematic WCAG failure:} None of the three evaluated systems achieve WCAG 2.1 Level AA compliance. MedRec and BurstIQ pass zero of nine evaluated criteria (strict ACS = 0\%); Patientory achieves a strict pass rate of 22.2\% (2 of 9 criteria) and a weighted ACS of 38.9\% when partial conformance is credited. Since WCAG 2.1 criteria are specifically designed to ensure access for PwDs, these failures constitute strong standards-based evidence of predicted accessibility barriers for this population. \textbf{Finding~2, Critical severity in immutability-related heuristics:} Heuristics H3 and H9 receive catastrophic ratings (4/4) in two of three systems, reflecting structural consequences of Blockchain's immutability that standard HCI solutions cannot directly address and that are predicted to be particularly harmful for users with cognitive or motor disabilities who may be more susceptible to irreversible errors. \textbf{Finding~3, Universal authentication barrier:} None of the three systems offers an alternative to raw cryptographic key management (B3). WCAG 2.1 has no dedicated criterion for this; WCAG 2.2's SC~3.3.8 (Accessible Authentication), which post-dates the 2.1 baseline used here, closes exactly this gap, reinforcing rather than weakening the barrier's standards-based grounding. Separately, all three systems also fail SC~3.3.4 (Error Prevention), reflecting the absence of adequate pre-confirmation safeguards for irreversible actions (B8, B9), indicating that, across all three evaluated systems, both cryptographic key-based authentication and the lack of confirm/undo safeguards are barriers indicated by the standards.
 
 
 % ============================================================
@@ -445,16 +444,17 @@ Table~\ref{tab:principles} summarizes the mapping between principles, barriers, 
 \hline
 \textbf{Principle} & \textbf{Barriers} & \textbf{Nielsen} & \textbf{WCAG 2.1} \\
 \hline
-AAD & B1, B2, B3 & H5, H6 & 2.2.1, 3.3.4 \\
+AAD & B1, B2, B3 & H5, H6 & 2.2.1$^{\ddagger}$ \\
 \hline
 PTD & B4, B5, B6 & H1, H2 & 3.1.5 \\
 \hline
-CID & B7, B8, B9 & H3, H5, H9 & 3.3.1, 3.3.2 \\
+CID & B7, B8, B9 & H3, H5, H9 & 3.3.1, 3.3.2, 3.3.4 \\
 \hline
 UAC & B10, B11, B12 & H4, H7 & 2.1.1, 2.4.7, 4.1.3 \\
 \hline
 \end{tabular}
 \end{adjustbox}
+{\footnotesize $^{\ddagger}$B3 (no authentication alternative) has no dedicated criterion in WCAG 2.1; this gap is closed only in WCAG 2.2 (SC~3.3.8, Accessible Authentication; Section~\ref{sec:background}), which post-dates the 2.1 baseline adopted here.}
 \end{center}
 \end{table}
 
@@ -478,7 +478,7 @@ Consider a patient with multiple sclerosis granting her neurologist access to he
 \section{The BCHAIN-ACCESS Framework}
 \label{sec:framework}
 
-This section addresses \textbf{RQ3} by presenting BCHAIN-ACCESS (Blockchain-based Healthcare \textbf{Access}ibility, \textbf{C}ompliance, and \textbf{C}are for \textbf{E}quitable \textbf{S}ecure \textbf{S}ystems). BCHAIN-ACCESS operationalizes the four HCI principles within a unified multi-perspective model, illustrated in Figure~\ref{fig:integrated}.
+This section addresses \textbf{RQ3} by presenting BCHAIN-ACCESS (Blockchain-based Healthcare \textbf{Access}ibility, \textbf{C}ompliance, and \textbf{C}are for \textbf{E}quitable \textbf{S}ecure \textbf{S}ystems). BCHAIN-ACCESS operationalizes the four HCI principles within a unified multi-perspective model, illustrated in Figure~\ref{fig:integrated}. Most of the model integrates established standards for this domain; its one original mechanism, the time-locked consent pending-state, emerges specifically where all four perspectives converge (Section~\ref{subsec:intersection}) and is the element the reference implementation most directly exercises.
 
 \begin{figure}[htbp]
 \centering
@@ -517,9 +517,10 @@ The BCHAIN-ACCESS decision process, formalized in Algorithm~\ref{alg:bchain} (Se
 
 \textbf{Stage~3, HCI and Accessibility Verification:} WCAG 2.1 Level AA conformance across all interface components (ACS $\geq$ 90\%); heuristic evaluation mean severity score below 0.5 across Nielsen's ten heuristics; assistive technology compatibility testing with screen readers (NVDA, JAWS, VoiceOver), keyboard-only navigation, and voice control; and usability testing with at least one PwD participant group per disability category. This final criterion is the critical empirical gate: expert evaluation and automated testing (Section~\ref{sec:feasibility}) are necessary but not sufficient, a system cannot be designated BCHAIN-ACCESS compliant without it. The complete pass/fail logic across all three stages is formalized in Algorithm~\ref{alg:bchain} (Section~\ref{sec:operationalization}).
 
-\textbf{Compliance status of the reference implementation itself.} We flag an important scope distinction explicitly here to avoid a self-referential inconsistency. \texttt{HealthAccessControl.sol} (Section~\ref{subsec:blockchain-architecture}) has \emph{not} undergone an independent security audit, and therefore does not itself satisfy Stage~1(b) of the process just defined. No static or dynamic analysis tooling (e.g., Slither, Mythril, or fuzz-testing frameworks such as Echidna) was run against the contract in this work. Consequently, the reference implementation is presented in this paper strictly as \emph{technical realizability evidence} for the P2/P3 perspectives, i.e., a demonstration that the required functions, access-control logic, and time-locked protocol can be implemented and executed correctly, and not as a claim that the reference implementation itself has achieved, or would achieve, BCHAIN-ACCESS Stage~1 certification under its own decision process. An independent audit (even a lightweight, checklist-based static-analysis pass) of \texttt{HealthAccessControl.sol} is accordingly listed as a prerequisite for any future claim of full framework compliance, and is added explicitly to the limitations (Section~\ref{sec:discussion}, L8).
+\textbf{Compliance status of the reference implementation itself.} We flag an important scope distinction explicitly here to avoid a self-referential inconsistency. \texttt{HealthAccessControl.sol} (Section~\ref{subsec:blockchain-architecture}) has \emph{not} undergone an independent security audit, and therefore does not itself satisfy Stage~1(b) of the process just defined. While automated static analysis (Slither) \emph{was} run against the contract (Supplementary~S6; all High and Medium findings were reviewed and determined to be false positives for this contract's usage), the contract has not undergone an independent professional security audit, nor dynamic or fuzz-testing analysis (e.g., Mythril, Echidna). Consequently, the reference implementation is presented in this paper strictly as \emph{technical realizability evidence} for the P2/P3 perspectives, i.e., a demonstration that the required functions, access-control logic, and time-locked protocol can be implemented and executed correctly, and not as a claim that the reference implementation itself has achieved, or would achieve, BCHAIN-ACCESS Stage~1 certification under its own decision process. An independent audit (even a lightweight, checklist-based static-analysis pass) of \texttt{HealthAccessControl.sol} is accordingly listed as a prerequisite for any future claim of full framework compliance, and is added explicitly to the limitations (Section~\ref{sec:discussion}, L8).
 
 \subsection{Intersection Design Obligations}
+\label{subsec:intersection}
 
 A key contribution of BCHAIN-ACCESS is the explicit specification of design obligations arising at perspective intersections, visualized in Figure~\ref{fig:integrated}. At \textbf{Healthcare $\times$ HCI} (P1 $\times$ P4), the framework requires guardian-delegated authentication, an accessible consent UI, and plain-language health summaries. At \textbf{Blockchain $\times$ Governance} (P2 $\times$ P3), it requires off-chain storage of personal data, on-chain hash verification, and a GDPR erasure workaround. At \textbf{Governance $\times$ HCI} (P3 $\times$ P4), WCAG 2.1 Level AA becomes a legal mandate, backed by EN~301~549 compliance documentation. At \textbf{Healthcare $\times$ Blockchain} (P1 $\times$ P2), PBFT consensus supports smart-contract consent automation. Where all four perspectives converge, the framework requires the time-locked pending state and biometric key binding with an audit trail, the mechanisms that jointly implement Principles CID and AAD at the architecture level.
 
@@ -540,9 +541,9 @@ A central design goal of BCHAIN-ACCESS is auditability: every predicted barrier 
 \hline
 \textbf{Barrier} & \textbf{Principle} & \textbf{Standard (WCAG/Nielsen)} & \textbf{Prototype Feature} & \textbf{Criterion} & \textbf{Status} \\
 \hline
-B1 Key management; B2 MFA complexity & AAD & 2.2.1; 3.3.4; H5, H6 & Biometric-unlock button (keyboard-accessible); adjustable session & VC1, VC3 & Demonstrated \\
+B1 Key management; B2 MFA complexity & AAD & 2.2.1; H5, H6 & Biometric-unlock button (keyboard-accessible); adjustable session & VC1, VC3 & Demonstrated \\
 \hline
-B3 No auth alternatives & AAD & 3.3.4 & Guardian-delegated access model; keyboard fallback & VC1 & Demonstrated \\
+B3 No auth alternatives & AAD & n/a (2.1); cf.\ 2.2 SC~3.3.8 & Guardian-delegated access model; keyboard fallback & VC1 & Demonstrated \\
 \hline
 B4 Invisible status; B5 jargon & PTD & 3.1.5; H1, H2 & Plain-language status messages; inline glossary & VC1, VC5 & Expert layer \\
 \hline
@@ -550,7 +551,7 @@ B6 Opaque data ownership & PTD & H1; GDPR Art.~13 & Visual data-ownership dashbo
 \hline
 B7 Cryptic errors & CID & 3.3.1; H9 & Actionable plain-language error messages & VC1, VC2 & Demonstrated \\
 \hline
-B8 No confirmation; B9 no undo & CID & H3, H5 & Two-stage confirmation; 60-second time-locked pending state & VC2, VC3 & Expert layer \\
+B8 No confirmation; B9 no undo & CID & 3.3.4; H3, H5 & Two-stage confirmation; 60-second time-locked pending state & VC2, VC3 & Expert layer \\
 \hline
 B10 Screen-reader incompatibility & UAC & 4.1.3 & ARIA live regions on all dynamic updates & VC1 & Demonstrated \\
 \hline
@@ -637,7 +638,7 @@ The $0.5$ partial-credit weight is a deliberate design choice rather than an emp
 
 \subsection{Smart Contract Interface Specification}
 
-The minimum smart-contract interface required by BCHAIN-ACCESS for consent management, five functions (\texttt{initiateGrant}, \texttt{confirmGrant}, \texttt{revokeAccess}, \texttt{checkAccess}, \texttt{getAuditLog}) supporting the time-locked pending state of Principle CID, is specified in full in the supplementary materials. The commit-reveal pattern underpinning \texttt{initiateGrant} and \texttt{confirmGrant} is adapted from time-lock mechanisms established in financial blockchain applications \cite{buterin2014ethereum}, here applied to healthcare consent workflows. Security note: all functions must implement role-based access control modifiers and be subject to formal verification or independent audit prior to deployment; reentrancy guards are required for all state-modifying functions. \texttt{HealthAccessControl.sol} implements the role-based modifiers and reentrancy guards described here, but, as clarified in Section~\ref{sec:framework} and Limitation~L8, has not itself undergone the independent audit this note requires.
+The minimum smart-contract interface required by BCHAIN-ACCESS for consent management, six functions (\texttt{initiateGrant}, \texttt{confirmGrant}, \texttt{cancelPendingGrant}, \texttt{revokeAccess}, \texttt{checkAccess}, \texttt{getAuditLog}) supporting the time-locked pending state of Principle CID, is specified in full in the supplementary materials. The commit-reveal pattern underpinning \texttt{initiateGrant} and \texttt{confirmGrant} is adapted from time-lock mechanisms established in financial blockchain applications \cite{buterin2014ethereum}, here applied to healthcare consent workflows. Security note: all functions must implement role-based access control modifiers and be subject to formal verification or independent audit prior to deployment; reentrancy guards are required for all state-modifying functions. \texttt{HealthAccessControl.sol} implements the role-based modifiers and reentrancy guards described here, but, as clarified in Section~\ref{sec:framework} and Limitation~L8, has not itself undergone the independent audit this note requires.
 
 
 
@@ -698,9 +699,17 @@ BCHAIN-ACCESS provides five measurable validation criteria. Criteria VC1 and VC2
 
 To demonstrate the achievability of the BCHAIN-ACCESS framework, we developed two complementary implementation components: (1) a \textbf{UI-layer prototype} used as the subject of the expert accessibility and usability evaluation, and (2) a \textbf{full blockchain backend system} implementing the technical architecture specified in Section~\ref{subsec:blockchain-architecture}. These are distinct artifacts with distinct purposes, and it is important to delineate them clearly.
 
-\textbf{Component 1, UI-Layer Prototype (Evaluation Subject).} The UI-layer prototype is a single-page HTML/CSS/JavaScript application implementing all four HCI principles (AAD, PTD, CID, UAC) for the patient data sharing scenario described in Section~\ref{sec:principles}. It is a \textbf{self-contained presentation-layer demonstration}: all state is managed in browser memory (JavaScript variables); reloading the page resets all data. The ``fingerprint'' authentication is a keyboard-accessible button with a CSS animation simulating biometric unlock (AAD); the ``60-second countdown'' is a JavaScript \texttt{setInterval} with ARIA live region announcements (CID); ``access grants'' are managed as DOM state with plain-language confirmation dialogs (PTD); and all interactive elements are fully keyboard operable with visible focus indicators and high-contrast mode support (UAC). This component was submitted to the N=10 expert feasibility assessment reported in Section~\ref{sec:feasibility}. All color combinations were verified to meet the WCAG~2.1 Level~AA minimum contrast ratio of 4.5:1, and all interactive elements were tested for keyboard operability and screen-reader announcement. Accessibility claims (ACS = 100\%, Lighthouse 100/100) apply \textbf{solely to this HCI presentation layer}, not to any blockchain system, smart contract, or production healthcare application.
+\textbf{Component 1, UI-Layer Prototype (Evaluation Subject).} The UI-layer prototype is a single-page HTML/CSS/JavaScript application implementing all four HCI principles (AAD, PTD, CID, UAC) for the patient data sharing scenario described in Section~\ref{sec:principles}. It is a \textbf{self-contained presentation-layer demonstration}: all state is managed in browser memory (JavaScript variables); reloading the page resets all data. The ``fingerprint'' authentication is a keyboard-accessible button with a CSS animation simulating biometric unlock (AAD); the ``60-second countdown'' is a JavaScript \texttt{setInterval} with ARIA live region announcements (CID); ``access grants'' are managed as DOM state with plain-language confirmation dialogs (PTD); and all interactive elements are fully keyboard operable with visible focus indicators and high-contrast mode support (UAC). This component was submitted to the N=10 expert feasibility assessment reported in Section~\ref{sec:feasibility}. All color combinations were verified to meet the WCAG~2.1 Level~AA minimum contrast ratio of 4.5:1, and all interactive elements were tested for keyboard operability and screen-reader announcement. Accessibility claims (ACS = 100\%, Lighthouse 100/100) apply \textbf{solely to this HCI presentation layer}, not to any blockchain system, smart contract, or production healthcare application. The actual prototype user interfaces corresponding to these features are presented in Figure~\ref{fig:prototype-screenshots}.
 
-\textbf{Component 2, Full Blockchain Backend (Technical Implementation).} In parallel with the UI-layer prototype, a complete blockchain backend was implemented to demonstrate that the framework's technical architecture (P2, Blockchain Perspective; P3, Governance Perspective) is realizable. This system comprises the \texttt{HealthAccessControl.sol} Solidity smart contract executed on a local Hardhat EVM development node, and a Python Flask REST API gateway integrating via Web3.py that builds, signs, and submits transactions to the node. When the local node is unavailable, the gateway falls back to an in-memory ledger engine that preserves the same API surface for offline demonstration; all on-chain results reported in this paper were obtained from the Hardhat node. A live reference deployment of the prototype is publicly accessible at \url{https://bchain-access-frontend.onrender.com/}; permanent deployment instructions and all source code are provided in the supplementary materials. The technical details of this backend are presented in Section~\ref{subsec:blockchain-architecture}; it was not the subject of the N=10 expert evaluation, which focused on the HCI presentation layer.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{images/Figure_6.png}
+\caption{Composite screenshot of the BCHAIN-ACCESS Patient-Controlled Consent Management interface: (A) The biometric authentication interface simulating fingerprint unlock (Principle AAD); (B) The patient health records access control dashboard showing active/private status badges, cryptographic hashes, and active provider access lists; (C) The grant wizard during the safety cooldown (Principle CID) with the 60-second countdown timer; and (D) The successful confirmation state showing the permanent blockchain transaction hash (Principle PTD).}
+\label{fig:prototype-screenshots}
+\end{figure}
+
+
+\textbf{Component 2, Full Blockchain Backend (Technical Implementation).} In parallel with the UI-layer prototype, a complete blockchain backend was implemented to demonstrate that the framework's technical architecture (P2, Blockchain Perspective; P3, Governance Perspective) is realizable. This system comprises the \texttt{HealthAccessControl.sol} Solidity smart contract executed on a local Hardhat EVM development node, and a Python Flask REST API gateway integrating via Web3.py that builds, signs, and submits transactions to the node. When the local node is unavailable, the gateway falls back to an in-memory ledger engine that preserves the same API surface for offline demonstration; all on-chain results reported in this paper were obtained from the Hardhat node. A live reference deployment of the prototype is publicly accessible at \url{https://bchain-access-frontend.onrender.com/}; permanent deployment instructions and all source code are provided in the supplementary materials and in the project repository, \url{https://github.com/mallisami/Bchain_Access-}. The technical details of this backend are presented in Section~\ref{subsec:blockchain-architecture}; it was not the subject of the N=10 expert evaluation, which focused on the HCI presentation layer.
 
 \textbf{Scope of the evaluation.} The expert feasibility assessment (Section~\ref{sec:feasibility}) evaluates Component~1 (the UI-layer prototype) exclusively. Table~\ref{tab:prototype-vs-full} clarifies the boundary between the evaluated UI prototype and the full production-grade system it is designed to represent at the interface layer.
 
@@ -767,7 +776,15 @@ where $\alpha$ is the access level (the prototype implements View-Only, $\alpha=
 &\land(\tau_{\text{exp}}=0\lor t\le\tau_{\text{exp}}).
 \end{aligned}
 \end{equation}
-The two-phase protocol enforces the CID safety window: a Phase-1 \texttt{initiateGrant} (guarded by \texttt{onlyPatient}, \texttt{recordExists}, a non-zero provider, and $\alpha>0$) sets $\tau_{\text{lock}}\leftarrow t_0+\Delta$ with $\text{active}=\text{False}$; a Phase-2 \texttt{confirmGrant} is valid only once $t_c\ge\tau_{\text{lock}}$, whereupon $\text{active}\leftarrow\text{True}$, $\tau_{\text{grant}}\leftarrow t_c$, and $\tau_{\text{lock}}\leftarrow 0$. This guarantees the 60-second cancellation window is cryptographically enforced on-chain rather than only in the UI.
+The two-phase protocol enforces the CID safety window: a Phase-1 \texttt{initiateGrant} (guarded by \texttt{onlyPatient}, \texttt{recordExists}, a non-zero provider, and $\alpha>0$) sets $\tau_{\text{lock}}\leftarrow t_0+\Delta$ with $\text{active}=\text{False}$; a Phase-2 \texttt{confirmGrant} is valid only once $t_c\ge\tau_{\text{lock}}$, whereupon $\text{active}\leftarrow\text{True}$, $\tau_{\text{grant}}\leftarrow t_c$, and $\tau_{\text{lock}}\leftarrow 0$. This guarantees the 60-second cancellation window is cryptographically enforced on-chain rather than only in the UI. The states and transitions of this time-locked two-phase protocol are illustrated in Figure~\ref{fig:consent-state-transition}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{images/Figure_7.png}
+\caption{State transition diagram of the time-locked two-phase consent protocol. A patient initiates access by calling \texttt{initiateGrant} (Phase 1), transitioning access to the Pending state (inactive, 60-second cooldown timer active). Within this period, the patient can call \texttt{cancelPendingGrant} to abort and return to the None/Revoked state. After the cooldown expires ($t \geq \tau_{\text{lock}}$), the patient can call \texttt{confirmGrant} (Phase 2), transitioning access to the Active/Authorized state. Revocation at any time returns access immediately to the None/Revoked state via \texttt{revokeAccess}.}
+\label{fig:consent-state-transition}
+\end{figure}
+
 
 \subsubsection{Smart Contract Implementation}
 
@@ -775,7 +792,7 @@ The \texttt{HealthAccessControl.sol} contract (Solidity~0.8.19) implements the c
 
 The time-locked pending state is implemented via a \texttt{pendingUntil} timestamp: when a patient initiates a grant, the contract records a pending entry with a 60-second expiry. Only after the countdown expires (or the patient explicitly confirms) does the grant become active. This mirrors the CID principle from the UI layer but enforces it at the smart contract level, making the delay cryptographically immutable rather than merely a UI pattern. The \texttt{checkAccess} function is a \texttt{view} call that executes locally off-chain at zero gas cost.
 
-\noindent\textbf{Gas costs.} Per-operation gas usage was recorded on the local Hardhat node from real EVM transaction receipts (\texttt{receipt.gasUsed}, dynamic gas price $\approx$1.79~gwei). Because the on-chain \texttt{AuditEntry[]} log is written on every state-modifying call, in addition to the 32-byte record hash, write operations are substantially higher than a hash-only write: \texttt{registerRecord} 341{,}873; \texttt{initiateGrant} 386{,}111; \texttt{confirmGrant} 199{,}832; \texttt{cancelPendingGrant} 213{,}328; \texttt{revokeAccess} 171{,}927; contract deployment 2{,}925{,}863 ($\approx$9.8\% of the block gas limit). Read (\texttt{view}) calls remain free. \texttt{cancelPendingGrant} is an on-chain state-modifying transaction, not a backend-mediated/off-chain operation. Storing a 1~MB document on-chain would instead exceed block limits. The on-chain audit log is the dominant cost driver here, and a deployment at 9.8\% of the block gas limit for a single contract would not scale as-is: a production system would move the audit trail off-chain with only a periodic on-chain hash anchor, or adopt a Layer-2 / permissioned chain, trading immediate on-chain tamper-evidence for materially lower per-call gas. These development-network figures are not representative of mainnet or public-testnet costs (Limitation~L7); the full benchmark table appears in the supplementary materials (Table~S1).
+\noindent\textbf{Gas costs.} Per-operation gas usage was recorded on the local Hardhat node from real EVM transaction receipts (\texttt{receipt.gasUsed}, dynamic gas price $\approx$1.79~gwei). Because the on-chain \texttt{AuditEntry[]} log is written on every state-modifying call, in addition to the 32-byte record hash, write operations are substantially higher than a hash-only write: \texttt{registerRecord} 341{,}873; \texttt{initiateGrant} 386{,}111; \texttt{confirmGrant} 199{,}832; \texttt{cancelPendingGrant} 213{,}328; \texttt{revokeAccess} 171{,}927; contract deployment 2{,}925{,}863 ($\approx$9.8\% of the block gas limit). Read (\texttt{view}) calls remain free. \texttt{cancelPendingGrant} is an on-chain state-modifying transaction, not a backend-mediated/off-chain operation. Storing a 1~MB document on-chain would instead exceed block limits. The on-chain audit log is the dominant cost driver here, and a deployment at 9.8\% of the block gas limit for a single contract would not scale as-is. A production system would move the audit trail off-chain with only a periodic on-chain hash anchor, or adopt a Layer-2 / permissioned chain, trading immediate on-chain tamper-evidence for materially lower per-call gas. These development-network figures are not representative of mainnet or public-testnet costs (Limitation~L7); the full benchmark table appears in the supplementary materials (Table~S1).
 
 \noindent\textbf{Threat model and security analysis.}
 
@@ -792,7 +809,7 @@ A Python Flask gateway bridges REST requests to EVM transactions: it connects to
 \subsubsection{Integration, Deployment, and Reproducibility}
 \label{subsubsec:bugs}
 
-The frontend and backend were developed and tested together as a functioning system; three integration defects (a checkbox/key mismatch, an access-revocation identifier mismatch, and a blockchain-status parser error) were identified and resolved during integration, providing concrete evidence that the two components interoperate. The contract was compiled with Solidity~0.8.19 and executed on a local Hardhat EVM development node (Chain~ID~1337) via an \texttt{ethers.js} deployment script; a documented offline-compiler configuration enabled builds under network restrictions. The frontend and backend were exposed via temporary tunnels for the evaluation period. Full environment details, the integration-defect log, the offline-compiler configuration, deployment scripts, and all source code are provided in the supplementary materials (with the live prototype accessible at \url{https://bchain-access-frontend.onrender.com/}) to support reproducibility.
+The frontend and backend were developed and tested together as a functioning system; three integration defects (a checkbox/key mismatch, an access-revocation identifier mismatch, and a blockchain-status parser error) were identified and resolved during integration, providing concrete evidence that the two components interoperate. The contract was compiled with Solidity~0.8.19 and executed on a local Hardhat EVM development node (Chain~ID~1337) via an \texttt{ethers.js} deployment script; a documented offline-compiler configuration enabled builds under network restrictions. The frontend and backend were exposed via temporary tunnels for the evaluation period. Full environment details, the integration-defect log, the offline-compiler configuration, deployment scripts, and all source code are provided in the supplementary materials and the project repository, \url{https://github.com/mallisami/Bchain_Access-} (with the live prototype accessible at \url{https://bchain-access-frontend.onrender.com/}), to support reproducibility.
 
 \section{Expert Feasibility Assessment}
 \label{sec:feasibility}
@@ -893,7 +910,7 @@ As summarized in Table~\ref{tab:participants}, the ten evaluators formed a delib
 
 \noindent\textbf{Tools and procedure.} 
 Automated accessibility testing was conducted using three complementary
-tools to maximize coverage of WCAG~2.1 success criteria. \textbf{Google Lighthouse v12}, the Chrome DevTools auditing engine, runs 73 automated accessibility checks derived from the Axe core rule set and produces an overall accessibility score (0--100). \textbf{WAVE v5.2}, the WebAIM browser extension, identifies accessibility errors, alerts, and structural features by analysing the DOM and rendered output. \textbf{Axe DevTools v4.10}, from Deque Systems, detects WCAG~2.1 Level~A and~AA violations with a low false-positive rate and is widely regarded as the industry standard for automated accessibility testing.
+tools to maximize coverage of WCAG~2.1 success criteria. \textbf{Google Lighthouse v13.4.0}, the Chrome DevTools auditing engine, runs 76 automated accessibility checks derived from the Axe core rule set and produces an overall accessibility score (0--100). \textbf{WAVE v5.2}, the WebAIM browser extension, identifies accessibility errors, alerts, and structural features by analysing the DOM and rendered output. \textbf{Axe DevTools v4.10}, from Deque Systems, detects WCAG~2.1 Level~A and~AA violations with a low false-positive rate and is widely regarded as the industry standard for automated accessibility testing.
 
 The evaluation targeted the BCHAIN-ACCESS UI-layer prototype as served through the reference deployment made available for the evaluation period. The frontend (Component~1) was connected to the full blockchain backend (Component~2) in the live deployment; however, the automated accessibility tools (Lighthouse, WAVE, Axe) evaluated the rendered DOM and JavaScript of the frontend interface exclusively, they do not instrument or evaluate backend API calls, EVM transactions, or smart contract logic. The prototype was tested independently by loading it in a controlled Chrome~126 environment and running all three tools sequentially.
 
@@ -911,7 +928,7 @@ audit results, visualized in Figure~\ref{fig:auto-eval}.
 \hline
 \textbf{Tool} & \textbf{Checks Run} & \textbf{Passed} & \textbf{Failed} & \textbf{Status} \\
 \hline
-Lighthouse & 73 & 23 & 1 (cosmetic) & 100/100 \\
+Lighthouse & 76 & 23 & 0 & 100/100 \\
 \hline
 WAVE & All views & 0 errors & 0 errors & Pass \\
 \hline
@@ -919,19 +936,19 @@ Axe DevTools & All views & 0 violations & 0 violations & Pass \\
 \hline
 \textbf{Overall} & --- & --- & --- & \textbf{Pass} \\
 \hline
-\multicolumn{5}{p{8.4cm}}{\footnotesize\textit{Note.} Lighthouse's 100/100 is a weighted composite, not a 73/73 pass count: of 73 checks, 23 passed, 1 failed (cosmetic), 36 were not applicable, and 13 require manual verification. The failure (\texttt{label-content-name-mismatch}) is a deliberate trade-off, not a genuine defect: the accessible name prefixes keyboard-activation instructions for screen-reader users.}
+\multicolumn{5}{p{8.4cm}}{\footnotesize\textit{Note.} Lighthouse's 100/100 is a weighted composite, not a 73/73 pass count: of 76 checks, 23 passed, 0 failed, 43 were not applicable, and 10 require manual verification. No audit failed.}
 \end{tabular}
 \end{adjustbox}
 \end{table}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{images/Figure_6.png}
+\includegraphics[width=\textwidth]{images/Figure_8.png}
 \caption{Automated accessibility evaluation of the BCHAIN-ACCESS prototype using Google Lighthouse, WAVE, and Axe DevTools, demonstrating compliance with WCAG 2.1 Level AA accessibility requirements.}
 \label{fig:auto-eval}
 \end{figure}
 
-\textbf{Google Lighthouse Analysis.} The prototype achieved a Lighthouse accessibility score of \textbf{100/100} (composite; the check-level breakdown and its interpretation are given in Table~\ref{tab:auto-audit}). Passed audits included critical ARIA, colour-contrast, heading-order, and language checks. The single failure (\texttt{label-content-name-mismatch}) is a deliberate trade-off, the button's accessible name prefixes keyboard-activation instructions for screen-reader users, rather than a genuine barrier.
+\textbf{Google Lighthouse Analysis.} The prototype achieved a Lighthouse accessibility score of \textbf{100/100} (composite; the check-level breakdown and its interpretation are given in Table~\ref{tab:auto-audit}). Passed audits included critical ARIA, colour-contrast, heading-order, and language checks. No audit failed; the remaining checks were either not applicable to the prototype or flagged for manual verification.
 
 \textbf{WAVE and Axe Results.} Neither WAVE nor Axe DevTools detected
 any errors or WCAG~2.1 Level~AA violations across the prototype. WAVE
@@ -1073,9 +1090,9 @@ Section~\ref{subsec:auto-evaluation}.
 
 \textbf{Inter-Rater Agreement.} On the ten Nielsen heuristics, all ten evaluators independently assigned identical severity ratings (H1--H8 = 0; H9 = 1), giving 100\% percentage agreement; Cohen's kappa is undefined under perfect agreement, so percentage agreement is reported instead. As detailed in Section~\ref{subsec:recruitment} (Session structure and independence), evaluators submitted ratings asynchronously with no group discussion or consensus step, ruling out direct social convergence as the explanation; we attribute the uniformity instead to the combination of an unblinded, purpose-built prototype and a coarse 0--4 severity scale, discussed below.
 
-We note that this convergence applies specifically to the coarse-grained heuristic severity scale, on which a well-formed prototype can plausibly elicit uniform ``no problem'' judgments. It should not be read as uniformity across the study as a whole: the finer-grained measures collected from the same evaluators show substantive variation, SUS scores range from 80 to 97.5 ($SD = 5.27$), accessibility-questionnaire means range from 3.8 to 4.9 ($SD = 0.35$), task times vary by evaluator role (reported per evaluator in the supplementary materials), and four evaluators recorded specific qualitative concerns (Section~\ref{subsec:expert-issues}). The heuristic consensus therefore reflects agreement on the absence of gross usability defects, not an absence of variation in expert judgment. Two further factors help explain the uniformly high scores: the prototype is a small, single-workflow artifact purpose-built to the very standards against which it was assessed (conformance by construction, not post-hoc remediation), and the evaluation targeted the presentation layer only, excluding the harder systemic sources of failure (key management, network latency, multi-provider workflows) that depress scores in production systems.
+We note that this convergence applies specifically to the coarse-grained heuristic severity scale, on which a well-formed prototype can plausibly elicit uniform ``no problem'' judgments. It should not be read as uniformity across the study as a whole. The finer-grained measures collected from the same evaluators show substantive variation, SUS scores range from 80 to 97.5 ($SD = 5.27$), each evaluator's own overall accessibility-questionnaire average ranges from 3.8 to 4.9 across evaluators ($SD = 0.35$; a different quantity from the $SD = 0.36$ reported in Table~\ref{tab:a11y-questionnaire}, which is computed across the ten item-level means rather than across evaluators), task times vary by evaluator role (reported per evaluator in the supplementary materials), and four evaluators recorded specific qualitative concerns (Section~\ref{subsec:expert-issues}). The heuristic consensus therefore reflects agreement on the absence of gross usability defects, not an absence of variation in expert judgment. Two further factors help explain the uniformly high scores: the prototype is a small, single-workflow artifact purpose-built to the very standards against which it was assessed (conformance by construction, not post-hoc remediation), and the evaluation targeted the presentation layer only, excluding the harder systemic sources of failure (key management, network latency, multi-provider workflows) that depress scores in production systems.
 
-These results descriptively support ERQ2: the prototype was rated substantially more favorably than the evaluated baseline platforms by the expert panel, under the unblinded design noted in L6, with a mean severity rating of 0.1 for the prototype (expert-assessed) compared to the 2.3--2.9 range for the baseline systems (documentation-based). We note this contrast is between expert ratings of the live prototype and documentation-based ratings of the baselines, so the magnitude should be read as indicative rather than a like-for-like measurement. Whether this improvement translates to usability for PwD end-users requires the empirical study described in Section~\ref{sec:discussion}.
+These results descriptively support ERQ2. Because the prototype was assessed live by experts while the baseline systems were assessed from documentation (L1) and were not themselves built to the standard, the severity gap (prototype 0.1 coarse / 0.30 re-rated versus 2.3--2.9 for the baselines) is not a like-for-like measurement; we report it only as a directional indication, not as evidence of comparative efficacy. Whether the design improves usability for PwD end-users requires the empirical study described in Section~\ref{sec:discussion}.
 
 %, ----------------------------------------------------------------------
 \subsection{Cognitive Walkthrough}
@@ -1291,7 +1308,7 @@ questionnaire results.
 \end{adjustbox}
 \end{table}
 
-The prototype achieved a mean accessibility rating of \textbf{4.44/5.0} ($SD = 0.36$; item-level results in Table~\ref{tab:a11y-questionnaire}). Navigation predictability and colour-contrast adequacy scored highest (4.8); the lowest item was comprehension of the information presented (Item~9, ``I understood the information presented to me''; 4.0), with comfort using the system independently close behind (Item~7; 4.1), evaluators suggesting additions such as audio countdown cues and clearer status messaging for the latter. The overall mean exceeds the VC5 threshold ($\geq 3.5$) by nearly a full point, giving descriptive support for ERQ5.
+The prototype achieved a mean accessibility rating of \textbf{4.44/5.0} ($SD = 0.27$; item-level results in Table~\ref{tab:a11y-questionnaire}). Navigation predictability and colour-contrast adequacy scored highest (4.8); the lowest item was comprehension of the information presented (Item~9, ``I understood the information presented to me''; 4.0), with comfort using the system independently close behind (Item~7; 4.1), evaluators suggesting additions such as audio countdown cues and clearer status messaging for the latter. The overall mean exceeds the VC5 threshold ($\geq 3.5$) by nearly a full point, giving descriptive support for ERQ5.
 
 %, ----------------------------------------------------------------------
 \subsection{Illustrative Scenario: Patient Data Sharing Workflow}
@@ -1376,11 +1393,11 @@ VC3--VC5 met by expert evaluators; PwD replication required before
 these criteria can be considered confirmed for the target population.}
 \end{table}
 
-Table~\ref{tab:validation-summary} reports the achievement of each criterion; we highlight only the points that the table does not convey. For \textbf{VC1}, the 100\% ACS (noting the expert instrument differs from the baseline audit instrument; see Table~\ref{tab:wcag-heuristic} note) is corroborated by three independent sources, Lighthouse (100/100), zero WAVE/Axe violations, and unanimous 9/9 expert Pass ratings, so the accessibility-compliance claim rests on triangulated evidence rather than a single tool. For \textbf{VC2}, the mean severity (0.1 coarse; 0.30 on the finer-grained re-rating) is well below the 0.5 threshold; as noted above, the contrast with the 2.3--2.9 baseline is indicative rather than a like-for-like measurement, since the baseline ratings are documentation-based. \textbf{VC3--VC5} (100\% task success with zero errors, SUS 87.5, questionnaire 4.44/5.0) are all met at the expert layer with substantial margins, but, unlike VC1 and VC2, these are user-experience criteria whose confirmation for the target population requires the PwD study of Section~\ref{sec:pwd-validation}.
+Table~\ref{tab:validation-summary} reports the achievement of each criterion; we highlight only the points that the table does not convey. For \textbf{VC1}, the 100\% ACS (noting the expert instrument differs from the baseline audit instrument; see Table~\ref{tab:wcag-heuristic} note) is corroborated by three independent sources, Lighthouse (100/100), zero WAVE/Axe violations, and unanimous 9/9 expert Pass ratings, so the accessibility-compliance claim rests on triangulated evidence rather than a single tool. For \textbf{VC2}, the mean severity (0.1 coarse; 0.30 on the finer-grained re-rating) is well below the 0.5 threshold; as noted above, the contrast with the 2.3--2.9 baseline is indicative rather than a like-for-like measurement, since the baseline ratings are documentation-based. \textbf{VC3--VC5} (100\% task success with zero errors, SUS 87.5, questionnaire 4.44/5.0) are all met at the expert layer with substantial margins, but, unlike VC1 and VC2, these are user-experience criteria whose confirmation for the target population requires the PwD study of Section~\ref{sec:pwd-validation}. Figure~\ref{fig:expert-eval} summarizes these four expert-layer instruments together.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{images/Figure_7.png}
+\includegraphics[width=\textwidth]{images/Figure_9.png}
 \caption{Expert evaluation of the BCHAIN-ACCESS prototype using heuristic evaluation, cognitive walkthrough, the System Usability Scale (SUS), and an accessibility questionnaire, demonstrating high usability and accessibility.}
 \label{fig:expert-eval}
 \end{figure}
@@ -1412,7 +1429,7 @@ This convergence of positive results across multiple evaluation methods and all 
 
 \textbf{For research,} the WCAG~2.1 failures across all three evaluated systems suggest accessibility is under-prioritized in current blockchain healthcare development, yet no empirical methodology exists for testing whether design changes are sufficient for PwDs, a gap BCHAIN-ACCESS addresses with measurable criteria. The catastrophic H3/H9 ratings further reveal a class of immutability-rooted usability problems that Nielsen's heuristics (designed for systems where undo is possible) do not capture, motivating a blockchain-specific heuristic extension. Finally, in our own non-exhaustive, single-reviewer search (Section~\ref{sec:methodology}, Limitation~L5), only 6 of 34 retained papers (17.6\%) addressed accessibility for PwDs. We report this as a descriptive signal from our specific search rather than as a field-wide bibliometric finding: the sample was not systematically screened, and a single narrow search cannot establish the prevalence of accessibility consideration across the broader literature. Given that PwDs are approximately 15\% of the global population \cite{who2023disability} with high dependency on digital health services, we read this signal as motivating, rather than demonstrating, a possible equity concern, and as strengthening the case for the formal systematic review with dual screening and participatory PwD methods identified as future work.
 
-\textbf{For practice,} authentication redesign is the highest-impact intervention: all three systems fail WCAG~2.1 criterion~3.3.4, and biometric key binding with guardian-delegated access (Principle~AAD) addresses this critical cluster without fundamental architectural change. GDPR and accessibility compliance should be treated as co-requirements, since both rely on off-chain storage with on-chain hash verification and are jointly served by the framework's intersection obligations. The time-locked pending state (Principle~CID), already used in financial blockchain applications for fraud prevention, is an immediately implementable mitigation for the H3/H9 violations without compromising blockchain integrity.
+\textbf{For practice,} authentication redesign is the highest-impact intervention: all three systems lack any alternative to raw cryptographic key management, a gap WCAG 2.1 leaves uncodified but WCAG 2.2's SC~3.3.8 now makes explicit, and biometric key binding with guardian-delegated access (Principle~AAD) addresses this critical cluster without fundamental architectural change. GDPR and accessibility compliance should be treated as co-requirements, since both rely on off-chain storage with on-chain hash verification and are jointly served by the framework's intersection obligations. The time-locked pending state (Principle~CID), already used in financial blockchain applications for fraud prevention, is an immediately implementable mitigation for the H3/H9 violations without compromising blockchain integrity.
 
 \subsection{On the Validity of Conceptual Contributions in HCI}
 
@@ -1446,7 +1463,7 @@ A natural question for any framework paper is whether conceptual validation alon
 
 \textbf{L7---Local development network only:} All blockchain measurements were obtained on a local Hardhat node with no network congestion. Opcode-level gas costs are deterministic and carry over to public EVM networks, but effective transaction cost, network contention, and confirmation latency---all relevant to the usability of the time-locked confirmation---do not, and remain unestablished pending evaluation on a public test network.
 
-\textbf{L8---Reference smart contract is unaudited:} \texttt{HealthAccessControl.sol} has not undergone independent security audit or automated static/dynamic analysis (Slither, Mythril, or fuzz testing), and therefore does not itself satisfy the Stage~1 blockchain-security gate of the BCHAIN-ACCESS decision process (Algorithm~\ref{alg:bchain}), which the framework requires of any system claiming compliance. As stated in Section~\ref{sec:framework}, the reference implementation is offered only as evidence of technical realizability, not as a self-certifying instance of the framework it operationalizes. A checklist-based static-analysis pass, at minimum, is required before this artifact could be used to support a compliance claim, and is prioritized as immediate future work ahead of the broader public-testnet evaluation described in L7.
+\textbf{L8---Reference smart contract is not independently audited:} \texttt{HealthAccessControl.sol} has undergone automated static analysis (Slither; Supplementary~S6, with all High/Medium findings reviewed as false positives) but has \emph{not} undergone an independent professional security audit, dynamic analysis, or fuzz testing (e.g., Mythril, Echidna). It therefore does not itself satisfy the Stage~1 blockchain-security gate of the BCHAIN-ACCESS decision process (Algorithm~\ref{alg:bchain}), which the framework requires of any system claiming compliance. As stated in Section~\ref{sec:framework}, the reference implementation is offered only as evidence of technical realizability, not as a self-certifying instance of the framework it operationalizes. An independent professional audit (complementing the static-analysis pass already performed) is required before this artifact could be used to support a compliance claim, and is prioritized as immediate future work ahead of the broader public-testnet evaluation described in L7.
 
 \subsection{Future Work: Pre-Specified PwD Validation Protocol}
 \label{sec:future-work}

@@ -82,8 +82,8 @@ def main():
         ci_lower, ci_upper = calc_95_ci_t(scores)
         
         print(f"Total Evaluators (N): {len(scores)}")
-        print(f"Mean SUS Score:       {mean:.2f} (Paper reports: 87.25)")
-        print(f"Standard Deviation:   {sd:.2f} (Paper reports: 4.78)")
+        print(f"Mean SUS Score:       {mean:.2f} (Paper reports: 87.5)")
+        print(f"Standard Deviation:   {sd:.2f} (Paper reports: 5.27)")
         print(f"Minimum SUS Score:    {min(scores):.1f}")
         print(f"Maximum SUS Score:    {max(scores):.1f}")
         print(f"95% Confidence Int.:  [{ci_lower:.2f}, {ci_upper:.2f}] (t-distribution, df={len(scores)-1})")
@@ -165,9 +165,9 @@ def main():
         mean_excel, sd_excel = calc_mean_sd(excel_rounded_means)
         
         print(f"Overall Mean Questionnaire Rating (True Raw): {mean_aq:.2f}/5")
-        print(f"Overall Mean Questionnaire Rating (Excel):    {mean_excel:.2f}/5 (Paper reports: 4.42)")
+        print(f"Overall Mean Questionnaire Rating (Excel):    {mean_excel:.2f}/5 (legacy Excel-rounded; paper reports 4.44 True Raw)")
         print(f"Standard Deviation (True Raw):               {sd_aq:.2f}")
-        print(f"Standard Deviation (Excel):                  {sd_excel:.2f} (Paper reports: 0.35)")
+        print(f"Standard Deviation (Excel):                  {sd_excel:.2f} (legacy Excel-rounded; paper reports 0.36 True Raw)")
         print(f"Minimum Evaluator Rating:                     {min(eval_scores):.2f}/5")
         print(f"Maximum Evaluator Rating:                     {max(eval_scores):.2f}/5\n")
     else:
