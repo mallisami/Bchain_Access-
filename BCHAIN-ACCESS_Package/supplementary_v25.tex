@@ -14,7 +14,7 @@
 paper. S1--S3 are development/feasibility artifacts recorded on a local Hardhat EVM node and are not
 representative of production-network behaviour. S4--S6 support the security, accessibility-conformance,
 and positioning claims. Cells marked \conf{} indicate values the authors should finalise against their
-own audit logs and the public deposit (project repository: \url{https://github.com/mallisami/Bchain_Access-}, archived at Zenodo DOI \href{https://doi.org/10.5281/zenodo.11155111}{10.5281/zenodo.11155111}).
+own audit logs and the public deposit (project repository: \url{https://github.com/mallisami/Bchain_Access-}, archived at Zenodo DOI \href{https://doi.org/10.5281/zenodo.21345578}{10.5281/zenodo.21345578}).
 
 \section*{S1. Development-Network Gas Benchmarks}
 Recorded on a local Hardhat EVM node (Solidity~0.8.19, optimizer enabled, 200 runs; 30{,}000{,}000~gas block limit; no congestion). Values are average \texttt{gasUsed} from the full reference implementation, in which the append-only audit log is written on-chain for HIPAA-style traceability; costs are correspondingly higher than a hash-only design would incur and are \emph{not} representative of mainnet, public-testnet, or Layer-2 costs. ETH estimates are illustrative at 20~Gwei.

@@ -5,7 +5,7 @@
 **Version:** 1.0.0  
 **Status:** Research Prototype (Not for Production Use)  
 **Licenses:** MIT (Code), CC BY 4.0 (Data)  
-**Zenodo DOI:** [10.5281/zenodo.11155111](https://doi.org/10.5281/zenodo.11155111)  
+**Zenodo DOI:** [10.5281/zenodo.21345578](https://doi.org/10.5281/zenodo.21345578)  
 
 ---
 
@@ -626,7 +626,7 @@ If you use BCHAIN-ACCESS in your academic work, please cite it using the followi
   pages={e11155111},
   year={2026},
   publisher={PeerJ},
-  doi={10.5281/zenodo.11155111}
+  doi={10.5281/zenodo.21345578}
 }
 ```
 
