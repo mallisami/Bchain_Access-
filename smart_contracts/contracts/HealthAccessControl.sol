@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity 0.8.26;
 
 /**
  * @title HealthAccessControl
  * @dev A healthcare access control smart contract for Ethereum.
  *      Stores patient record hashes on-chain, manages provider access grants
- *      with time-locked confirmation, and maintains an immutable audit trail.
+ *      with delayed confirmation, and maintains a chain-scoped audit trail.
  *
  *      Design philosophy:
- *      - Full medical data lives off-chain (IPFS/HIPAA-compliant storage)
+ *      - A production system would keep medical data in a secured off-chain store
  *      - Only cryptographic hashes and access metadata live on-chain
- *      - Every access action emits events for permanent, auditable logging
+ *      - State-changing access actions emit events for chain-scoped logging
  *      - 60-second pending state prevents accidental grants (user education + time to cancel)
  */
 contract HealthAccessControl {
@@ -24,7 +24,7 @@ contract HealthAccessControl {
      *      and only its SHA-256 (or similar) hash is anchored here for integrity.
      */
     struct Record {
-        bytes32 recordHash;          // e.g., sha256 of the encrypted off-chain blob
+        bytes32 recordHash;          // application-supplied record identifier/digest
         string recordType;           // e.g., "MRI Brain Scan", "Blood Work Panel"
         string facility;             // e.g., "Metro Neurology Center"
         uint256 dateTimestamp;       // Date the record was created (unix timestamp)
@@ -34,14 +34,14 @@ contract HealthAccessControl {
 
     /**
      * @dev Represents an access grant for a specific provider to a specific record.
-     *      Includes a time-locked confirmation window (60 seconds) to prevent
+     *      Includes a 60-second minimum wait before confirmation to prevent
      *      accidental grants, supporting the "Confirmatory Interaction Design" (CID)
      *      pattern from the frontend prototype.
      */
     struct AccessGrant {
         address provider;            // The healthcare provider's wallet address
         bytes32 recordHash;          // Which record this grant applies to
-        uint8 accessLevel;           // 1 = VIEW_ONLY, 2 = DOWNLOAD (future), etc.
+        uint8 accessLevel;           // reference implementation permits VIEW_ONLY only
         uint256 expiration;          // Unix timestamp when access expires (0 = no expiry)
         uint256 grantTimestamp;      // When the grant was finalized (not pending)
         uint256 pendingUntil;        // Time-lock: must be 0 to be active (pending state indicator)
@@ -50,8 +50,8 @@ contract HealthAccessControl {
     }
 
     /**
-     * @dev Audit log entry for every access-related event.
-     *      Immutable on-chain record of who did what, when, to which record.
+     * @dev Contract-level audit entry for recorded access-related events.
+     *      This does not establish off-chain identity or complete clinical access history.
      */
     struct AuditEntry {
         address actor;             // Who performed the action (patient or provider)
@@ -68,9 +68,8 @@ contract HealthAccessControl {
 
     uint8 public constant ACCESS_LEVEL_NONE = 0;
     uint8 public constant ACCESS_LEVEL_VIEW = 1;
-    uint8 public constant ACCESS_LEVEL_DOWNLOAD = 2;
 
-    /// @dev Duration of the pending (time-locked) confirmation window in seconds.
+    /// @dev Minimum pending interval before confirmation is available, in seconds.
     ///      Matches the 60-second countdown in the frontend prototype.
     uint256 public constant PENDING_DURATION = 60 seconds;
 
@@ -80,6 +79,9 @@ contract HealthAccessControl {
 
     /// @dev Owner (deployer) address for administrative functions.
     address public owner;
+
+    /// @dev Address of the off-chain data gateway authorized to log access attempts.
+    address public authorizedGateway;
 
     /// @dev Mapping: patient address => record hash => Record struct
     mapping(address => mapping(bytes32 => Record)) public records;
@@ -138,7 +140,7 @@ contract HealthAccessControl {
     );
 
     /// @dev Emitted whenever a provider attempts to access a record (success or failure).
-    ///      This is the critical audit event for HIPAA compliance tracking.
+    ///      This provides technical audit evidence; it does not establish HIPAA compliance.
     event AccessAttempt(
         address indexed patient,
         address indexed provider,
@@ -147,6 +149,13 @@ contract HealthAccessControl {
         uint8 accessLevel,
         string reason,
         uint256 timestamp
+    );
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    event AuthorizedGatewayUpdated(
+        address indexed previousGateway,
+        address indexed newGateway
     );
 
     /// @dev Emitted when a pending grant is cancelled by the patient.
@@ -163,6 +172,15 @@ contract HealthAccessControl {
 
     modifier onlyOwner() {
         require(msg.sender == owner, "HealthAccessControl: caller is not the owner");
+        _;
+    }
+
+    modifier onlyAuthorizedLogger() {
+        require(
+            msg.sender == owner ||
+            msg.sender == authorizedGateway,
+            "Unauthorized logger"
+        );
         _;
     }
 
@@ -191,10 +209,10 @@ contract HealthAccessControl {
     /**
      * @dev Register a new health record hash on-chain.
      *      The actual medical data (images, PDFs, etc.) must be stored off-chain
-     *      (e.g., IPFS, encrypted S3, or a HIPAA-compliant health data store).
+     *      in a deployment-appropriate secured clinical-data store.
      *      Only the hash is anchored here for integrity verification.
      *
-     * @param _recordHash    SHA-256 hash of the off-chain encrypted record
+     * @param _recordHash    Application-supplied record digest/identifier
      * @param _recordType    Human-readable type (e.g., "MRI Brain Scan")
      * @param _facility      Facility that created the record
      * @param _dateTimestamp Unix timestamp of the record's creation date
@@ -263,8 +281,8 @@ contract HealthAccessControl {
     /**
      * @dev Initiate an access grant (enters PENDING state for 60 seconds).
      *      This is the first step of the two-step confirmation process.
-     *      The patient must call confirmGrant() after the pending window expires
-     *      to finalize the grant. During the pending window, the grant can be cancelled.
+     *      The patient must call confirmGrant() after the minimum wait
+     *      to finalize the grant. The grant can be cancelled until confirmation.
      *
      * @param _provider      Provider's wallet address
      * @param _recordHash    Hash of the record to grant access to
@@ -280,9 +298,10 @@ contract HealthAccessControl {
         external
         onlyPatient(msg.sender)
         recordExists(msg.sender, _recordHash)
+        whenNotPaused
     {
         require(_provider != address(0), "HealthAccessControl: invalid provider address");
-        require(_accessLevel > ACCESS_LEVEL_NONE, "HealthAccessControl: invalid access level");
+        require(_accessLevel == ACCESS_LEVEL_VIEW, "HealthAccessControl: only view access is supported");
         require(
             !accessGrants[msg.sender][_recordHash][_provider].exists ||
             !accessGrants[msg.sender][_recordHash][_provider].isActive,
@@ -292,7 +311,7 @@ contract HealthAccessControl {
         // If there's an existing inactive grant, we can overwrite it (new pending)
         if (
             accessGrants[msg.sender][_recordHash][_provider].exists &&
-            accessGrants[msg.sender][_recordHash][_provider].isActive == false
+            !accessGrants[msg.sender][_recordHash][_provider].isActive
         ) {
             // Overwrite existing inactive grant
         } else if (!accessGrants[msg.sender][_recordHash][_provider].exists) {
@@ -320,7 +339,7 @@ contract HealthAccessControl {
             recordHash: _recordHash,
             action: "GRANT_INITIATED",
             timestamp: block.timestamp,
-            details: string(abi.encodePacked("Level: ", uintToString(_accessLevel), ", Pending until: ", uintToString(pendingUntil)))
+            details: "View access pending confirmation"
         }));
 
         emit GrantAccessInitiated(
@@ -336,8 +355,7 @@ contract HealthAccessControl {
     /**
      * @dev Confirm a pending access grant after the 60-second time-lock has passed.
      *      This is the second step of the two-step confirmation process.
-     *      Anyone can call this (the patient, or even the provider after the wait),
-     *      but the grant was initiated by the patient and the provider was specified.
+     *      Only the patient address can call this after the minimum wait.
      *
      * @param _provider   Provider address (must match the pending grant)
      * @param _recordHash Hash of the record
@@ -349,11 +367,13 @@ contract HealthAccessControl {
         external
         onlyPatient(msg.sender)
         recordExists(msg.sender, _recordHash)
+        whenNotPaused
     {
         AccessGrant storage grant = accessGrants[msg.sender][_recordHash][_provider];
 
         require(grant.exists, "HealthAccessControl: no pending grant found");
         require(!grant.isActive, "HealthAccessControl: grant is already active");
+        require(grant.pendingUntil > 0, "HealthAccessControl: no pending grant found");
         require(block.timestamp >= grant.pendingUntil, "HealthAccessControl: still in pending period");
 
         grant.isActive = true;
@@ -367,7 +387,7 @@ contract HealthAccessControl {
             recordHash: _recordHash,
             action: "GRANT_CONFIRMED",
             timestamp: block.timestamp,
-            details: string(abi.encodePacked("Access level: ", uintToString(grant.accessLevel)))
+            details: "View access confirmed"
         }));
 
         emit GrantAccessConfirmed(
@@ -381,8 +401,8 @@ contract HealthAccessControl {
     }
 
     /**
-     * @dev Cancel a pending grant before the 60-second time-lock expires.
-     *      This is the safety mechanism that allows patients to change their mind.
+     * @dev Cancel an unconfirmed grant at any time before confirmation.
+     *      The 60-second value is a minimum wait before confirmation, not an expiry.
      *
      * @param _provider   Provider address
      * @param _recordHash Hash of the record
@@ -399,7 +419,7 @@ contract HealthAccessControl {
 
         require(grant.exists, "HealthAccessControl: no grant found");
         require(!grant.isActive, "HealthAccessControl: cannot cancel an active grant");
-        require(grant.pendingUntil > block.timestamp, "HealthAccessControl: pending period already expired");
+        require(grant.pendingUntil > 0, "HealthAccessControl: no pending grant found");
 
         // Mark as inactive but keep exists=true for audit trail
         grant.isActive = false;
@@ -412,7 +432,7 @@ contract HealthAccessControl {
             recordHash: _recordHash,
             action: "GRANT_CANCELLED",
             timestamp: block.timestamp,
-            details: "Patient cancelled pending grant before confirmation"
+            details: "Patient cancelled unconfirmed grant"
         }));
 
         emit GrantAccessCancelled(msg.sender, _provider, _recordHash, block.timestamp);
@@ -497,8 +517,8 @@ contract HealthAccessControl {
      * @param _patient    Patient address
      * @param _provider   Provider address
      * @param _recordHash Record hash
-     * @return isPending  True if the grant is pending and not yet confirmed
-     * @return pendingUntil The timestamp when the pending period ends (0 if not pending)
+     * @return pendingState True if the grant is pending and not yet confirmed
+     * @return pendingUntil The earliest confirmation timestamp (0 if not pending)
      */
     function isPending(
         address _patient,
@@ -507,13 +527,13 @@ contract HealthAccessControl {
     )
         external
         view
-        returns (bool isPending, uint256 pendingUntil)
+        returns (bool pendingState, uint256 pendingUntil)
     {
         AccessGrant storage grant = accessGrants[_patient][_recordHash][_provider];
         if (!grant.exists || grant.isActive) {
             return (false, 0);
         }
-        if (grant.pendingUntil > block.timestamp) {
+        if (grant.pendingUntil > 0) {
             return (true, grant.pendingUntil);
         }
         return (false, 0);
@@ -576,9 +596,10 @@ contract HealthAccessControl {
     )
         external
         recordExists(_patient, _recordHash)
+        onlyAuthorizedLogger
     {
-        // In production, this would be restricted to the off-chain gateway
-        // For flexibility, we allow any caller but log the caller's address
+        // Only the owner or configured off-chain gateway may append an attempt.
+        // The caller's address is retained as the audit actor.
         (bool hasAccess, uint8 accessLevel) = this.checkAccess(_patient, _provider, _recordHash);
 
         // Verify consistency between claimed success and actual access check
@@ -653,33 +674,6 @@ contract HealthAccessControl {
     }
 
     // ============================================
-    // UTILITY FUNCTIONS
-    // ============================================
-
-    /**
-     * @dev Convert a uint256 to a string (for logging details).
-     *      Needed because Solidity has no native uint-to-string conversion.
-     */
-    function uintToString(uint256 _value) internal pure returns (string memory) {
-        if (_value == 0) {
-            return "0";
-        }
-        uint256 temp = _value;
-        uint256 digits;
-        while (temp != 0) {
-            digits++;
-            temp /= 10;
-        }
-        bytes memory buffer = new bytes(digits);
-        while (_value != 0) {
-            digits -= 1;
-            buffer[digits] = bytes1(uint8(48 + uint256(_value % 10)));
-            _value /= 10;
-        }
-        return string(buffer);
-    }
-
-    // ============================================
     // ADMIN FUNCTIONS
     // ============================================
 
@@ -689,13 +683,33 @@ contract HealthAccessControl {
      */
     function transferOwnership(address _newOwner) external onlyOwner {
         require(_newOwner != address(0), "HealthAccessControl: invalid new owner");
+        address previousOwner = owner;
         owner = _newOwner;
+        emit OwnershipTransferred(previousOwner, _newOwner);
     }
 
     /**
-     * @dev Emergency pause for all grant operations.
-     *      In a production contract, this would use OpenZeppelin's Pausable.
-     *      Included here as a basic reference.
+     * @dev Set the authorized off-chain gateway address for access logging.
+     * @param newGateway New gateway address
+     */
+    function setAuthorizedGateway(address newGateway)
+        external
+        onlyOwner
+    {
+        require(newGateway != address(0), "Invalid gateway");
+
+        emit AuthorizedGatewayUpdated(
+            authorizedGateway,
+            newGateway
+        );
+
+        authorizedGateway = newGateway;
+    }
+
+    /**
+     * @dev Administrative pause state. Initiation and confirmation are blocked
+     *      while paused; cancellation and revocation remain available so a
+     *      patient can stop or remove access during an incident.
      */
     bool public paused = false;
 

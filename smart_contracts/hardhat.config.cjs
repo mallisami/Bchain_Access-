@@ -3,12 +3,12 @@ require("@nomicfoundation/hardhat-toolbox");
 require("dotenv/config");
 
 subtask("compile:solidity:solc:get-build", async (args, hre, runSuper) => {
-  if (args.solcVersion === "0.8.19") {
+  if (args.solcVersion === "0.8.26") {
     return {
-      compilerPath: path.join(__dirname, "soljson-v0.8.19+commit.7dd6d404.js"),
+      compilerPath: require.resolve("solc/soljson.js"),
       isSolcJs: true,
       version: args.solcVersion,
-      longVersion: "0.8.19+commit.7dd6d404",
+      longVersion: "0.8.26+commit.8a97fa7a",
     };
   }
   return runSuper();
@@ -16,7 +16,7 @@ subtask("compile:solidity:solc:get-build", async (args, hre, runSuper) => {
 
 module.exports = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.26",
     settings: {
       optimizer: {
         enabled: true,
@@ -27,6 +27,7 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 1337,
+      blockGasLimit: 30000000,
     },
     localhost: {
       url: "http://127.0.0.1:8545",
@@ -37,5 +38,9 @@ module.exports = {
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
       chainId: 11155111,
     }
-  }
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS === "true",
+    blockGasLimit: 30000000,
+  },
 };

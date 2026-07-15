@@ -2,7 +2,7 @@
               BCHAIN-ACCESS HARDHAT EVM GAS REPORT
 ======================================================================
 
-Solc version: 0.8.19
+Solc version: 0.8.26
 Optimizer enabled: true
 Runs: 200
 Block limit: 30000000 gas
@@ -12,20 +12,21 @@ Methods
 --------------------------------------------------------------------------------
 Contract             | Method              | Min Gas    | Max Gas    | Avg Gas    | # Calls
 ---------------------+---------------------+------------+------------+------------+---------
-HealthAccessControl  | cancelPendingGrant  | -          | -          | 213,328    | 2
-HealthAccessControl  | confirmGrant        | -          | -          | 199,832    | 4
-HealthAccessControl  | initiateGrant       | 380,412    | 400,360    | 386,111    | 7
-HealthAccessControl  | registerRecord      | -          | -          | 341,873    | 9
-HealthAccessControl  | revokeAccess        | -          | -          | 171,927    | 2
+HealthAccessControl  | cancelPendingGrant  | -          | -          | 213,319    | 4
+HealthAccessControl  | confirmGrant        | -          | -          | 198,723    | 4
+HealthAccessControl  | initiateGrant       | 351,075    | 371,023    | 356,062    | 8
+HealthAccessControl  | registerRecord      | -          | -          | 341,845    | 13
+HealthAccessControl  | revokeAccess        | -          | -          | 171,917    | 2
+HealthAccessControl  | transferOwnership   | -          | -          | 28,600     | 2
 
 --------------------------------------------------------------------------------
 Deployments
 --------------------------------------------------------------------------------
 Contract             | Avg Gas             | % of Block Limit
 ---------------------+---------------------+------------------
-HealthAccessControl  | 2,925,863           | 9.8 %
+HealthAccessControl  | 2,816,201           | 9.4 %
 
 --------------------------------------------------------------------------------
-Note: These numbers reflect the full Solidity implementation, including on-chain
-append-only audit log storage updates which are executed on-chain for HIPAA compliance
-auditing.
+Note: These figures are from the 2026-07-14 local Hardhat test workload. They include
+the contract's append-only audit-log storage updates; they do not establish regulatory
+compliance or predict fees on a particular production network.

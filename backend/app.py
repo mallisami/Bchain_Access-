@@ -4,8 +4,8 @@ Flask backend for the Healthcare Blockchain Access Control prototype.
 
 This backend coordinates blockchain operations by interfacing with real Solidity
 smart contracts via Web3.py, falling back to a local educational Python ledger
-engine if the local node is offline. It replaces client-side JavaScript state 
-management with a secure server-side blockchain interface.
+engine if the local node is offline. It is a development reference service,
+not a production security boundary.
 
 Endpoints:
 - Authentication: /api/auth/unlock
@@ -60,7 +60,7 @@ else:
 
 app = Flask(__name__)
 
-# Enable CORS for all origins (for development; restrict in production)
+# Development-only permissive CORS; this must be restricted before deployment.
 CORS(app, resources={
     r"/api/*": {
         "origins": "*",
@@ -172,7 +172,7 @@ access_grants_db: Dict[str, Dict[str, Any]] = {
 # Structure: {pending_id: {grant info with pending_until}}
 pending_grants: Dict[str, Any] = {}
 
-# Audit log database (acting as a local cache of the smart contract's immutable audit log)
+# Audit log database (development cache of recorded contract/fallback events)
 # Structure: {record_id: [audit_entries]}
 audit_logs_db: Dict[str, list] = {
     "mri-scan": [
@@ -296,10 +296,11 @@ def create_blockchain_transaction(
         signature="",
         nonce=tx_nonce_counter,
     )
-    if real_tx_hash:
-        tx.tx_hash = real_tx_hash
-    else:
-        tx.tx_hash = tx.compute_hash()
+    # Preserve separate identities for the educational ledger and the EVM.
+    # The local ledger validates tx_hash against its own serialized payload;
+    # real_tx_hash is the authoritative explorer/API identifier when present.
+    tx.tx_hash = tx.compute_hash()
+    tx.real_tx_hash = real_tx_hash
 
     if real_gas_used is not None:
         tx.gas_used = real_gas_used
@@ -331,6 +332,11 @@ def create_blockchain_transaction(
 
     blockchain.add_transaction(tx)
     return tx
+
+
+def reported_tx_hash(tx: Transaction) -> str:
+    """Return the real EVM hash when connected, otherwise the local-ledger hash."""
+    return tx.real_tx_hash or tx.tx_hash
 
 
 def mine_if_needed():
@@ -490,7 +496,7 @@ def auth_unlock():
             "blockchain_address": patient_wallet.address,
         },
         "blockchain": {
-            "tx_hash": tx.tx_hash,
+            "tx_hash": reported_tx_hash(tx),
             "block_number": tx.block_number,
             "gas_used": tx.gas_used,
             "gas_cost_eth": round(tx.gas_used * tx.gas_price / 1e9, 9),  # Cost in ETH
@@ -621,6 +627,19 @@ def grant_access():
             "error": "provider_id and record_ids are required"
         }), 400
 
+    # Ensure exactly one record is processed (B3 requirement)
+    if not isinstance(record_ids, list) or len(record_ids) != 1:
+        return jsonify({
+            "success": False,
+            "error": "Exactly one record must be processed in each consent request."
+        }), 400
+
+    if access_level != 1:
+        return jsonify({
+            "success": False,
+            "error": "Only view-only access (access_level=1) is supported"
+        }), 400
+
     provider = provider_registry.get(provider_id)
     if not provider:
         return jsonify({
@@ -671,6 +690,10 @@ def grant_access():
                     real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity initiateGrant: {e}")
+                return jsonify({
+                    "success": False,
+                    "error": "Connected EVM rejected the grant initiation; no local grant was created",
+                }), 502
 
         # Create blockchain transaction for grant initiation
         tx = create_blockchain_transaction(
@@ -711,7 +734,7 @@ def grant_access():
             "initiated_at": now,
             "pending_until": pending_until,
             "expiration": expiration,
-            "tx_hash": tx.tx_hash,
+            "tx_hash": reported_tx_hash(tx),
             "block_number": tx.block_number,
             "gas_used": tx.gas_used,
         }
@@ -737,7 +760,7 @@ def grant_access():
         "tx_hashes": [g["tx_hash"] for g in grant_entries],
         "provider": provider,
         "records": [records_db[rid] for rid in record_ids],
-        "message": f"Access grant initiated for {provider['name']}. Confirm within {PENDING_DURATION_SECONDS} seconds.",
+        "message": f"Access grant initiated for {provider['name']}. Confirmation becomes available after {PENDING_DURATION_SECONDS} seconds; cancellation remains available until confirmation.",
     })
 
 
@@ -768,6 +791,13 @@ def confirm_access():
 
     if pending["status"] != "pending":
         return jsonify({"success": False, "error": f"Grant is already {pending['status']}"}), 400
+
+    # Ensure exactly one record is processed (B3 requirement)
+    if "entries" not in pending or len(pending["entries"]) != 1:
+        return jsonify({
+            "success": False,
+            "error": "Exactly one record must be processed in each consent request."
+        }), 400
 
     # Check if countdown has expired
     if time.time() < pending["pending_until"]:
@@ -806,6 +836,10 @@ def confirm_access():
                     real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity confirmGrant: {e}")
+                return jsonify({
+                    "success": False,
+                    "error": "Connected EVM rejected confirmation; the local grant remains pending",
+                }), 502
 
         # Move from pending to active in access_grants_db
         access_grants_db[record_id][provider_id] = {
@@ -840,7 +874,7 @@ def confirm_access():
             real_gas_price=real_gas_price,
             real_block_number=real_block_number
         )
-        tx_hashes.append(tx.tx_hash)
+        tx_hashes.append(reported_tx_hash(tx))
 
         # Add to audit log
         if record_id not in audit_logs_db:
@@ -851,7 +885,7 @@ def confirm_access():
             "action": "GRANT_CONFIRMED",
             "timestamp": time.time(),
             "details": f"Access granted to {entry['provider_name']} for {entry['record_type']}",
-            "tx_hash": tx.tx_hash,
+            "tx_hash": reported_tx_hash(tx),
         })
 
     # Mine block
@@ -874,7 +908,8 @@ def confirm_access():
 @app.route("/api/access/cancel", methods=["POST"])
 def cancel_access():
     """
-    Cancel a pending access grant before the 60-second countdown expires.
+    Cancel an unconfirmed access grant. Cancellation remains available after
+    the minimum waiting period and until the grant is confirmed.
 
     Request body: { "pending_id": "..." }
     """
@@ -891,8 +926,12 @@ def cancel_access():
     if pending["status"] != "pending":
         return jsonify({"success": False, "error": f"Grant is already {pending['status']}"}), 400
 
-    if time.time() >= pending["pending_until"]:
-        return jsonify({"success": False, "error": "Pending period has already expired"}), 400
+    # Ensure exactly one record is processed (B3 requirement)
+    if "record_ids" not in pending or len(pending["record_ids"]) != 1:
+        return jsonify({
+            "success": False,
+            "error": "Exactly one record must be processed in each consent request."
+        }), 400
 
     # Send Solidity transaction for cancelPendingGrant
     real_tx_hash = None
@@ -918,6 +957,10 @@ def cancel_access():
                     real_block_number = receipt.blockNumber
             except Exception as e:
                 print(f"Error on Solidity cancelPendingGrant: {e}")
+                return jsonify({
+                    "success": False,
+                    "error": "Connected EVM rejected cancellation; the local grant remains pending",
+                }), 502
 
     # Create cancellation transaction
     tx = create_blockchain_transaction(
@@ -942,7 +985,7 @@ def cancel_access():
     return jsonify({
         "success": True,
         "pending_id": pending_id,
-        "tx_hash": tx.tx_hash,
+        "tx_hash": reported_tx_hash(tx),
         "message": "Access grant cancelled. No changes were made.",
     })
 
@@ -965,6 +1008,13 @@ def revoke_access():
     if not provider_id or not record_id:
         return jsonify({"success": False, "error": "provider_id and record_id are required"}), 400
 
+    # Ensure exactly one record is processed (B3 requirement)
+    if isinstance(record_id, list) or "record_ids" in data:
+        return jsonify({
+            "success": False,
+            "error": "Exactly one record must be processed in each consent request."
+        }), 400
+
     record_grants = access_grants_db.get(record_id, {})
     grant = record_grants.get(provider_id)
     if not grant or grant.get("status") != "active":
@@ -972,10 +1022,6 @@ def revoke_access():
 
     provider = provider_registry.get(provider_id, {})
     provider_address = provider.get("address", "")
-
-    # Remove the grant
-    grant["status"] = "revoked"
-    grant["revoked_at"] = time.time()
 
     # Send Solidity transaction for revokeAccess
     real_tx_hash = None
@@ -997,6 +1043,15 @@ def revoke_access():
                 real_block_number = receipt.blockNumber
         except Exception as e:
             print(f"Error on Solidity revokeAccess: {e}")
+            return jsonify({
+                "success": False,
+                "error": "Connected EVM rejected revocation; the local grant remains active",
+            }), 502
+
+    # Update local state only after the connected EVM transaction succeeds (or
+    # immediately in explicit fallback mode when no contract is available).
+    grant["status"] = "revoked"
+    grant["revoked_at"] = time.time()
 
     # Create blockchain revocation transaction
     tx = create_blockchain_transaction(
@@ -1028,14 +1083,14 @@ def revoke_access():
         "action": "REVOKE",
         "timestamp": time.time(),
         "details": f"Access revoked from {provider.get('name', provider_id)} for {record_type}",
-        "tx_hash": tx.tx_hash,
+        "tx_hash": reported_tx_hash(tx),
     })
 
     mine_if_needed()
 
     return jsonify({
         "success": True,
-        "tx_hash": tx.tx_hash,
+        "tx_hash": reported_tx_hash(tx),
         "block_number": blockchain.get_latest_block().index,
         "provider_name": provider.get("name", provider_id),
         "record_type": record_type,
@@ -1106,7 +1161,7 @@ def check_access():
         "access_level": access_level,
         "access_level_name": "VIEW_ONLY" if access_level == 1 else "NONE",
         "details": details,
-        "check_tx_hash": tx.tx_hash,
+        "check_tx_hash": reported_tx_hash(tx),
     })
 
 
@@ -1166,7 +1221,7 @@ def get_audit_log():
             if tx.data.get("record_id") == record_id:
                 blockchain_events.append({
                     "action": f"BLOCKCHAIN_{tx.tx_type.value.upper()}",
-                    "tx_hash": tx.tx_hash,
+                    "tx_hash": reported_tx_hash(tx),
                     "block_number": block.index,
                     "block_hash": block.hash,
                     "timestamp": tx.timestamp,
@@ -1328,19 +1383,16 @@ def get_pending_grants():
 
     for pending_id, pending in pending_grants.items():
         if pending["status"] == "pending":
-            remaining = int(pending["pending_until"] - now)
-            if remaining > 0:
-                active_pending.append({
-                    "pending_id": pending_id,
-                    "provider_id": pending["provider_id"],
-                    "record_ids": pending["record_ids"],
-                    "remaining_seconds": remaining,
-                    "pending_until": pending["pending_until"],
-                    "pending_until_iso": datetime.fromtimestamp(pending["pending_until"], tz=timezone.utc).isoformat(),
-                })
-            else:
-                # Expired - update status
-                pending["status"] = "expired"
+            remaining = max(0, int(pending["pending_until"] - now))
+            active_pending.append({
+                "pending_id": pending_id,
+                "provider_id": pending["provider_id"],
+                "record_ids": pending["record_ids"],
+                "remaining_seconds": remaining,
+                "confirmation_available": remaining == 0,
+                "pending_until": pending["pending_until"],
+                "pending_until_iso": datetime.fromtimestamp(pending["pending_until"], tz=timezone.utc).isoformat(),
+            })
 
     return jsonify({
         "pending_grants": active_pending,

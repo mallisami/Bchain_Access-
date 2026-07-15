@@ -302,7 +302,7 @@
           <span class="tooltip-icon" aria-hidden="true">?</span>
           <span class="sr-only">What is a transaction hash?</span>
           <span class="tooltip-content" id="tx-tooltip" role="tooltip">
-            A transaction hash is a unique fingerprint of your blockchain action. You can use it to verify that your access grant was recorded permanently.
+            A transaction hash identifies this ledger action. In the local-EVM mode it can be used to inspect the development-chain transaction; fallback-mode identifiers are simulated.
           </span>
         </span>
       </p>
@@ -579,7 +579,7 @@
       window.selectedRecordsList.length > 1
         ? window.selectedRecordsList.join(", ") + " records"
         : window.selectedRecordsList[0];
-    consequenceEl.innerHTML = `<strong>What this means:</strong> ${providerName} will be able to view your ${recordsText} when providing your care. They will not be able to edit, delete, or download them. You can remove their access at any time. This action will be recorded on the blockchain with a permanent transaction hash.`;
+    consequenceEl.innerHTML = `<strong>What this means:</strong> ${providerName} will receive view-only authorization for your ${recordsText} in this demonstration. You can remove that authorization at any time. The action will receive a local-EVM transaction hash or a simulated fallback-ledger identifier.`;
 
     document.getElementById("grant-stage-1").classList.add("hidden");
     document.getElementById("grant-stage-2").classList.remove("hidden");
@@ -618,8 +618,11 @@
       document.getElementById("step-3-indicator").className = "step step--current";
       document.getElementById("step-3-indicator").innerHTML = '<span class="sr-only">Current step: </span>3. Confirm';
 
-      // Start countdown
+      // The contract enforces a minimum waiting period. Confirmation becomes
+      // available when the countdown reaches zero; the request does not expire.
       let countdownSeconds = result.countdown_seconds || 60;
+      const confirmButton = document.getElementById("btn-final-confirm");
+      if (confirmButton) confirmButton.disabled = true;
       updateCountdownDisplay(countdownSeconds);
       if (state.countdownIntervalId) clearInterval(state.countdownIntervalId);
       state.countdownIntervalId = setInterval(() => {
@@ -627,8 +630,12 @@
         updateCountdownDisplay(countdownSeconds);
         if (countdownSeconds <= 0) {
           clearInterval(state.countdownIntervalId);
-          document.getElementById("btn-final-confirm").disabled = true;
-          announceAssertive("The confirmation period has expired. Please start over if you still want to grant access.");
+          updateCountdownDisplay(0);
+          if (confirmButton) {
+            confirmButton.disabled = false;
+            confirmButton.focus();
+          }
+          announceAssertive("Confirmation is now available. Choose Confirm Grant Access to finalize, or Cancel to stop.");
         }
       }, 1000);
 
@@ -639,8 +646,7 @@
         stage3.insertBefore(txContainer, stage3.querySelector(".flex-wrap"));
       }
 
-      announceToScreenReader(`Step 3: Confirm. You have ${countdownSeconds} seconds to confirm granting access to ${window.selectedProviderName}. Transaction initiated on blockchain. Select Confirm to proceed or Cancel to stop.`);
-      document.getElementById("btn-final-confirm").focus();
+      announceToScreenReader(`Step 3 of 3: Confirm. Confirmation will be available in ${countdownSeconds} seconds for ${window.selectedProviderName}. You may cancel at any time before confirming.`);
     } catch (error) {
       console.error("Grant initiation failed:", error);
       showError(
@@ -655,11 +661,15 @@
 
   function updateCountdownDisplay(seconds) {
     const numEl = document.getElementById("countdown-number");
-    if (numEl) numEl.textContent = seconds;
+    if (numEl) numEl.textContent = seconds > 0 ? seconds : "Ready";
+    const labelEl = document.getElementById("countdown-label");
+    if (labelEl && seconds <= 0) labelEl.textContent = "Confirmation is now available";
     if (seconds % 10 === 0 || (seconds <= 5 && seconds > 0)) {
       const pendingStatus = document.getElementById("pending-status");
       if (pendingStatus) {
-        pendingStatus.textContent = `${seconds} seconds remaining to confirm granting access.`;
+        pendingStatus.textContent = seconds > 0
+          ? `Confirmation will be available in ${seconds} seconds. You may cancel before confirming.`
+          : "Confirmation is now available. You may confirm or cancel.";
       }
     }
   }

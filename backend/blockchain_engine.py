@@ -72,6 +72,7 @@ class Transaction:
     timestamp: float                    # Unix timestamp
     tx_hash: str                        # Unique transaction hash
     signature: str                      # Digital signature (simulated)
+    real_tx_hash: Optional[str] = None   # EVM hash when mirrored to a connected contract
     gas_price: int = 0                  # Gas price in gwei (simulated)
     gas_limit: int = 0                  # Gas limit (simulated)
     gas_used: int = 0                   # Actual gas used (simulated)
@@ -471,7 +472,8 @@ class Blockchain:
                     return False
 
         tx.status = "pending"
-        tx.estimate_gas()
+        if tx.gas_used <= 0:
+            tx.estimate_gas()
         self.mempool.append(tx)
         return True
 

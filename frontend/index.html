@@ -74,7 +74,8 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 .checkbox-group { display: flex; flex-direction: column; gap: var(--space-sm); }
 .checkbox-item { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-sm); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; }
 .checkbox-item:hover { background: #f5f5f5; }
-.checkbox-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); }
+.checkbox-item input[type="checkbox"] { width: 24px; height: 24px; min-width: 24px; min-height: 24px; accent-color: var(--primary); cursor: pointer; }
+.explorer-link { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 6px; }
 .review-box { background: #f8f9fa; border: 2px solid var(--border-color); border-radius: 8px; padding: var(--space-lg); margin-bottom: var(--space-lg); }
 .review-item { display: flex; justify-content: space-between; padding: var(--space-sm) 0; border-bottom: 1px solid #ddd; }
 .review-item:last-child { border-bottom: none; }
@@ -109,6 +110,15 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 .audit-log-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; display: flex; align-items: center; justify-content: center; }
 .audit-log-content { background: var(--bg-card); border-radius: 12px; padding: var(--space-xl); max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
 @media (max-width: 768px) { .header-inner { flex-direction: column; align-items: flex-start; } .record-card { flex-direction: column; } .step-indicator { flex-direction: column; } .countdown-number { font-size: 3rem; } }
+@media (max-width: 400px) {
+  .blockchain-status {
+    position: static;
+    inset: auto;
+    width: auto;
+    max-width: none;
+    margin: 1rem 0;
+  }
+}
 </style>
 </head>
 <body>
@@ -122,6 +132,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 </header>
 
 <main id="main-content" tabindex="-1">
+  <div id="global-error-banner" class="status-banner error hidden" role="alert" tabindex="-1" style="margin-bottom:var(--space-lg);"></div>
   <!-- AUTH LOCKED -->
   <section id="auth-locked" aria-labelledby="auth-heading">
     <h2 class="section-title" id="auth-heading">Unlock Your Health Records</h2>
@@ -149,11 +160,11 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
       </div>
     </div>
 
-    <h2 class="section-title" id="dashboard-heading">Your Health Records</h2>
+    <h2 class="section-title" id="dashboard-heading" tabindex="-1">Your Health Records</h2>
     <div id="records-container"></div>
 
     <div class="card" style="margin-top:var(--space-xl);">
-      <div class="card-title">Grant Access to a Healthcare Provider</div>
+      <h2 class="card-title" id="grant-access-title" tabindex="-1">Grant Access to a Healthcare Provider</h2>
       <div class="step-indicator" role="list" aria-label="Grant access progress">
         <div class="step step--current" id="step-1-indicator" role="listitem"><span class="sr-only">Current step: </span>1. Select</div>
         <div class="step step--pending" id="step-2-indicator" role="listitem"><span class="sr-only">Pending step: </span>2. Review</div>
@@ -173,7 +184,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
           <p id="provider-help" class="form-hint" style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Only registered healthcare providers can request access to your records.</p>
         </div>
         <div class="form-group">
-          <span class="form-label">Select Records to Share</span>
+          <span class="form-label" id="records-selection-heading" tabindex="-1">Select Records to Share</span>
           <div class="checkbox-group" id="records-checkbox-group">
             <label class="checkbox-item">
               <input type="checkbox" name="records" value="mri-scan|MRI Brain Scan" checked>
@@ -193,7 +204,8 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
       </div>
 
       <div id="grant-stage-2" class="hidden">
-        <div class="review-box" role="region" aria-label="Review your access grant">
+        <h3 id="review-heading" tabindex="-1" class="sr-only">Review Your Choices</h3>
+        <div class="review-box" role="region" aria-labelledby="review-heading">
           <div class="review-item"><span class="review-label">Records</span><span class="review-value" id="review-records">--</span></div>
           <div class="review-item"><span class="review-label">Provider</span><span class="review-value" id="review-provider">--</span></div>
           <div class="review-item"><span class="review-label">Access Level</span><span class="review-value">View only</span></div>
@@ -209,24 +221,25 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
       </div>
 
       <div id="grant-stage-3" class="hidden">
+        <h3 id="confirmation-heading" tabindex="-1" class="sr-only">Confirm Access</h3>
         <div class="countdown-display" role="timer" aria-live="off">
           <div class="countdown-number" id="countdown-number">60</div>
-          <div class="countdown-label">seconds remaining to confirm</div>
-          <p id="pending-status" class="sr-only" aria-live="polite">60 seconds remaining to confirm granting access.</p>
+          <div class="countdown-label" id="countdown-label">seconds until confirmation is available</div>
+          <p id="pending-status" class="sr-only" aria-live="polite">Confirmation will be available in 60 seconds. You may cancel at any time before confirming.</p>
         </div>
         <p style="text-align:center; color:var(--text-muted); margin-bottom:var(--space-lg);">This is a safety feature. For 60 seconds, you can still cancel this request. After that, you can confirm it to finish granting access. Nothing happens until you choose Cancel or Confirm.</p>
         <div style="display:flex; gap:var(--space-md);">
           <button class="btn-outline btn-lg" style="flex:1;" onclick="cancelGrant()">Cancel</button>
-          <button class="btn-accent btn-lg" style="flex:1;" id="btn-final-confirm" onclick="finalConfirm()">Confirm Grant Access</button>
+          <button class="btn-accent btn-lg" style="flex:1;" id="btn-final-confirm" onclick="finalConfirm()" disabled aria-describedby="pending-status">Confirm Grant Access</button>
         </div>
       </div>
 
-      <div id="grant-success" class="hidden">
-        <div class="status-banner success" role="status" aria-live="polite">
+      <div id="grant-success" class="hidden" role="status" tabindex="-1">
+        <div class="status-banner success">
           <strong>Access granted successfully.</strong> The provider can now view your selected records. You can remove this access at any time.
         </div>
         <div class="tx-hash-display" id="grant-tx-hash"></div>
-        <p style="margin-top:var(--space-md);"><a href="#" class="blockchain-link" id="explorer-link" target="_blank">View on Blockchain Explorer</a></p>
+        <p style="margin-top:var(--space-md);"><a href="#" class="blockchain-link explorer-link" id="explorer-link" target="_blank">View on Blockchain Explorer</a></p>
         <button class="btn-primary btn-lg" onclick="resetGrant()" style="margin-top:var(--space-lg);">Grant Access to Another Provider</button>
       </div>
     </div>
@@ -243,7 +256,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
             <span aria-hidden="true">+</span>
           </button>
           <div class="faq-answer" aria-hidden="true">
-            <p>Blockchain is a type of security technology that creates a permanent, unchangeable record of who accessed your health information and when. Think of it like a tamper-proof logbook. For your health records, this means you always have proof of who looked at your data, and no one can secretly change or delete that record.</p>
+            <p>A blockchain can provide a replicated record of access-related transactions. In this demonstration, events are recorded on a local development ledger; this does not by itself prove who viewed off-chain data or guarantee end-to-end log integrity.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -261,7 +274,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
             <span aria-hidden="true">+</span>
           </button>
           <div class="faq-answer" aria-hidden="true">
-            <p>During the 60-second countdown, nothing is finalized. Your data is not shared. The countdown is a safety feature that gives you time to change your mind. If you do nothing, the request is automatically cancelled. Only after you confirm does the access grant get recorded on the blockchain.</p>
+            <p>During the 60-second wait, access is not active. If you do nothing, the request remains pending and cancellable; it does not activate or cancel automatically. Only an explicit confirmation after the wait activates the grant.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -270,7 +283,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
             <span aria-hidden="true">+</span>
           </button>
           <div class="faq-answer" aria-hidden="true">
-            <p>Your blockchain transactions (access grants and revocations) are recorded on a public ledger. The transactions contain only the record hash and provider address — not your actual medical data. Your medical data remains encrypted and stored separately. The blockchain ensures the audit trail cannot be tampered with.</p>
+            <p>In this demonstration, access grants and revocations are recorded on a local development ledger or its in-memory fallback. Entries contain record hashes and addresses rather than medical-file contents. A production off-chain record store, encryption service, and end-to-end audit assurance are not implemented here.</p>
           </div>
         </div>
       </div>
@@ -278,7 +291,7 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 
     <div class="card" style="margin-top:var(--space-xl);">
       <div class="card-title">Blockchain Audit Log</div>
-      <p style="color:var(--text-muted); margin-bottom:var(--space-md);">View the complete, immutable record of all access events recorded on the blockchain.</p>
+      <p style="color:var(--text-muted); margin-bottom:var(--space-md);">View the access-related events recorded by this local demonstration. This is not a complete clinical access log.</p>
       <button class="btn-primary" onclick="showAuditLog()">View Audit Log</button>
     </div>
   </section>
@@ -291,11 +304,25 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 </div>
 
 <!-- Audit Log Modal -->
-<div id="audit-log-modal" class="audit-log-modal hidden" onclick="closeAuditLog(event)">
-  <div class="audit-log-content" onclick="event.stopPropagation()">
-    <h3 style="margin-bottom:var(--space-md);">Blockchain Audit Log</h3>
+<div id="audit-log-modal" class="audit-log-modal hidden" role="dialog" aria-modal="true" aria-labelledby="audit-modal-title">
+  <div class="audit-log-content">
+    <h2 id="audit-modal-title" tabindex="-1" style="margin-bottom:var(--space-md);">Blockchain Audit Log</h2>
     <div id="audit-log-entries"></div>
-    <button class="btn-primary" style="margin-top:var(--space-lg);" onclick="closeAuditLog()">Close</button>
+    <button type="button" class="btn-primary" id="close-audit-dialog" style="margin-top:var(--space-lg);" aria-label="Close audit log" onclick="closeAuditLog()">Close</button>
+  </div>
+</div>
+
+<!-- Revocation Confirmation Modal -->
+<div id="revoke-confirm-modal" class="audit-log-modal hidden" role="dialog" aria-modal="true" aria-labelledby="revoke-modal-title" aria-describedby="revoke-modal-desc">
+  <div class="audit-log-content">
+    <h2 id="revoke-modal-title" tabindex="-1" style="margin-bottom:var(--space-md);">Confirm access removal</h2>
+    <p style="margin-bottom:var(--space-lg);" id="revoke-modal-desc">
+      Removing access will prevent <span id="revoke-provider-name">the provider</span> from accessing the selected record. The previous audit history will remain available.
+    </p>
+    <div style="display:flex; gap:var(--space-md); justify-content:flex-end;">
+      <button type="button" class="btn-outline" id="btn-cancel-revoke" onclick="closeRevokeModal()">Keep Access</button>
+      <button type="button" class="btn-danger" id="btn-confirm-revoke" onclick="confirmRevokeAction()">Remove Access</button>
+    </div>
   </div>
 </div>
 
@@ -308,9 +335,9 @@ button { cursor: pointer; font-family: var(--font-body); font-size: 1rem; paddin
 // BCHAIN-ACCESS FRONTEND WITH BLOCKCHAIN BACKEND INTEGRATION
 // =========================================================================
 
-const CONFIG = { API_BASE_URL: "https://bchain-access-backend.onrender.com/api", POLL_INTERVAL_MS: 5000, FETCH_TIMEOUT_MS: 10000, MAX_RETRIES: 2 };
+const CONFIG = { API_BASE_URL: window.BCHAIN_API_BASE_URL || "http://localhost:5000/api", POLL_INTERVAL_MS: 5000, FETCH_TIMEOUT_MS: 10000, MAX_RETRIES: 2 };
 
-const state = { session: { active: false, token: null }, blockchain: { connected: false, latestBlock: null, chainId: null }, pollIntervalId: null, pendingGrant: null, countdownIntervalId: null };
+const state = { session: { active: false, token: null }, blockchain: { connected: false, latestBlock: null, chainId: null }, pollIntervalId: null, pendingGrant: null, countdownIntervalId: null, recordsCache: null };
 
 async function apiRequest(endpoint, options = {}) {
   const url = `${CONFIG.API_BASE_URL}${endpoint}`;
@@ -330,6 +357,20 @@ async function apiRequest(endpoint, options = {}) {
 function announcePolite(message) { document.getElementById('aria-polite').textContent = message; }
 function announceAssertive(message) { document.getElementById('aria-assertive').textContent = message; }
 
+// Global error handlers
+function showError(title, message) {
+  const banner = document.getElementById('global-error-banner');
+  banner.innerHTML = `<strong>Error: ${title}.</strong> ${message} <button type="button" class="btn-outline" style="min-height:36px; padding:2px 8px; margin-left:var(--space-md); font-size:0.85rem;" onclick="dismissError()">Dismiss</button>`;
+  banner.classList.remove('hidden');
+  banner.focus();
+  announceAssertive(`Error: ${title}. ${message}`);
+}
+
+function dismissError() {
+  const banner = document.getElementById('global-error-banner');
+  banner.classList.add('hidden');
+}
+
 // Blockchain Status Polling
 async function updateBlockchainStatus() {
   try {
@@ -343,7 +384,7 @@ async function updateBlockchainStatus() {
     document.getElementById('wallet-address').textContent = data.patient_wallet ? data.patient_wallet.substring(0, 10) + '...' : '--';
     document.getElementById('blockchain-status-panel').className = `blockchain-status ${isEVM ? 'connected' : 'warning'}`;
     document.getElementById('blockchain-status-icon').textContent = isEVM ? '🟢' : '🟡';
-    document.getElementById('blockchain-status-text').textContent = isEVM 
+    document.getElementById('blockchain-status-text').textContent = isEVM
       ? `EVM Blockchain: Connected (${data.stats.chain_length} blocks)`
       : `Fallback Ledger Active (${data.stats.chain_length} blocks)`;
   } catch (error) {
@@ -373,11 +414,10 @@ async function unlock() {
     await loadRecords();
     await updateBlockchainStatus();
     startPolling();
+    // A3 Focus simulated entry -> dashboard
+    document.getElementById('dashboard-heading').focus();
   } catch (error) {
-    document.getElementById('auth-error').textContent = 'Unlock failed: ' + error.message;
-    document.getElementById('auth-error').classList.remove('hidden');
-    announceAssertive('Unlock failed. Please try again.');
-  } finally {
+    showError('Unlock failed', error.message);
     btn.disabled = false; btn.removeAttribute('aria-busy');
   }
 }
@@ -386,11 +426,12 @@ async function unlock() {
 async function loadRecords() {
   try {
     const data = await apiRequest('/records');
+    state.recordsCache = data.records; // Cache records for modal naming lookup
     const container = document.getElementById('records-container');
     container.innerHTML = '';
     data.records.forEach(record => {
       const accessList = record.access_grants && record.access_grants.length > 0
-        ? `<ul class="access-list">${record.access_grants.map(g => `<li><span class="provider-name">${g.provider_name}</span> <span class="provider-specialty">${g.specialty}</span> <span class="access-badge active">Active</span> <button class="btn-danger" style="padding:4px 12px; font-size:0.85rem;" onclick="revokeAccess('${g.provider_id}', '${record.id}')">Remove Access</button></li>`).join('')}</ul>`
+        ? `<ul class="access-list">${record.access_grants.map(g => `<li><span class="provider-name">${g.provider_name}</span> <span class="provider-specialty">${g.provider_specialty}</span> <span class="access-badge active">Active</span> <button class="btn-danger" style="padding:var(--space-sm) var(--space-md); font-size:0.85rem; min-height:44px;" aria-label="Remove ${g.provider_name}'s access to ${record.title}" onclick="revokeAccess('${g.provider_id}', '${record.id}')">Remove Access</button></li>`).join('')}</ul>`
         : '<p style="color:var(--text-muted); font-size:0.9rem;">No one has access to this record yet.</p>';
       const badge = record.status === 'active' ? '<span class="access-badge active">Active</span>' : '<span class="access-badge private">Private</span>';
       container.innerHTML += `
@@ -405,16 +446,36 @@ async function loadRecords() {
           </div>
         </div>`;
     });
-  } catch (error) { console.error('Failed to load records:', error); }
+  } catch (error) {
+    showError('Record Loading Failure', 'Failed to load records from backend: ' + error.message);
+  }
+}
+
+// Enforce single checkbox selection for records
+function setupSingleCheckboxSelection() {
+  const checkboxes = document.querySelectorAll('input[name="records"]');
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      if (this.checked) {
+        checkboxes.forEach(other => {
+          if (other !== this) other.checked = false;
+        });
+      }
+    });
+  });
 }
 
 // Grant access flow
 async function proceedToReview() {
   const providerSelect = document.getElementById('provider-select');
   const [providerId, providerName, providerSpecialty] = providerSelect.value.split('|');
-  if (!providerId) { announceAssertive('Please select a provider first.'); providerSelect.focus(); return; }
+  if (!providerId) { announceAssertive('Error: Choose a provider. Please select a provider from the dropdown.'); providerSelect.focus(); return; }
   const checkboxes = document.querySelectorAll('input[name="records"]:checked');
-  if (checkboxes.length === 0) { announceAssertive('Please select at least one record to share.'); return; }
+  if (checkboxes.length === 0) {
+    announceAssertive('Error: No record selected. Please select a record.');
+    document.getElementById('records-selection-heading').focus();
+    return;
+  }
   const records = Array.from(checkboxes).map(cb => cb.value.split('|')[0]);
   state.pendingGrant = { providerId, providerName, providerSpecialty, records };
   document.getElementById('review-records').textContent = records.join(', ');
@@ -424,6 +485,8 @@ async function proceedToReview() {
   document.getElementById('step-1-indicator').className = 'step step--complete';
   document.getElementById('step-2-indicator').className = 'step step--current';
   announcePolite(`Step 2: Review. You are about to let ${providerName} view ${records.join(', ')}.`);
+  // A3 Focus transition -> step 2
+  document.getElementById('review-heading').focus();
 }
 
 function goBackToSelection() {
@@ -432,30 +495,57 @@ function goBackToSelection() {
   document.getElementById('step-1-indicator').className = 'step step--current';
   document.getElementById('step-2-indicator').className = 'step step--pending';
   announcePolite('Returned to step 1: Select.');
+  // Focus step 1 title
+  document.getElementById('grant-access-title').focus();
 }
 
 async function proceedToConfirm() {
+  try {
+    const initiated = await apiRequest('/access/grant', {
+      method: 'POST',
+      body: JSON.stringify({
+        provider_id: state.pendingGrant.providerId,
+        record_ids: state.pendingGrant.records,
+        access_level: 1
+      })
+    });
+    state.pendingGrant.pendingId = initiated.pending_id;
+    state.pendingGrant.txHashes = initiated.tx_hashes || [];
+    state.pendingGrant.countdownSeconds = initiated.countdown_seconds || 60;
+  } catch (error) {
+    showError('Grant Initiation Failure', error.message);
+    return;
+  }
   document.getElementById('grant-stage-2').classList.add('hidden');
   document.getElementById('grant-stage-3').classList.remove('hidden');
   document.getElementById('step-2-indicator').className = 'step step--complete';
   document.getElementById('step-3-indicator').className = 'step step--current';
-  let countdown = 60;
+  const confirmButton = document.getElementById('btn-final-confirm');
+  const countdownLabel = document.getElementById('countdown-label');
+  confirmButton.disabled = true;
+  let countdown = state.pendingGrant.countdownSeconds;
   document.getElementById('countdown-number').textContent = countdown;
-  announcePolite(`Step 3: Confirm. You have 60 seconds to confirm granting access to ${state.pendingGrant.providerName}.`);
+  announcePolite(`Step 3 of 3: Confirm. Confirmation will be available in ${countdown} seconds. You may cancel at any time before confirming access for ${state.pendingGrant.providerName}.`);
+  // A3 Focus transition -> step 3
+  document.getElementById('confirmation-heading').focus();
   state.countdownIntervalId = setInterval(() => {
     countdown--;
-    document.getElementById('countdown-number').textContent = countdown;
-    if (countdown <= 0) { clearInterval(state.countdownIntervalId); document.getElementById('btn-final-confirm').disabled = true; announceAssertive('Confirmation period expired. Please start over.'); }
+    document.getElementById('countdown-number').textContent = countdown > 0 ? countdown : 'Ready';
+    if (countdown <= 0) {
+      clearInterval(state.countdownIntervalId);
+      document.getElementById('countdown-number').textContent = 'Ready';
+      countdownLabel.textContent = 'Confirmation is now available';
+      confirmButton.disabled = false;
+      announceAssertive('Confirmation is now available. Choose Confirm Grant Access to finalize, or Cancel to stop.');
+      confirmButton.focus();
+    }
   }, 1000);
 }
 
 async function finalConfirm() {
   clearInterval(state.countdownIntervalId);
   try {
-    const data = await apiRequest('/access/grant', { method: 'POST', body: JSON.stringify({ provider_id: state.pendingGrant.providerId, record_ids: state.pendingGrant.records, access_level: 1 }) });
-    // Wait 60 seconds (time-lock countdown) then confirm
-    await new Promise(r => setTimeout(r, 60000));
-    const confirmData = await apiRequest('/access/confirm', { method: 'POST', body: JSON.stringify({ pending_id: data.pending_id }) });
+    const confirmData = await apiRequest('/access/confirm', { method: 'POST', body: JSON.stringify({ pending_id: state.pendingGrant.pendingId }) });
     document.getElementById('grant-stage-3').classList.add('hidden');
     document.getElementById('grant-success').classList.remove('hidden');
     document.getElementById('step-3-indicator').className = 'step step--complete';
@@ -463,20 +553,36 @@ async function finalConfirm() {
     document.getElementById('explorer-link').href = `#blockchain/explorer/${confirmData.block_number}`;
     announceAssertive(`Access granted successfully. ${state.pendingGrant.providerName} can now view your records. Transaction hash: ${confirmData.tx_hashes ? confirmData.tx_hashes[0] : 'N/A'}`);
     await loadRecords();
-  } catch (error) { announceAssertive('Grant failed: ' + error.message); }
+    // A3 Focus transition -> success state
+    document.getElementById('grant-success').focus();
+  } catch (error) {
+    showError('Grant Confirmation Failure', error.message);
+  }
 }
 
-function cancelGrant() {
+async function cancelGrant() {
   clearInterval(state.countdownIntervalId);
+  if (state.pendingGrant && state.pendingGrant.pendingId) {
+    try {
+      await apiRequest('/access/cancel', { method: 'POST', body: JSON.stringify({ pending_id: state.pendingGrant.pendingId }) });
+    } catch (error) {
+      showError('Cancellation Failure', error.message);
+      return;
+    }
+  }
   document.getElementById('grant-stage-3').classList.add('hidden');
   document.getElementById('grant-stage-1').classList.remove('hidden');
   document.getElementById('step-1-indicator').className = 'step step--current';
   document.getElementById('step-2-indicator').className = 'step step--pending';
   document.getElementById('step-3-indicator').className = 'step step--pending';
+  state.pendingGrant = null;
   announcePolite('Grant cancelled. No access was granted.');
+  // Focus step 1 title
+  document.getElementById('grant-access-title').focus();
 }
 
 function resetGrant() {
+  state.pendingGrant = null;
   document.getElementById('grant-success').classList.add('hidden');
   document.getElementById('grant-stage-1').classList.remove('hidden');
   document.getElementById('step-1-indicator').className = 'step step--current';
@@ -484,17 +590,11 @@ function resetGrant() {
   document.getElementById('step-3-indicator').className = 'step step--pending';
   document.getElementById('provider-select').value = '';
   document.querySelectorAll('input[name="records"]').forEach(cb => cb.checked = false);
-  document.querySelector('input[name="records"]').checked = true;
+  const firstCheckbox = document.querySelector('input[name="records"]');
+  if (firstCheckbox) firstCheckbox.checked = true;
   announcePolite('Ready to grant access to another provider.');
-}
-
-async function revokeAccess(providerId, recordId) {
-  if (!confirm('Are you sure you want to remove access?')) return;
-  try {
-    const data = await apiRequest('/access/revoke', { method: 'POST', body: JSON.stringify({ provider_id: providerId, record_id: recordId }) });
-    announceAssertive('Access removed successfully.');
-    await loadRecords();
-  } catch (error) { announceAssertive('Revoke failed: ' + error.message); }
+  // Focus step 1 title
+  document.getElementById('grant-access-title').focus();
 }
 
 // FAQ
@@ -509,12 +609,72 @@ function toggleAllFAQ() {
   document.querySelectorAll('.faq-question').forEach(btn => { if (btn.getAttribute('aria-expanded') === 'false') toggleFAQ(btn); });
 }
 
-// Audit Log
-async function showAuditLog() {
+// Dialog focus trap utility
+function trapDialogFocus(event, modalId) {
+  const modal = document.getElementById(modalId);
+  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const focusable = Array.from(modal.querySelectorAll(focusableSelectors));
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (event.key === 'Tab') {
+    if (event.shiftKey) {
+      if (document.activeElement === first || document.activeElement === modal.querySelector('h2')) {
+        last.focus();
+        event.preventDefault();
+      }
+    } else {
+      if (document.activeElement === last) {
+        first.focus();
+        event.preventDefault();
+      }
+    }
+  }
+}
+
+// Audit Log focus management and loading
+let auditLogTrigger = null;
+
+function openAuditLogDialog() {
+  auditLogTrigger = document.activeElement;
   const modal = document.getElementById('audit-log-modal');
-  const entries = document.getElementById('audit-log-entries');
   modal.classList.remove('hidden');
+
+  // Set background elements inert
+  document.querySelector('main').setAttribute('inert', '');
+  document.getElementById('blockchain-status-panel').setAttribute('inert', '');
+
+  document.getElementById('audit-modal-title').focus();
+  document.addEventListener('keydown', handleAuditLogKeydown);
+}
+
+function closeAuditLogDialog() {
+  const modal = document.getElementById('audit-log-modal');
+  modal.classList.add('hidden');
+
+  document.querySelector('main').removeAttribute('inert');
+  document.getElementById('blockchain-status-panel').removeAttribute('inert');
+
+  document.removeEventListener('keydown', handleAuditLogKeydown);
+  if (auditLogTrigger) {
+    auditLogTrigger.focus();
+  }
+}
+
+function handleAuditLogKeydown(event) {
+  if (event.key === 'Escape') {
+    closeAuditLogDialog();
+    event.preventDefault();
+  } else if (event.key === 'Tab') {
+    trapDialogFocus(event, 'audit-log-modal');
+  }
+}
+
+async function showAuditLog() {
+  const entries = document.getElementById('audit-log-entries');
   entries.innerHTML = '<p>Loading audit log from blockchain...</p>';
+  openAuditLogDialog();
   try {
     const data = await apiRequest('/audit/log?record_id=all');
     if (data.entries && data.entries.length > 0) {
@@ -524,9 +684,97 @@ async function showAuditLog() {
           <p style="font-size:0.85rem; color:var(--text-muted);">Actor: ${e.actor} | Tx: ${e.transaction_hash.substring(0, 16)}...</p>
         </div>`).join('');
     } else { entries.innerHTML = '<p style="color:var(--text-muted);">No audit entries found.</p>'; }
-  } catch (error) { entries.innerHTML = '<p style="color:var(--error);">Failed to load audit log.</p>'; }
+  } catch (error) {
+    entries.innerHTML = `<p style="color:var(--error);" role="alert" tabindex="-1" id="audit-log-error">Failed to load audit log: ${error.message}</p>`;
+    document.getElementById('audit-log-error').focus();
+  }
 }
-function closeAuditLog(event) { if (!event || event.target.id === 'audit-log-modal') document.getElementById('audit-log-modal').classList.add('hidden'); }
+
+function closeAuditLog(event) {
+  if (!event || event.target.id === 'audit-log-modal' || event.target.id === 'close-audit-dialog') {
+    closeAuditLogDialog();
+  }
+}
+
+// Revocation confirmation modal logic
+let revokeTriggerButton = null;
+let pendingRevokeProviderId = null;
+let pendingRevokeRecordId = null;
+
+function revokeAccess(providerId, recordId) {
+  revokeTriggerButton = document.activeElement;
+  pendingRevokeProviderId = providerId;
+  pendingRevokeRecordId = recordId;
+
+  let providerName = "the provider";
+  const record = state.recordsCache ? state.recordsCache.find(r => r.id === recordId) : null;
+  if (record && record.access_grants) {
+    const grant = record.access_grants.find(g => g.provider_id === providerId);
+    if (grant) providerName = grant.provider_name;
+  }
+
+  document.getElementById('revoke-provider-name').textContent = providerName;
+
+  const modal = document.getElementById('revoke-confirm-modal');
+  modal.classList.remove('hidden');
+
+  document.querySelector('main').setAttribute('inert', '');
+  document.getElementById('blockchain-status-panel').setAttribute('inert', '');
+
+  document.getElementById('btn-cancel-revoke').focus();
+  document.addEventListener('keydown', handleRevokeModalKeydown);
+}
+
+function closeRevokeModal() {
+  const modal = document.getElementById('revoke-confirm-modal');
+  modal.classList.add('hidden');
+
+  document.querySelector('main').removeAttribute('inert');
+  document.getElementById('blockchain-status-panel').removeAttribute('inert');
+
+  document.removeEventListener('keydown', handleRevokeModalKeydown);
+  if (revokeTriggerButton) {
+    revokeTriggerButton.focus();
+  }
+
+  pendingRevokeProviderId = null;
+  pendingRevokeRecordId = null;
+  revokeTriggerButton = null;
+}
+
+async function confirmRevokeAction() {
+  const providerId = pendingRevokeProviderId;
+  const recordId = pendingRevokeRecordId;
+  closeRevokeModal();
+
+  try {
+    const data = await apiRequest('/access/revoke', {
+      method: 'POST',
+      body: JSON.stringify({ provider_id: providerId, record_id: recordId })
+    });
+
+    const statusBanner = document.getElementById('system-status');
+    statusBanner.innerHTML = `<strong>Access removed successfully.</strong> Removed access for ${data.provider_name || providerId} to ${data.record_type || recordId}.`;
+    statusBanner.className = "status-banner success";
+    statusBanner.classList.remove('hidden');
+
+    announceAssertive(`Access removed successfully. Removed access for ${data.provider_name || providerId} to ${data.record_type || recordId}.`);
+    await loadRecords();
+    statusBanner.focus();
+
+  } catch (error) {
+    showError('Revocation failed', error.message);
+  }
+}
+
+function handleRevokeModalKeydown(event) {
+  if (event.key === 'Escape') {
+    closeRevokeModal();
+    event.preventDefault();
+  } else if (event.key === 'Tab') {
+    trapDialogFocus(event, 'revoke-confirm-modal');
+  }
+}
 
 // Event listeners
 document.getElementById('fingerprint-btn').addEventListener('click', unlock);
@@ -536,7 +784,8 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !document.getElementById('grant-stage-3').classList.contains('hidden')) cancelGrant();
 });
 
-// Initial status
+// Initial setup
+setupSingleCheckboxSelection();
 updateBlockchainStatus();
 </script>
 </body>
