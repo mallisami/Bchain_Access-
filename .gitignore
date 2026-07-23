@@ -1,8 +1,11 @@
 # Dependencies
 node_modules/
-backend/venv/
-backend/.env
-smart_contracts/.env
+core/backend/venv/
+experiments/hardhat/node_modules/
+.env
+.env.local
+.env.*
+*.env
 
 # Python Caches
 __pycache__/
@@ -12,18 +15,20 @@ __pycache__/
 .pytest_cache/
 
 # Hardhat Build Artifacts & Caches
-smart_contracts/artifacts/
-smart_contracts/cache/
-smart_contracts/typechain/
-smart_contracts/typechain-types/
+experiments/hardhat/artifacts/
+experiments/hardhat/cache/
+experiments/hardhat/typechain/
+experiments/hardhat/typechain-types/
 
 # Local/Temporary Configurations
-smart_contracts/deployment.json
+experiments/hardhat/deployment.json
 DEPLOYED_URLS.txt
 
 # Sensitive Expert Study Raw Excel Sheets
 # (Excluded for evaluator de-identification compliance; de-identified versions are in /data)
+archive/Excel_Data_Sheets/*.xlsx
 BCHAIN-ACCESS_10_Consolidated_Analysis.xlsx
+BCHAIN-ACCESS_10_Consolidated_Analysis_REVISED.xlsx
 BCHAIN-ACCESS_10_Evaluator_Responses.xlsx
 
 # OS files
@@ -34,5 +39,11 @@ Thumbs.db
 git_portable/
 
 # Solidity Compiler cached binaries
-smart_contracts/soljson-*.js
+experiments/hardhat/soljson-*.js
+.artifact-inspect/
+.hardhat-appdata/
+.hardhat-localappdata/
+*.inspect.ndjson
 
+# Temporary directories
+tmp/

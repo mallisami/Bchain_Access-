@@ -1,0 +1,37 @@
+======================================================================
+              BCHAIN-ACCESS HARDHAT EVM GAS REPORT
+======================================================================
+
+Solc version: 0.8.26
+Optimizer enabled: true
+Runs: 200
+Block limit: 30000000 gas
+
+--------------------------------------------------------------------------------
+Methods
+--------------------------------------------------------------------------------
+Contract             | Method                | Min Gas    | Max Gas    | Avg Gas    | # Calls
+---------------------+---------------------+------------+------------+------------+---------
+HealthAccessControl  | cancelPendingGrant    | -          | -          | 213,322    | 6
+HealthAccessControl  | confirmGrant          | -          | -          | 200,852    | 10
+HealthAccessControl  | initiateGrant         | 229,466    | 373,149    | 335,903    | 18
+HealthAccessControl  | logAccessAttempt      | 175,032    | 177,076    | 176,054    | 4
+HealthAccessControl  | pause                 | -          | -          | 45,540     | 5
+HealthAccessControl  | registerRecord        | -          | -          | 341,833    | 28
+HealthAccessControl  | revokeAccess          | 171,917    | 173,917    | 173,117    | 5
+HealthAccessControl  | setAuthorizedGateway  | -          | -          | 47,823     | 3
+HealthAccessControl  | transferOwnership     | -          | -          | 28,600     | 2
+HealthAccessControl  | unpause               | -          | -          | 23,634     | 4
+
+--------------------------------------------------------------------------------
+Deployments
+--------------------------------------------------------------------------------
+Contract             | Avg Gas             | % of Block Limit
+---------------------+---------------------+------------------
+HealthAccessControl  | 2,934,432           | 9.8 %
+
+--------------------------------------------------------------------------------
+Note: These figures were regenerated on 2026-07-15 using the final corrected contract
+at code/evidence commit 360eaa2a26b2f2b4fef98c0667f87db09e5e5120 and the complete
+28-test local Hardhat workload. All 28 tests passed. The values do not establish
+regulatory compliance or predict fees on a particular production network.

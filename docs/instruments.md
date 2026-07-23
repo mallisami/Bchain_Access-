@@ -31,7 +31,7 @@ Each item is scored on a standard 5-point Likert scale:
 ---
 
 ## 2. Accessibility Questionnaire
-Each item is scored on a 5-point Likert scale (1 = Strongly Disagree, 5 = Strongly Agree), designed to evaluate the prototype's WCAG 2.1 Level AA conformance from a user experience standpoint:
+Each item is scored on a 5-point Likert scale (1 = Strongly Disagree, 5 = Strongly Agree). It records expert perceptions of selected interface qualities; it is not a validated accessibility measure and cannot establish WCAG conformance:
 1. I found the navigation consistent and predictable.
 2. I found the instructions and labels easy to understand.
 3. I was able to access all features using only the keyboard.
@@ -57,10 +57,16 @@ The expert panel followed these 8 tasks sequentially to evaluate the end-to-end 
 * **Task 4: Access Initiation**
   * *Instruction:* "Select Dr. Sarah Chen from the provider directory and initiate a 'View Only' access grant for your MRI Brain Scan record."
 * **Task 5: Review Cooldown**
-  * *Instruction:* "Review the pending access grant details and inspect the active 60-second safety cooldown window."
+  * *Instruction:* "Review the pending access grant details and inspect the active 60-second minimum-wait phase."
 * **Task 6: Access Confirmation**
   * *Instruction:* "Wait for the 60-second safety countdown to expire, then confirm the access grant to finalize it on-chain."
 * **Task 7: Access Revocation**
   * *Instruction:* "Immediately revoke Dr. Sarah Chen's access permissions to verify that access is cut off with no pending delay."
 * **Task 8: Help & FAQ Search**
   * *Instruction:* "Navigate to the FAQ section and locate the explanation for the question 'What is blockchain?'."
+
+---
+
+## Surviving Environment Metadata
+
+The retained source package does not contain the evaluated frontend/backend commit or release tag, exact session dates, per-session EVM-versus-fallback mode, archived deployment URL, or per-evaluator browser and operating-system versions. E10's qualitative comments identify NVDA use but do not record its version. Zoom/reflow settings and switch, voice-input, and mobile testing are likewise not documented. These omissions prevent exact reconstruction of the manual evaluation environment and must not be filled by inference.

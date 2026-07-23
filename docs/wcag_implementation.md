@@ -41,7 +41,7 @@ These features are explicitly coded within [frontend/index.html](file:///c:/User
 
 #### [SC 1.4.3: Contrast (Minimum) (Level AA)](file:///c:/Users/user/Documents/kimi/workspace/blockchain_prototype/frontend/index.html#L12-L17)
 *   **Mechanism**: Color combinations designed to meet contrast minimums.
-*   **Verification**: 29/29 color combinations pass the $\ge$ 4.5:1 ratio (3:1 for large text). Detailed audit records are located in [analysis/wcag/contrast_check.csv](file:///c:/Users/user/Documents/kimi/workspace/blockchain_prototype/analysis/wcag/contrast_check.csv).
+*   **Verification**: 29/29 inspected color combinations meet the recorded thresholds ($\ge$ 4.5:1, or 3:1 for large text). This is a bounded pairwise check, not a whole-interface conformance result. The retained data are in `results/wcag/contrast_check.csv`.
 
 #### [SC 1.4.5: Images of Text (Level AA)](file:///c:/Users/user/Documents/kimi/workspace/blockchain_prototype/frontend/index.html#L119)
 *   **Mechanism**: All headers and buttons render actual selectable text instead of flattened images of text.
@@ -131,7 +131,7 @@ These features are explicitly coded within [frontend/index.html](file:///c:/User
 *   **Code Reference**: `<label for="provider-select">` paired with `aria-describedby="provider-help"` (lines 165-166).
 
 #### [SC 3.3.4: Error Prevention (Legal, Financial, Data) (Level AA)](file:///c:/Users/user/Documents/kimi/workspace/blockchain_prototype/frontend/index.html#L211-L222)
-*   **Mechanism**: An audit-safe confirmation window acts as a safeguard before final transaction signing.
+*   **Mechanism**: An audit-safe minimum wait acts as a safeguard before final transaction signing; cancellation remains available until confirmation.
 *   **Code Reference**: Uses a two-stage select-and-review confirmation workflow, layered with a 60-second time-lock countdown (line 213) that allows the user to cancel before the access grant is finalized on the blockchain ledger.
 
 ---
@@ -164,7 +164,7 @@ These criteria are validated dynamically through automated browser scans (Axe, L
 *   **1.4.10: Reflow (AA)**: Responsive layouts wrap columns and collapse headers cleanly on viewport widths down to 320 CSS pixels.
 *   **1.4.12: Text Spacing (AA)**: No overlapping content when overriding text layout styles (line-height, word-spacing, letter-spacing).
 *   **1.4.13: Content on Hover or Focus (AA)**: Dynamic help tooltips are dismissible by keyboard, hover-persistent, and easy to locate.
-*   **2.2.1: Timing Adjustable (A)**: *Open Remediation Item* — The 60s transaction cooldown window is active but needs user configuration controls added in the next iteration.
+*   **2.2.1: Timing Adjustable (A)**: *Not applicable to the implemented minimum wait; timed authentication not assessed* — The 60-second mechanism prevents confirmation before an earliest time but imposes no deadline or expiry afterward. Authentication is simulated, so no real timed authentication workflow was evaluated.
 *   **2.4.5: Multiple Ways (AA)**: Provides redundant entry points (direct list actions and sidebar navigation).
 *   **2.5.1--2.5.4: Pointer/Motion Input (A/AA)**: Interfaces trigger actions via single-click equivalent events; no complex multi-point gestures or device-shaking inputs required.
 *   **3.3.3: Error Suggestion (AA)**: Inline script messages suggest specific steps (e.g., "choose a provider first") to help correct invalid state configurations.

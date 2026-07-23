@@ -105,11 +105,12 @@ def main():
     else:
         print("No SUS data found.\n")
 
-    # 2. COGNITIVE WALKTHROUGH ANALYSIS
-    print("--- 2. COGNITIVE WALKTHROUGH ANALYSIS ---")
+    # 2. EXPERT TASK-WORKBOOK DESCRIPTIVE ANALYSIS
+    print("--- 2. EXPERT TASK-WORKBOOK DESCRIPTIVE ANALYSIS ---")
     cw_data = load_csv(cw_path)
     if cw_data:
-        # Group times and success rate by task
+        # Group recorded rows by task. The CSV has no completion-status field, so
+        # row presence must not be converted into a success rate.
         tasks = {}
         for row in cw_data:
             tid = row["TaskID"]
@@ -119,27 +120,26 @@ def main():
             difficulty = row["Difficulty"]
             
             if tid not in tasks:
-                tasks[tid] = {"name": tname, "times": [], "errors": [], "difficulties": [], "success_count": 0}
+                tasks[tid] = {"name": tname, "times": [], "errors": [], "difficulties": []}
             
             tasks[tid]["times"].append(time_s)
             tasks[tid]["errors"].append(errors)
             tasks[tid]["difficulties"].append(difficulty)
-            tasks[tid]["success_count"] += 1
             
-        print(f"{'Task':<16} | {'Success':<8} | {'Mean Time (s)':<14} | {'SD (s)':<8} | {'Mean Diff. (1-5)':<16}")
+        print(f"{'Task':<16} | {'Rows':<8} | {'Mean Active (s)':<15} | {'SD (s)':<8} | {'Mean Diff. (1-5)':<16}")
         print("-" * 72)
         all_times = []
         for tid in sorted(tasks.keys()):
             t = tasks[tid]
             mean_t, sd_t = calc_mean_sd(t["times"])
             mean_d, _ = calc_mean_sd(t["difficulties"])
-            success_rate = (t["success_count"] / len(t["times"])) * 100
-            print(f"{tid + ': ' + t['name']:<16} | {success_rate:>6.1f}% | {mean_t:>12.2f}   | {sd_t:>6.2f} | {mean_d:>14.2f}")
+            print(f"{tid + ': ' + t['name']:<16} | {len(t['times']):>6}   | {mean_t:>13.2f}   | {sd_t:>6.2f} | {mean_d:>14.2f}")
             all_times.extend(t["times"])
             
         overall_mean_time = sum(all_times) / len(all_times)
-        print(f"\nOverall Mean Task Completion Time: {overall_mean_time:.2f} seconds (Paper reports: 9.69)")
-        print(f"Overall Task Success Rate:         100.0% (80/80 tasks completed successfully)\n")
+        print(f"\nOverall Mean Recorded Active-Interaction Time: {overall_mean_time:.2f} seconds (Paper reports: 9.69)")
+        print("Completion status: not reconstructible from this CSV (no row-level completion field).")
+        print("The workbook summary reports 80/80 completions; the manuscript discloses but excludes that outcome.\n")
     else:
         print("No walkthrough data found.\n")
 
@@ -173,8 +173,8 @@ def main():
     else:
         print("No accessibility questionnaire data found.\n")
 
-    # 4. HEURISTIC EVALUATION SEVERITY RE-ANALYSIS
-    print("--- 4. HEURISTIC EVALUATION SEVERITY RE-ANALYSIS ---")
+    # 4. HEURISTIC RATING PROVENANCE
+    print("--- 4. HEURISTIC RATING PROVENANCE ---")
     he_data = load_csv(he_path)
     if he_data:
         orig_severities = [row["OriginalSeverity"] for row in he_data]
@@ -183,21 +183,18 @@ def main():
         orig_mean, orig_sd = calc_mean_sd(orig_severities)
         rerated_mean, rerated_sd = calc_mean_sd(rerated_severities)
         
-        print("Comparison of Heuristic Severity Ratings (0-4 scale):")
-        print(f"Original Consensus Model (0/1):")
-        print(f"  - Mean Severity: {orig_mean:.2f} (consensus 0.10)")
-        print(f"  - Std Deviation: {orig_sd:.4f} (flat distribution)")
-        print(f"Finer-Grained Re-Rating Model (Factoring in open-ended comments):")
-        print(f"  - Mean Severity: {rerated_mean:.2f} (expanded scale)")
-        print(f"  - Std Deviation: {rerated_sd:.4f} (non-zero variance established)")
+        print("Heuristic Rating Fields (0-4 scale; excluded from principal results):")
+        print("Original Coarse Source Field (0/1):")
+        print(f"  - Mean rating: {orig_mean:.2f}")
+        print(f"  - Std Deviation: {orig_sd:.4f}")
+        print("Undocumented Post-Hoc Re-Rating Field:")
+        print(f"  - Mean rating: {rerated_mean:.2f}")
+        print(f"  - Std Deviation: {rerated_sd:.4f}")
         print("\nExplanation:")
-        print("  Under the original rating, the coarse 0-4 scale resulted in a flat consensus (H1-H8 = 0, H9 = 1)")
-        print("  with a mean severity of 0.10. By performing a finer-grained re-rating pass mapping open-ended")
-        print("  evaluator feedback onto the heuristic categories as minor/cosmetic friction (e.g. countdown timer")
-        print("  customization for motor control as H3/H7 friction), we reveal a richer, non-zero variance distribution")
-        print(f"  (SD = {rerated_sd:.4f}) while maintaining a low overall average severity ({rerated_mean:.2f} <= 0.50).")
-        print("  This directly defuses the 'zero-variance' criticism from reviewers by demonstrating that")
-        print("  consensus does not equal uniform or uncritical scoring.")
+        print("  The coarse source field and the later re-rating field are reproduced only for provenance.")
+        print("  The source package does not establish independent item-level observations or a documented")
+        print("  re-rating protocol. Neither field supports a severity inference, and both are excluded from")
+        print("  the manuscript's principal results.")
     else:
         print("No heuristic rating data found.\n")
 

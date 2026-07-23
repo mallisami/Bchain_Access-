@@ -1,0 +1,467 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=0.8in]{geometry}
+\usepackage{array,booktabs,longtable,tabularx,adjustbox,graphicx,textcomp,xcolor,pdflscape}
+\usepackage{amsmath}
+\usepackage{parskip}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={BCHAIN-ACCESS: A Standards-Informed, Evidence-Aware Framework for Accessibility-Oriented Blockchain Healthcare Consent Interfaces},
+  pdfauthor={Nadeem Yaqub and Muhammad Sami Ullah},
+  pdfsubject={Accessibility-oriented blockchain healthcare consent interfaces},
+  pdfkeywords={accessibility, blockchain, consent management, WCAG 2.2, design science research},
+  pdfdisplaydoctitle=true,
+  bookmarksopen=true,
+  pdflang={en-US}
+}
+\newcommand{\suppsection}[2]{\pdfbookmark[1]{#1}{#2}\section*{#1}}
+\newcommand{\suppsubsection}[2]{\pdfbookmark[2]{#1}{#2}\subsection*{#1}}
+\newcommand{\yes}{No issue observed}
+\newcommand{\no}{Issue observed}
+\newcommand{\na}{Not applicable}
+\newcommand{\conf}{Not fully evaluated}
+\title{\textbf{Supplementary Materials}\\[3pt]\large BCHAIN-ACCESS: A Standards-Informed, Evidence-Aware Framework for Accessibility-Oriented Blockchain Healthcare Consent Interfaces}
+\date{}
+\begin{document}
+\pdfbookmark[0]{Supplementary Materials}{supp-title}
+\maketitle
+\noindent This supplement provides implementation-depth and audit material referenced from the main paper. Following the main paper, \textbf{Cycle~1} denotes the initial prototype evaluated by the ten experts and \textbf{Cycle~2} the refined artifact verified on 15~July 2026 at commit \texttt{360eaa2a26b2f2b4fef98c0667f87db09e5e5120}. A 19~July text-only working-tree correction aligns the review-screen duration with the gateway's no-expiry default and is not included in the 15~July accessibility evidence. Evidence is reported against the cycle that produced it. S1 reports development-network measurements from a local Hardhat EVM node. S2--S4 document implementation assumptions, conceptual scope distinctions, security controls, and residual risks. These materials are not representative of production-network behavior; they record tested evidence, scope, and residual risks.
+
+\suppsection{S1. Final-Contract Development-Network Gas Results}{supp-s1}
+Regenerated on 15 July 2026 from the final Cycle~2 contract at code/evidence commit \texttt{360eaa2a\allowbreak 26b2f2b4\allowbreak fef98c06\allowbreak 67f87db0\allowbreak 9e5e5120}, using the complete 28-test workload, solc~0.8.26, optimizer enabled (200 runs), Paris EVM target, Hardhat chain ID 1337, and a block limit of 30{,}000{,}000 gas. Values are development-node \texttt{gasUsed}; fee conversions are omitted because the intended setting is a permissioned consortium network.
+\begin{center}\small\begin{tabularx}{\textwidth}{|p{3.4cm}|p{2.5cm}|>{\raggedright\arraybackslash}X|}
+\hline\textbf{Contract Function} & \textbf{EVM Gas} & \textbf{Interpretation}\\\hline
+\texttt{registerRecord} & 341{,}833 ($n=28$) & Write (storage initialization plus audit entry)\\\hline
+\texttt{initiateGrant} & 335{,}903 & Write (229{,}466--373{,}149; $n=18$)\\\hline
+\texttt{confirmGrant} & 200{,}852 ($n=10$) & Modify (storage update plus audit entry)\\\hline
+\texttt{cancelPendingGrant} & 213{,}322 ($n=6$) & Modify (pending grant cleared plus audit entry)\\\hline
+\texttt{revokeAccess} & 173{,}117 & Modify (171{,}917--173{,}917; $n=5$)\\\hline
+\texttt{logAccessAttempt} & 176{,}054 & Write (175{,}032--177{,}076; $n=4$)\\\hline
+\texttt{setAuthorizedGateway} & 47{,}823 ($n=3$) & Administrative gateway update\\\hline
+\texttt{pause} & 45{,}540 ($n=5$) & Administrative emergency-state update\\\hline
+\texttt{unpause} & 23{,}634 ($n=4$) & Administrative emergency-state update\\\hline
+\texttt{transferOwnership} & 28{,}600 ($n=2$) & Modify (owner update plus event)\\\hline
+\texttt{checkAccess} & Not measured by transaction & No user-paid transaction gas when invoked off-chain through \texttt{eth\_call}; an on-chain invocation would consume gas.\\\hline
+\texttt{getAuditLog} & Not measured by transaction & No user-paid transaction gas when invoked off-chain through \texttt{eth\_call}; an on-chain invocation would consume gas.\\\hline
+\textit{(deployment)} & 2{,}934{,}432 & Deployment (9.8\% of the development block limit)\\\hline
+\end{tabularx}\end{center}
+{\footnotesize All 28 tests passed during this gas-reporting run. The retained report is \texttt{results/gas-report.txt}. For an identical EVM revision, contract bytecode, input, and storage state, \texttt{gasUsed} is deterministic. Effective fees, congestion, RPC behavior, confirmation time, and network-specific execution conditions were not evaluated. The demonstration registered seeded 32-byte identifiers; it did not include clinical record files or a production off-chain store.}
+
+\suppsection{S2. Assumption--Threat--Control--Residual-Risk Matrix}{supp-s2}
+\begin{center}\footnotesize\begin{tabular}{|p{2.2cm}|p{2.3cm}|p{3.0cm}|p{3.1cm}|p{2.8cm}|}
+\hline\textbf{Assumption} & \textbf{Threat} & \textbf{Implemented control} & \textbf{Residual risk} & \textbf{Not evaluated}\\\hline
+Patient key is controlled by the patient & Unauthorized grant & \texttt{onlyPatient} and record-owner mapping & Key theft, malicious wallet, and identity mismatch & HSM, recovery, identity proofing\\\hline
+EVM transaction ordering is valid & Replay & Account nonces & Application-layer replay and cross-domain signing & Adversarial replay tests\\\hline
+Patient can act without coercion & Accidental or coerced grant & Minimum wait and cancellation until confirmation & Coercer can wait; control mitigates accidents only & Coercion-resistance study\\\hline
+Chain history remains available & Log alteration & Events and append-only contract array & Gateway logs, reorgs, governance, and display integrity & End-to-end audit assurance\\\hline
+Addresses correspond to approved actors & Sybil identities & Application provider registry & Registry is not proof of personhood or organizational identity & Identity governance\\\hline
+Only the patient confirms & Ordering/front-running & Caller restriction and explicit provider/record tuple & MEV and transaction-ordering risks remain & Public-testnet/MEV analysis\\\hline
+REST request contains multiple records & Partial multi-record commit & The final gateway rejects any state-changing consent request that does not contain exactly one record identifier & No atomic multi-record API is provided & Batch-contract design and gateway failure-injection tests if batch support is introduced\\\hline
+Access-attempt logger is called & Misleading or spam audit entries & Contract restricts logging to the owner or configured authorized gateway and retains the caller address & Gateway key compromise, role governance, and rate limiting remain deployment risks & Adversarial authorization and rate-limit testing\\\hline
+Emergency pause is invoked & Continued grant creation or confirmation during an incident & \texttt{whenNotPaused} applies to grant initiation and confirmation; cancellation and revocation remain available & Operational pause governance and key compromise remain unassessed & Incident-response and adversarial pause testing\\\hline
+Known Hardhat accounts are used & Development keys reused outside the isolated node & Configuration labels the fallback key development-only and production mode requires an environment value & Provider/demo keys remain embedded for local demonstration & HSM/KMS-backed production key custody and rotation\\\hline
+\end{tabular}\end{center}
+
+\suppsection{S3. Conceptual Scope Distinctions Across Architecture Patterns}{supp-s3}
+The centralized-EHR and pure-Ethereum columns are generic architecture categories, not evaluated comparator systems. The table presents conceptual distinctions only and does not provide empirical performance, privacy, usability, or accessibility comparisons.
+\begin{center}\small\begin{tabularx}{\textwidth}{|p{3.7cm}|p{3.2cm}|p{3.2cm}|>{\raggedright\arraybackslash}X|}
+\hline\textbf{Property} & \textbf{Centralized EHR} & \textbf{Pure-Ethereum} & \textbf{BCHAIN-ACCESS}\\\hline
+Patient control over grants & Deployment-dependent & Deployment-dependent & Implemented for a reference patient address in the local authorization model; no user-controlled wallet integration\\\hline
+Personal-data exposure & Database-dependent & Design-dependent & Seeded 32-byte identifiers on-chain in the reference artifact; production hashes or metadata would require separate privacy engineering and off-chain storage\\\hline
+Delayed confirmation workflow & Not assessed & Not assessed & Implemented in reference contract\\\hline
+Audit evidence & Database logs & Ledger events & Contract events plus residual end-to-end risks\\\hline
+WCAG~2.2 inspection & Not assessed & Not assessed & Selected Cycle~1 issues addressed and technically verified across 12 Cycle~2 interface states; residual criterion-level and target-user questions remain; no conformance claim\\\hline
+\end{tabularx}\end{center}
+
+\suppsection{S4. Security Threat Model (STRIDE)}{supp-s4}
+STRIDE decomposition of \texttt{HealthAccessControl.sol}. ``Residual/next step'' items are scoped to the deployment, adversarial-testing, and independent-assurance work identified in Limitation~L9.
+\begin{center}\small
+\begin{tabular}{|p{2.3cm}|p{5.4cm}|p{5.4cm}|}
+\hline
+\textbf{STRIDE category} & \textbf{Contract-level exposure} & \textbf{Mitigation / residual}\\\hline
+\textbf{S}poofing (identity) & Impersonating a patient or provider address & EVM account keys + \texttt{onlyPatient(msg.sender)} binding; residual: key-management/HSM out of scope\\\hline
+\textbf{T}ampering (data) & Altering records or grants & On-chain seeded-identifier registration and append-only contract structures; clinical-record hash anchoring and production off-chain encryption were not demonstrated\\\hline
+\textbf{R}epudiation & Denying a grant/revoke occurred & Contract events and \texttt{AuditEntry[]} provide chain-scoped evidence; end-to-end attribution and display integrity remain unassessed\\\hline
+\textbf{I}nformation disclosure & Leaking PII via chain data & Demonstration registers seeded 32-byte identifiers only; real metadata may remain identifying, and no production encryption or salt store is implemented\\\hline
+\textbf{D}enial of service & Blocking access or exhausting gas & Off-chain \texttt{eth\_call} reads incur no user-paid transaction gas; owner pause blocks new initiation and confirmation while cancellation/revocation remain available. Public-network fees, RPC availability, and denial-of-service behavior are unmeasured (L9)\\\hline
+\textbf{E}levation of privilege & Gaining access or writing misleading audit entries & \texttt{onlyPatient} restrictions, delayed confirmation, and owner/authorized-gateway logger restriction; Cycle~2 bytecode received fresh Slither analysis but still requires adversarial testing, fuzzing, and independent audit\\\hline
+\end{tabular}
+\end{center}
+
+\suppsection{S5. WCAG~2.2 A/AA Criterion-Level Inspection Matrix}{supp-s5}
+The matrix contains separate rows for every WCAG~2.2 Level~A and~AA success criterion. SC~4.1.1 Parsing is not included because it is obsolete and removed in WCAG~2.2. Each Cycle~1 result uses one of four classifications: \textit{No issue observed}, \textit{Issue observed}, \textit{Not fully evaluated}, or \textit{Not applicable}. ``No issue observed'' is limited to the retained method and states and is not a conformance finding. The \textbf{Cycle~1 tested state} column describes the build evaluated by the ten experts. State labels A1--A12 denote the Cycle~2 states enumerated in S5.2 and exist only in Cycle~2; they therefore appear in the method/provenance and Cycle~2 columns and never as the basis of a Cycle~1 result.
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{3.1cm}|p{4.2cm}|>{\raggedright\arraybackslash}X|}
+\hline\textbf{Evidence layer} & \textbf{Scope} & \textbf{Interpretation}\\\hline
+Cycle~1 build & Enumerated workflow states used by the ten-expert assessment; commit and environment not archived (L4) & Cycle~1 manual results remain the evaluation evidence and are not replaced by Cycle~2 changes.\\\hline
+Cycle~2 refinement & Repository source after the Cycle~1 sessions & The final column records targeted source changes, subsequent technical-verification status, and remaining criterion-specific gaps; it is not a second conformance evaluation.\\\hline
+Cycle~2 scan, 15 July 2026 & Initial rendered page only & Lighthouse~13.4.0: 100/100, 23 passed, 0 failed, 43 not applicable, 10 manual; axe-core~4.12.1: zero violations and zero incomplete. These automated results do not supersede the Cycle~1 manual findings.\\\hline
+Intermediate workflow inspection, 15 July 2026 & Selected workflow and open audit-dialog state before the final dialog fix & Live axe-core~4.8.2 reported one moderate \texttt{region} finding. This result is retained as intermediate Cycle~2 evidence.\\\hline
+Final state-by-state verification, 15 July 2026 & Twelve enumerated Cycle~2 states plus separate keyboard, focus, dialog, target-size, error-presentation, and reflow checks & Standalone axe-core~4.10.0 recorded zero violations in all 12 retained reports; five reports contain incomplete items retained for manual review. No conformance determination or live screen-reader test was performed.\\\hline
+\end{tabularx}
+\end{center}
+
+\suppsubsection{S5.1 Deposited Automated Report Summary}{supp-s5-1}
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{3.2cm}|p{2.8cm}|p{4.4cm}|X|}
+\hline
+\textbf{Artifact} & \textbf{Date/build status} & \textbf{Tool-native result} & \textbf{Interpretation} \\\hline
+Lighthouse, Cycle~1 & 12 July 2026 & 100/100; 23 passed, 0 failed, 43 not applicable, 10 manual & Not linked to a specific session build \\\hline
+Lighthouse, Cycle~2 & 15 July 2026 & 100/100; 23 passed, 0 failed, 43 not applicable, 10 manual & Initial-state Cycle~2 scan \\\hline
+WAVE & 29 June 2026; retained URL & 0 errors, 0 contrast errors, 0 alerts & Tool-limited retained report \\\hline
+Undated axe-core summary & Unknown & Three passed rule summaries & Incomplete evidence \\\hline
+axe-core, Cycle~2 & 15 July 2026 & 0 violations, 0 incomplete & Initial-state Cycle~2 scan \\\hline
+Live axe-core workflow/dialog inspection & 15 July 2026; Cycle~2 & One moderate \texttt{region} finding involving audit-dialog content & Targeted live-state inspection; not a complete conformance determination \\\hline
+Final standalone axe-core state reports & 15 July 2026; final Cycle~2 build & 0 violations across all 12 retained reports; 5 reports contain incomplete items & Final Cycle~2 engineering verification; manual checks recorded separately; no conformance determination \\\hline
+\end{tabularx}
+\end{center}
+{\footnotesize These artifacts differ in provenance, date, tool version, and retained state coverage and are not aggregated. Lighthouse~13.4.0 reports its own 100/100 composite and embedded axe-core~4.12.1 environment. The final state files are standalone axe-core~4.10.0 reports and are reported independently.}
+
+\clearpage
+\begin{landscape}
+\suppsubsection{S5.2 Final State-by-State Evidence Inventory}{supp-s5-2}
+{\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{longtable}{|p{1.0cm}|p{2.6cm}|p{4.8cm}|p{4.2cm}|p{5.0cm}|p{4.0cm}|}
+\hline
+\textbf{State} & \textbf{Interface state} & \textbf{Retained files} & \textbf{Standalone axe result} & \textbf{Recorded manual/browser method and result} & \textbf{Evidence boundary}\\\hline
+\endfirsthead
+\hline
+\textbf{State} & \textbf{Interface state} & \textbf{Retained files} & \textbf{Standalone axe result} & \textbf{Recorded manual/browser method and result} & \textbf{Evidence boundary}\\\hline
+\endhead
+A1 & Landing & \texttt{A1\_landing\_axe.json}; \texttt{A1\_landing.png} & 0 violations; 0 incomplete & Keyboard entry and visible focus inspected & No live screen-reader confirmation\\\hline
+A2 & Dashboard & \texttt{A2\_dashboard\_axe.json}; \texttt{A2\_dashboard.png} & 0 violations; 0 incomplete & Programmatic dashboard-heading focus inspected & Cycle~2 build only\\\hline
+A3 & Record selection & \texttt{A3\_record-selection\_axe.json}; \texttt{A3\_record-selection.png} & 0 violations; 0 incomplete & Provider selection, single-record choice, names, and target dimensions inspected & No alternative-input test\\\hline
+A4 & Review & \texttt{A4\_review\_axe.json}; \texttt{A4\_review.png} & 0 violations; 0 incomplete & Wizard-transition focus and keyboard controls inspected & Comprehension effectiveness not evaluated\\\hline
+A5 & Countdown & \texttt{A5\_countdown\_axe.json}; \texttt{A5\_countdown.png} & 0 violations; 1 incomplete & Focus order and status messaging inspected under SC~2.4.3 and SC~4.1.3; the minimum wait is not classified under SC~2.2.1 & Acceptability of delay unresolved\\\hline
+A6 & Confirmation success & \texttt{A6\_confirmation-success\_axe.json}; \texttt{A6\_confirmation-success.png} & 0 violations; 0 incomplete & Success focus and visible/programmatic status inspected & No live AT announcement confirmation\\\hline
+A7 & Audit dialog open & \texttt{A7\_audit-dialog-open\_axe.json}; \texttt{A7\_audit-dialog-open.png} & 0 violations; 1 incomplete & Dialog name, focus containment, Escape handling, and restoration inspected & Manual browser result; no live screen reader\\\hline
+A8 & Revocation dialog open & \texttt{A8\_revocation-dialog-open\_axe.json}; \texttt{A8\_revocation-dialog-open.png} & 0 violations; 1 incomplete & Dialog focus containment, Escape handling, cancellation, and restoration inspected & No live screen reader\\\hline
+A9 & Expanded FAQ & \texttt{A9\_expanded-faq\_axe.json}; \texttt{A9\_expanded-faq.png} & 0 violations; 1 incomplete & Accordion keyboard state and affected target dimensions inspected & Content comprehension not evaluated\\\hline
+A10 & Record-loading failure & \texttt{A10\_record-loading-failure\_axe.json}; \texttt{A10\_record-loading-failure.png} & 0 violations; 0 incomplete & Verification harness invoked the implemented visible alert and programmatic announcement presentation & Presentation check, not RPC failure injection\\\hline
+A11 & Audit-loading failure & \texttt{A11\_audit-loading-failure\_axe.json}; \texttt{A11\_audit-loading-failure.png} & 0 violations; 1 incomplete & Verification harness invoked the implemented audit-dialog error presentation and focus movement & Presentation check, not RPC failure injection\\\hline
+A12 & Transaction failure & \texttt{A12\_transaction-failure\_axe.json}; \texttt{A12\_transaction-failure.png} & 0 violations; 0 incomplete & Verification harness invoked the implemented visible alert and programmatic announcement presentation & Presentation check, not adversarial transaction testing\\\hline
+\end{longtable}
+}
+\clearpage
+{\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.10}
+\begin{longtable}{|p{1.0cm}|p{3.3cm}|p{1.9cm}|p{2.7cm}|p{2.5cm}|p{4.1cm}|p{4.1cm}|}
+\hline
+\textbf{SC} & \textbf{Criterion} & \textbf{Applicability} & \textbf{Cycle~1 tested state} & \textbf{Method and state provenance} & \textbf{Cycle~1 result} & \textbf{Cycle~2 status}\\\hline
+\endfirsthead
+\hline
+\textbf{SC} & \textbf{Criterion} & \textbf{Applicability} & \textbf{Cycle~1 tested state} & \textbf{Method and state provenance} & \textbf{Cycle~1 result} & \textbf{Cycle~2 status}\\\hline
+\endhead
+1.1.1 & Non-text Content (A) & Applicable & Images, icons, and controls in enumerated states & Code and rendered-state inspection & \textbf{No issue observed}: retained inspection recorded text alternatives or decorative treatment. & No targeted source change; complete-process re-evaluation not performed.\\\hline
+1.2.1 & Audio-only and Video-only (Prerecorded) (A) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no prerecorded audio-only or video-only content. & No media added; applicability must be reconfirmed for future builds.\\\hline
+1.2.2 & Captions (Prerecorded) (A) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no prerecorded synchronized media. & No media added; applicability must be reconfirmed for future builds.\\\hline
+1.2.3 & Audio Description or Media Alternative (Prerecorded) (A) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no prerecorded video content. & No media added; applicability must be reconfirmed for future builds.\\\hline
+1.2.4 & Captions (Live) (AA) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no live synchronized media. & No live media added; applicability must be reconfirmed for future builds.\\\hline
+1.2.5 & Audio Description (Prerecorded) (AA) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no prerecorded video content. & No media added; applicability must be reconfirmed for future builds.\\\hline
+1.3.1 & Info and Relationships (A) & Applicable & Page regions, forms, records, and grant wizard in the evaluated build & Code inspection (Cycle~1); standalone axe-core and manual dialog inspection in Cycle~2 state A7 & \textbf{No issue observed}: retained review recorded semantic HTML and ARIA landmarks. & Remediated and technically verified in the final Cycle~2 build; \texttt{A7\_audit-dialog-open\_axe.json} records zero violations and the corresponding screenshot and manual dialog check are retained.\\\hline
+1.3.2 & Meaningful Sequence (A) & Applicable & Reading order across enumerated states & DOM and manual reading-order inspection & \textbf{No issue observed}: retained review recorded logical DOM order. & No targeted change; complete-process re-evaluation not performed.\\\hline
+1.3.3 & Sensory Characteristics (A) & Applicable & Instructions and state cues & Content inspection & \textbf{No issue observed}: instructions were not recorded as color-, shape-, or position-only. & No targeted change; complete-process re-evaluation not performed.\\\hline
+1.3.4 & Orientation (AA) & Applicable & Responsive workflow states & Viewport and orientation review & \textbf{Not fully evaluated}: no session-level orientation or device record survives. & Responsive source retained; portrait and landscape retest remains required.\\\hline
+1.3.5 & Identify Input Purpose (AA) & Not applicable & Provider and record selections & Form-purpose inspection & \textbf{Not applicable}: the evaluated form did not collect user-personal input covered by the input-purpose taxonomy. & Applicability must be reconfirmed if personal-data fields are added.\\\hline
+1.4.1 & Use of Color (A) & Applicable & Statuses, selections, and controls & Visual/manual inspection & \textbf{No issue observed}: retained review did not identify a color-only cue. & No targeted change; complete-process re-evaluation not performed.\\\hline
+1.4.2 & Audio Control (A) & Not applicable & All enumerated states & Content inventory & \textbf{Not applicable}: no automatically playing audio. & No audio added; applicability must be reconfirmed for future builds.\\\hline
+1.4.3 & Contrast (Minimum) (AA) & Applicable & Recorded text/background pairs & Measured contrast review & \textbf{No issue observed}: 29/29 retained pairs met the stated 4.5:1 threshold (3:1 for large text). & Initial-state scan repeated; no full-state contrast re-evaluation.\\\hline
+1.4.4 & Resize Text (AA) & Applicable & Enumerated responsive states & Manual zoom review & \textbf{Not fully evaluated}: a 200\% check was summarized, but browser, viewport, and per-state evidence were not preserved. & No targeted change; repeat with preserved environment and state evidence.\\\hline
+1.4.5 & Images of Text (AA) & Applicable & All enumerated states & Content inspection & \textbf{No issue observed}: retained review recorded real text rather than authored images of text. & No targeted change; complete-process re-evaluation not performed.\\\hline
+1.4.10 & Reflow (AA) & Applicable & Dashboard and workflow at 320 CSS pixels & Manual responsive inspection (Cycle~1 summary); Cycle~2 narrow-viewport inspection with retained screenshots & \textbf{Not fully evaluated}: a 320-CSS-pixel check was summarized without a preserved state-by-state record. & Remediated and technically verified for the recorded narrow-viewport states: the status panel moves into normal flow and the earlier overlap was not reproduced; this is not exhaustive device coverage.\\\hline
+1.4.11 & Non-text Contrast (AA) & Applicable & Controls, boundaries, and focus indicators & Measured/manual inspection & \textbf{No issue observed}: retained review recorded at least 3:1 for inspected components and focus indicators. & No full-state remeasurement after the Cycle~2 changes.\\\hline
+1.4.12 & Text Spacing (AA) & Applicable & Enumerated text-bearing states & Manual spacing override & \textbf{Not fully evaluated}: the summary reports no clipping but no preserved per-state screenshots or settings. & Repeat with preserved spacing settings and workflow states.\\\hline
+1.4.13 & Content on Hover or Focus (AA) & Applicable where additional content appears & Tooltips/disclosures in enumerated states & Keyboard, pointer, and code inspection & \textbf{Not fully evaluated}: no complete retained hover/focus-content test record. & No complete manual re-evaluation after the Cycle~2 changes.\\\hline
+2.1.1 & Keyboard (A) & Applicable & Principal workflow controls in the evaluated build & Manual keyboard walkthrough (Cycle~1); A1--A12 screenshots and state reports (Cycle~2) & \textbf{No issue observed}: retained workflow review recorded keyboard operation. & Remediated and technically verified for the recorded principal workflow, audit dialog, revocation dialog, and FAQ controls; alternative-input testing remains outside scope.\\\hline
+2.1.2 & No Keyboard Trap (A) & Applicable & Modal dialogs in the evaluated workflow & Manual Tab, Shift+Tab, Escape, and focus-restoration inspection; Cycle~2 states A7 and A8 & \textbf{No issue observed}: no trap was recorded in the tested workflow. & Remediated and technically verified in the final Cycle~2 build; focus containment and restoration passed the recorded manual checks. No live screen-reader test was performed.\\\hline
+2.1.4 & Character Key Shortcuts (A) & Not applicable & All enumerated states & Code and interaction inspection & \textbf{Not applicable}: no single-character shortcuts were identified. & No shortcuts added; applicability must be reconfirmed for future builds.\\\hline
+2.2.1 & Timing Adjustable (A) & Minimum wait not applicable; real authentication timer not evaluated & Real timed authentication only; the minimum-wait countdown state excluded & Workflow and code inspection & \textbf{Not fully evaluated}: the 60-second mechanism is a minimum wait with no post-wait completion deadline, so it is not a time limit under this SC; timed authentication was not assessed. & No pass or failure is assigned to the countdown under this criterion. Real timed authentication still requires evaluation.\\\hline
+2.2.2 & Pause, Stop, Hide (A) & Potentially applicable & Visible 60-second countdown and other updating content & Manual and code inspection & \textbf{Not fully evaluated}: no retained assessment establishes whether the visible auto-updating countdown requires or provides a pause, stop, or hide mechanism. & Countdown remains; criterion-specific manual evaluation is outstanding.\\\hline
+2.3.1 & Three Flashes or Below Threshold (A) & Applicable & Animations and state changes & Visual and code inspection & \textbf{No issue observed}: no flashing content was recorded. & Reduced-motion handling retained; full-state recheck not performed.\\\hline
+2.4.1 & Bypass Blocks (A) & Applicable & Initial page and revealed sections & Keyboard/code inspection & \textbf{No issue observed}: a skip-to-main link was recorded. & No targeted change; full-state keyboard recheck pending.\\\hline
+2.4.2 & Page Titled (A) & Applicable & Document/page state & DOM inspection & \textbf{No issue observed}: a descriptive page title was recorded. & No targeted change.\\\hline
+2.4.3 & Focus Order (A) & Applicable & Workflow, dialog, and error states & Manual keyboard and focus inspection (Cycle~1); Cycle~2 states A2, A4--A8, and A10--A12 with retained screenshots & \textbf{No issue observed}: no illogical focus order was recorded. & Remediated and technically verified: dashboard and wizard heading focus, countdown availability, success focus, dialog containment/restoration, and error focus passed the recorded manual checks.\\\hline
+2.4.4 & Link Purpose (In Context) (A) & Applicable & Navigation, audit, and explorer links & Content and code inspection & \textbf{No issue observed}: retained review recorded descriptive link purpose in context. & Dynamic links require fresh rendered-state inspection.\\\hline
+2.4.5 & Multiple Ways (AA) & Applicable to page sets & Navigation and direct actions & Structure inspection & \textbf{Not fully evaluated}: retained evidence does not establish the page-set scope or all navigation mechanisms. & Reassess if deployed as a multi-page product.\\\hline
+2.4.6 & Headings and Labels (AA) & Applicable & Page regions, forms, and wizard & Content/manual inspection & \textbf{No issue observed}: retained review recorded descriptive headings and labels. & Affected wizard headings, dialog labels, and contextual control names were technically verified in the recorded Cycle~2 states; a complete criterion-wide evaluation is not claimed.\\\hline
+2.4.7 & Focus Visible (AA) & Applicable & Enumerated keyboard states & Manual keyboard walkthrough & \textbf{No issue observed}: visible focus was recorded in the tested workflow. & Visible focus was verified for the recorded principal keyboard workflow and dialog states; exhaustive coverage across every responsive state is not claimed.\\\hline
+2.4.11 & Focus Not Obscured (Minimum) (AA) & Applicable & Sticky content, overlays, and scrolled workflow states & Manual keyboard/viewport inspection & \textbf{Not fully evaluated}: no preserved test demonstrates that focused components remained at least partially visible in every state and viewport. & Requires a fresh keyboard test across overlays, scroll positions, and responsive viewports.\\\hline
+2.5.1 & Pointer Gestures (A) & Not applicable & All scripted controls & Code and interaction inventory & \textbf{Not applicable}: no multipoint or path-based gesture was required. & No gesture control added; applicability must be reconfirmed for future builds.\\\hline
+2.5.2 & Pointer Cancellation (A) & Applicable & Buttons, links, accordions, and modal dismissals & Pointer and code inspection & \textbf{Not fully evaluated}: no preserved down-event, up-event, abort, or undo test record. & Current controls use click/button activation; manual pointer-cancellation retest pending.\\\hline
+2.5.3 & Label in Name (A) & Applicable & ``Remove Access'' and other visibly labelled controls & Accessible-name and visible-label comparison & \textbf{No issue observed}: the visible string ``Remove Access'' was contained in the control name; the separate lack of provider context is recorded under 3.3.2 and 4.1.2. & Remediated and technically verified for the Cycle~2 removal controls: the accessible name retains the visible ``Remove Access'' text and adds provider and record context.\\\hline
+2.5.4 & Motion Actuation (A) & Not applicable & All scripted controls & Input-mechanism inventory & \textbf{Not applicable}: no device-motion or user-motion operation was required. & No motion input added; applicability must be reconfirmed for future builds.\\\hline
+2.5.7 & Dragging Movements (AA) & Not applicable & All scripted controls & Input-mechanism and code inventory & \textbf{Not applicable}: no functionality required a dragging movement. & No dragging interaction added; applicability must be reconfirmed for future builds.\\\hline
+2.5.8 & Target Size (Minimum) (AA) & Applicable & Record controls, explorer link, and FAQ controls & Rendered bounding-box measurement and screenshots; Cycle~2 states A3, A6, and A9 & \textbf{Issue observed}: compact controls were flagged for review in the evaluated build. & Remediated and technically verified for the affected controls: checkboxes and the explorer link have minimum 24-by-24-CSS-pixel target dimensions and the recorded manual measurements passed.\\\hline
+3.1.1 & Language of Page (A) & Applicable & Document root & DOM inspection & \textbf{No issue observed}: the page language was set. & No targeted change.\\\hline
+3.1.2 & Language of Parts (AA) & Not applicable & All enumerated content & Content inventory & \textbf{Not applicable}: no passage in another human language was recorded. & Applicability must be reconfirmed if multilingual content is added.\\\hline
+3.2.1 & On Focus (A) & Applicable & Focusable controls & Manual keyboard walkthrough & \textbf{No issue observed}: no context change on focus was recorded. & Full-state retest pending.\\\hline
+3.2.2 & On Input (A) & Applicable & Provider/record selections and controls & Manual interaction walkthrough & \textbf{No issue observed}: no unexpected context change on input was recorded. & Full-state retest pending.\\\hline
+3.2.3 & Consistent Navigation (AA) & Applicable to repeated navigation & Revealed workflow sections & Structural/manual inspection & \textbf{No issue observed}: retained review recorded consistent navigation. & Deployment as a page set requires a fresh consistency test.\\\hline
+3.2.4 & Consistent Identification (AA) & Applicable & Repeated controls and components & Content/manual inspection & \textbf{No issue observed}: repeated components were recorded as consistently identified. & Dynamic components require fresh rendered-state inspection.\\\hline
+3.2.6 & Consistent Help (A) & Applicable where help is repeated & FAQ/help access across workflow states & Cross-state structural inspection & \textbf{Not fully evaluated}: the retained materials do not document a criterion-specific consistency check for help placement and order. & Current source retains the FAQ/help region; complete cross-state evaluation remains required.\\\hline
+3.3.1 & Error Identification (A) & Applicable & Record-loading, audit-loading, and transaction-failure presentations & Manual inspection (Cycle~1); verification-harness invocation, standalone axe-core, screenshot, visible-alert, and programmatic-announcement inspection in Cycle~2 states A10--A12 & \textbf{No issue observed}: retained review recorded identified and announced errors in inspected states. & Remediated and technically verified for the recorded presentations; the retained files are listed in S5.2. Dynamic RPC-loss failure injection remains outside scope.\\\hline
+3.3.2 & Labels or Instructions (A) & Applicable & Record list and revocation controls & Manual accessible-name/content inspection (Cycle~1); standalone axe-core in Cycle~2 states A3 and A8 & \textbf{Issue observed}: the ``Remove Access'' control lacked provider context in the evaluated build. & Remediated and technically verified: provider and record context appears in Cycle~2 removal-control names and the accessible revocation dialog was inspected.\\\hline
+3.3.3 & Error Suggestion (AA) & Applicable where suggestions are known & Validation and transaction error states & Manual failure-state inspection & \textbf{Not fully evaluated}: no complete retained set of error and correction-guidance states. & Fresh failure-injection and guidance review required.\\\hline
+3.3.4 & Error Prevention (Legal, Financial, Data) (AA) & Applicable to consent changes & Grant review, confirmation, cancellation, and revocation & Complete-process and code inspection & \textbf{Not fully evaluated}: two-stage confirmation and cancellation provide partial evidence, but complete-process prevention testing was not preserved. & Cancellation and state wording were improved; complete-process re-evaluation remains required.\\\hline
+3.3.7 & Redundant Entry (A) & Potentially applicable & Multi-step grant workflow & Complete-process manual inspection & \textbf{Not fully evaluated}: no retained criterion-specific record establishes whether previously entered information was requested again or automatically populated. & Current wizard retains selections when navigating between stages; complete-process retest pending.\\\hline
+3.3.8 & Accessible Authentication (Minimum) (AA) & Applicable to real authentication & Simulated fingerprint unlock & Manual and code inspection & \textbf{Not fully evaluated}: fingerprint interaction was simulated and did not constitute a real authentication mechanism. & Real WebAuthn/FIDO2 or alternative authentication remains unimplemented and unevaluated.\\\hline
+4.1.2 & Name, Role, Value (A) & Applicable & Record, dialog, and FAQ controls & Manual accessibility-tree and code inspection (Cycle~1); standalone axe-core and screenshot inspection in Cycle~2 states A3 and A7--A9 & \textbf{Issue observed}: the evaluated ``Remove Access'' control lacked contextual accessible-name information. & Remediated and technically verified: corrected controls and both dialogs expose names, roles, and states in the inspected build; live screen-reader confirmation remains outstanding.\\\hline
+4.1.3 & Status Messages (AA) & Applicable & Wizard, confirmation, and error states & Live-region/code inspection (Cycle~1); manual focus checks, standalone axe-core, and retained screenshots in Cycle~2 states A2, A4--A6, and A10--A12 & \textbf{Issue observed}: wizard step transitions were incompletely announced in the evaluated build. & Remediated and technically verified within the recorded browser scope: transition focus, confirmation availability, success, and visible/programmatic error messages were inspected; live NVDA/VoiceOver evaluation remains required.\\\hline
+\end{longtable}
+}
+\end{landscape}
+
+{\footnotesize \textit{Evidence boundary.} The matrix preserves the Cycle~1 classifications and identifies Cycle~2 source changes separately. The Cycle~1 commit and environment were not archived (L4). The 15 July 2026 Lighthouse and axe-core reports cover only the Cycle~2 initial rendered state. The final 15 July standalone axe-core~4.10.0 layer covers the 12 states listed in S5.2; keyboard, focus, target-size, error-presentation, and reflow evidence is manual/browser evidence recorded separately. No layer constitutes a WCAG~2.2 conformance evaluation or live screen-reader test. Initial-state reports are deposited as \texttt{results/wcag/lighthouse\_report\_2026-07-15.json} and \texttt{results/wcag/axe\_report\_2026-07-15.json}; final state reports and screenshots are under \texttt{results/wcag/final-state-verification/}.}
+
+\suppsection{S6. Final Cycle~2 Contract Technical Verification}{supp-s6}
+The final Hardhat suite was executed on 15 July 2026 using solc~0.8.26 and Hardhat Chain~ID~1337. It contained 28 tests, all of which passed. The retained output covers authorized and unauthorized audit logging, owner-controlled gateway administration, zero-address rejection, owner and non-owner pause administration, blocked grant initiation and confirmation while paused, continued cancellation and revocation while paused, and normal operation after unpausing, together with the retained lifecycle and access-state cases. The Flask gateway rejects state-changing requests unless exactly one record identifier is supplied before transaction submission. Dedicated dynamic RPC-loss failure-injection testing remains outstanding.
+
+Slither~0.11.5 was rerun on the final Cycle~2 \texttt{HealthAccessControl.sol} using 101 detectors. Canonical retained filenames are listed separately to avoid ambiguity:
+\begin{itemize}
+\item \texttt{results/slither-report.json};
+\item \texttt{results/slither-summary.txt}; and
+\item \texttt{results/hardhat-test-output.txt}.
+\end{itemize}
+\begin{center}\small
+\begin{tabular}{|l|c|l|p{6.0cm}|}
+\hline\textbf{Severity} & \textbf{Count} & \textbf{Detector(s)} & \textbf{Resolution}\\\hline
+High & 0 & --- & No high-severity detector output.\\\hline
+Medium & 0 & --- & No medium-severity detector output.\\\hline
+Low & 6 & \texttt{timestamp} & \texttt{block.timestamp} dependence is intrinsic to the documented minimum-wait and expiry design; permitted miner/validator variation remains a boundary risk (L9).\\\hline
+Informational & 35 & \texttt{naming-convention} & Parameter names use a leading underscore; this is a style finding with no functional effect.\\\hline
+\end{tabular}
+\end{center}
+{\footnotesize The final source restricts access-attempt logging to the owner or authorized gateway and applies pause enforcement to grant initiation and confirmation while preserving cancellation and revocation. Static analysis is a floor, not a substitute for professional audit; property-based fuzzing, dynamic adversarial analysis, dedicated gateway failure injection, dependency review, multi-node testing, and independent audit remain outstanding (Limitation~L9).}
+
+\suppsection{S7. Targeted Narrative Evidence-Gathering Notes}{supp-s7}
+The related-work synthesis was conducted to motivate the research problem, identify relevant accessibility and consent-interface concerns, and position BCHAIN-ACCESS against closely related work. It was not designed as a systematic literature review, scoping review, bibliometric analysis, or exhaustive evidence synthesis.
+
+Relevant work was identified from IEEE Xplore, ACM Digital Library, SpringerLink, and PubMed using combinations of terms related to blockchain, healthcare, consent, HCI, usability, accessibility, and assistive technology. Seminal earlier studies were retained where they defined relevant blockchain-healthcare systems or HCI concepts.
+
+Studies were considered relevant when they addressed blockchain healthcare together with consent, interface design, usability, accessibility, or patient-controlled access. Infrastructure-only and cryptocurrency-only studies were outside the focused synthesis. The literature was used qualitatively for problem formulation and design reasoning; no prevalence estimates, exhaustive-coverage claims, or systematic-review conclusions are made.
+
+\suppsection{S8. Evaluation Detail, Data Provenance, and Exclusions}{supp-s8}
+
+\suppsubsection{S8.1 Documentation-Based Heuristic Evidence Matrix}{supp-s8-1}
+\label{supp:documentary-heuristics}
+The matrix below records categorical evidence from the documentation review. It does not represent live-system observation, user impact, severity, or comparative performance.
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{4.6cm}|X|X|X|}
+\hline
+\textbf{Nielsen Heuristic} & \textbf{MedRec} & \textbf{Patientory} & \textbf{BurstIQ} \\\hline
+H1: Visibility of System Status & Concern evidenced & Concern evidenced & Concern partially evidenced \\\hline
+H2: Match System \& Real World & Concern evidenced & Concern partially evidenced & Concern evidenced \\\hline
+H3: User Control \& Freedom & Concern evidenced & Concern evidenced & Concern evidenced \\\hline
+H4: Consistency \& Standards & Concern partially evidenced & Concern partially evidenced & Concern partially evidenced \\\hline
+H5: Error Prevention & Concern evidenced & Concern evidenced & Concern evidenced \\\hline
+H6: Recognition over Recall & Concern evidenced & Concern partially evidenced & Concern evidenced \\\hline
+H7: Flexibility \& Efficiency & Concern partially evidenced & Concern partially evidenced & Concern partially evidenced \\\hline
+H8: Aesthetic \& Minimalist Design & Concern partially evidenced & Concern not evidenced & Concern partially evidenced \\\hline
+H9: Error Recovery & Concern evidenced & Concern evidenced & Concern evidenced \\\hline
+H10: Help \& Documentation & Concern evidenced & Concern partially evidenced & Concern evidenced \\\hline
+\end{tabularx}
+\end{center}
+
+\suppsubsection{S8.2 Evaluator-Level Descriptive Metadata}{supp-s8-2}
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{0.7cm}|X|p{0.8cm}|p{1.6cm}|p{1.8cm}|p{2.0cm}|}
+\hline
+\textbf{ID} & \textbf{Reported background} & \textbf{Yrs.} & \textbf{HCI} & \textbf{Blockchain} & \textbf{Accessibility} \\\hline
+E1 & Accessibility Researcher & 7 & Expert & Intermediate & Expert \\\hline
+E2 & UX Designer \& Consultant & 5 & Expert & Novice & Expert \\\hline
+E3 & HCI Research Scientist & 6 & Expert & Intermediate & Advanced \\\hline
+E4 & Software Engineering Faculty & 5 & Expert & Intermediate & Advanced \\\hline
+E5 & Senior Frontend Developer & 8 & Expert & Intermediate & Expert \\\hline
+E6 & Accessibility Specialist (CPACC, IAAP) & 9 & Expert & Novice & Expert \\\hline
+E7 & UX Researcher (PhD HCI, Health Informatics) & 7 & Expert & Intermediate & Advanced \\\hline
+E8 & Senior Frontend Engineer (Accessibility Advocate) & 10 & Expert & Intermediate & Expert \\\hline
+E9 & Occupational Therapist (Digital Health) & 8 & Expert & Novice & Advanced \\\hline
+E10 & Assistive Technology Specialist & 9 & Expert & Intermediate & Expert \\\hline
+\end{tabularx}
+\end{center}
+{\footnotesize Expertise labels and credential strings reproduce the retained evaluator summary. Their definitions, assignment method, and independent verification were not preserved, so they are descriptive metadata rather than independently established grades.}
+
+\suppsubsection{S8.3 Coarse Heuristic Rating Matrix}{supp-s8-3}
+\noindent\textit{Excluded from the reported results (main paper, ED2 and Limitation~L6). Reproduced unaltered for transparency: all ten evaluators returned an identical rating vector, which cannot be shown to reflect ten independent observations. No claim in the paper rests on these values.}
+
+\begin{center}\footnotesize
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l*{10}{c}c}
+\toprule
+\textbf{ID} & \textbf{H1} & \textbf{H2} & \textbf{H3} & \textbf{H4} & \textbf{H5} & \textbf{H6} & \textbf{H7} & \textbf{H8} & \textbf{H9} & \textbf{H10} & \textbf{Mean} \\
+\midrule
+E1 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E2 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E3 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E4 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E5 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E6 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E7 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E8 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E9 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+E10 & 0&0&0&0&0&0&0&0&1&0&0.1 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{center}
+{\footnotesize The uniform pattern gives 100\% raw agreement but a degenerate marginal distribution. A chance-corrected coefficient is therefore not interpreted.}
+
+\suppsubsection{S8.4 Expert Task-Workbook Results}{supp-s8-4}
+\noindent\textit{Timings below are reported descriptively in the main paper. The completion and error fields are excluded from the reported results (main paper, ED3 and Limitation~L6): they are uniform across all ten evaluators and ``error'' is not operationally defined. See S8.8.}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{2.7cm}|p{2.7cm}|X|X|X|X|}
+\hline
+\textbf{Task} & \textbf{Workbook-reported completion} & \textbf{Mean active time (s)} & \textbf{SD} & \textbf{Errors} & \textbf{Difficulty} \\\hline
+T1: Interface entry & 100\% & 6.8 & 3.9 & 0.0 & 1.5 \\\hline
+T2: View Record & 100\% & 4.0 & 1.5 & 0.0 & 1.6 \\\hline
+T3: Check Access & 100\% & 6.3 & 2.2 & 0.0 & 1.5 \\\hline
+T4: Grant Access & 100\% & 14.8 & 5.9 & 0.0 & 2.4 \\\hline
+T5: Review & 100\% & 10.4 & 3.9 & 0.0 & 1.8 \\\hline
+T6: Confirm & 100\% & 17.3 & 6.3 & 0.0 & 2.4 \\\hline
+T7: Revoke & 100\% & 7.0 & 2.8 & 0.0 & 1.7 \\\hline
+T8: FAQ & 100\% & 10.9 & 5.2 & 0.0 & 2.1 \\\hline
+\textbf{Overall} & \textbf{100\%} & \textbf{9.7} & \textbf{5.9} & \textbf{0.0} & \textbf{1.9} \\\hline
+\end{tabularx}
+\end{center}
+{\footnotesize Completion values are reproduced from the consolidated workbook and cannot be independently reconstructed from the task CSV. Difficulty is rated 1 (very easy)--5 (very difficult). The 17.3-second T6 value records active interaction after the separate 60-second minimum wait.}
+
+\suppsubsection{S8.5 SUS Scores and Scoring}{supp-s8-5}
+\noindent\textit{Excluded from the reported results (main paper, ED4 and Limitation~L6). Reproduced for transparency only: the respondents were unblinded non-target evaluators inspecting an artifact built around the principles they were shown, so these scores cannot support an accessibility or usability claim.}
+
+For the standard ten-item SUS, odd-item contributions are $X_i-1$ and even-item contributions are $5-X_i$; the sum is multiplied by 2.5:
+\[
+\text{SUS}=\left(\sum_{i=1,3,5,7,9}(X_i-1)+\sum_{i=2,4,6,8,10}(5-X_i)\right)\times2.5.
+\]
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{2.2cm}|*{11}{>{\centering\arraybackslash}X|}}
+\hline
+\textbf{Metric} & \textbf{E1} & \textbf{E2} & \textbf{E3} & \textbf{E4} & \textbf{E5} & \textbf{E6} & \textbf{E7} & \textbf{E8} & \textbf{E9} & \textbf{E10} & \textbf{Mean} \\\hline
+SUS Score & 87.5 & 90.0 & 82.5 & 90.0 & 97.5 & 87.5 & 85.0 & 92.5 & 82.5 & 80.0 & 87.5 \\\hline
+\end{tabularx}
+\end{center}
+{\footnotesize $SD=5.27$; range 80.0--97.5. These values describe perceived usability within the expert sample only.}
+
+\suppsubsection{S8.6 Custom Questionnaire Item Results}{supp-s8-6}
+\noindent\textit{Excluded from the reported results (main paper, ED5 and Limitation~L6). Reproduced for transparency only: the instrument is author-designed with no reliability or validity evidence and was completed by the same unblinded non-target evaluators as S8.5.}
+
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|X|p{1.4cm}|p{1.4cm}|}
+\hline
+\textbf{Statement} & \textbf{Mean} & \textbf{SD} \\\hline
+1. I found the navigation consistent and predictable. & 4.8 & 0.4 \\\hline
+2. I found the instructions and labels easy to understand. & 4.4 & 0.5 \\\hline
+3. I was able to access all features using only the keyboard. & 4.5 & 0.5 \\\hline
+4. I found the colour contrast adequate for reading. & 4.8 & 0.4 \\\hline
+5. I found the error messages helpful and clear. & 4.2 & 0.4 \\\hline
+6. I felt in control while using the system. & 4.5 & 0.7 \\\hline
+7. I would feel comfortable using this system independently. & 4.1 & 0.6 \\\hline
+8. I found the system forgiving if I made a mistake. & 4.7 & 0.5 \\\hline
+9. I understood the information presented to me. & 4.0 & 0.5 \\\hline
+10. I found the system responsive and fast enough. & 4.4 & 0.5 \\\hline
+\textbf{Overall participant-level mean} & \textbf{4.44} & \textbf{0.36} \\\hline
+\end{tabularx}
+\end{center}
+{\footnotesize Scale: 1 (Strongly Disagree) to 5 (Strongly Agree). The instrument is author-designed, and its reliability and validity have not been evaluated. Participant-level means ranged from 3.8 to 4.9.}
+
+\suppsubsection{S8.7 Hypothetical Workflow-to-Principle Mapping}{supp-s8-7}
+This mapping expands the diagnosis-neutral traceability example in the main paper and shows how the reference artifact represents each principle.
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{0.9cm}|p{3.0cm}|p{2.0cm}|X|X|}
+\hline
+\textbf{Step} & \textbf{Workflow action} & \textbf{Principle(s)} & \textbf{Artifact representation} & \textbf{Evidence boundary} \\\hline
+T1 & Enter the interface & AAD & Simulated entry control & Production authentication not implemented \\\hline
+T2 & View an MRI record & PTD & Record and metadata presentation & Semantic separation identified for follow-up \\\hline
+T3 & Inspect provider access & PTD, ATC & Permission list and removal controls & Contextual names and permission controls remediated and technically retested \\\hline
+T4 & Initiate a grant & PTD, CID & Provider selection and grant initiation & Single-record initiation and transition handling verified \\\hline
+T5 & Review consequences & CID & Review page before confirmation & Wizard focus movement verified; cognitive content-density effectiveness remains target-user work \\\hline
+T6 & Confirm after the minimum wait & CID, ATC & Delayed confirmation and status messaging & Countdown status and focus technically verified; acceptability remains empirically unresolved \\\hline
+T7 & Revoke access & CID, PTD & Revocation and updated permission state & Accessible revocation dialog and focus behavior technically verified \\\hline
+T8 & Open help content & PTD, ATC & Plain-language FAQ and accordion controls & FAQ target-size corrections technically verified \\\hline
+\end{tabularx}
+\end{center}
+
+\suppsubsection{S8.8 Evaluation Data Provenance and Exclusions}{supp-s8-8}
+The source package contains a consolidated ten-evaluator analysis workbook and exported CSV tables. The task CSV retains evaluator ID, task ID and name, time, error count, difficulty, and notes, but no row-level completion, assistance, restart, or incomplete-attempt field. It contains no timestamps or software telemetry. The collection packet does not preserve whether evaluators self-timed, entered values immediately after each task, or supplied values for later transcription; no observer sheet, screen recording, or session recording is deposited. ``Error'' is not operationally defined beyond the numeric field, the aggregate ``without assistance'' statement cannot be independently checked, and restart and incomplete-attempt rules were not retained. Task values and the consolidated workbook's 100\% completion figure are therefore workbook-reported expert-task data rather than independently observed performance measures.
+
+The expert task times are recorded as active interaction time; T6 excludes the fixed 60-second system wait, so its 17.3-second mean corresponds to a minimum elapsed duration of 77.3 seconds. The custom questionnaire has not undergone reliability or validity evaluation, and participant-level rather than item-level dispersion is used when describing respondent variability. Recruitment channel, evaluator-author relationships, disability status, definitions and assignment of the ``Advanced''/``Expert'' labels, and credential verification were not preserved. Documented WhatsApp consent records are retained privately because they contain participant-identifying information and are not included in the deposited research package.
+
+Per-session browser, operating-system, screen-reader version, zoom/reflow configuration, and alternative-input settings were not preserved. E10's comments identify NVDA use without a version. The manual findings are therefore diagnostic expert observations rather than a reproducible assistive-technology compatibility test.
+
+The consolidated workbook contains heuristic-level means for a finer post-hoc re-rating but does not contain its scale anchors, instructions, administration time, whether prior answers were visible, or the complete per-evaluator matrix. Consequently, that re-rating is excluded from the principal results. The baseline source package likewise lacks separate pre-consensus contingency tables needed to recompute weighted ordinal and categorical agreement; the pooled $\kappa=0.74$ is withdrawn and no replacement reliability coefficient is claimed.
+
+\suppsection{S9. Detailed Implementation Scope}{supp-s9}
+This table expands the condensed implementation boundary in the main paper. ``Implemented'' refers to the reference development artifacts, not a production deployment.
+\begin{center}\footnotesize
+\begin{longtable}{|p{2.5cm}|p{4.0cm}|p{4.2cm}|p{4.2cm}|}
+\hline
+\textbf{Component} & \textbf{UI-layer prototype} & \textbf{Local-development backend} & \textbf{Production requirement}\\\hline\endhead
+Blockchain layer & Integrated UI could use the local EVM or explicit fallback; blockchain behavior was not an accessibility-evaluation outcome & \texttt{HealthAccessControl.sol} on a local Hardhat EVM via Web3.py, with an in-memory fallback ledger & Governed distributed deployment with documented finality and operational assumptions\\\hline
+Smart contracts & Contract behavior was not assessed by the expert accessibility instrument & Solidity~0.8.26 contract deployed and integration-tested on a local Hardhat node & Independently audited contracts under production governance\\\hline
+Cryptography & Cryptographic correctness was not assessed by the expert instrument & Seeded SHA-256 identifiers, EVM nonces, and Web3.py signing with a Hardhat development key; no production record encryption or salt store & Deployment-appropriate hashing, encryption, user key management, and HSM/KMS-backed secrets\\\hline
+Wallet integration & No user-controlled wallet or key management & Patient wallet derived from a Hardhat test account; backend signs development transactions & Accessible user-controlled wallet, key derivation, recovery, and secure storage\\\hline
+Data persistence & The Cycle~2 interface uses API-managed state; there is no separate browser-memory Cycle~2 build & In-memory Python fallback state; seeded identifiers registered on startup when the local EVM is available & Governed on-chain records plus secured, encrypted off-chain clinical storage\\\hline
+Authentication & Simulated fingerprint control only & Wallet-address checks and \texttt{onlyPatient()} contract restriction; no real biometric authentication & Evaluated WebAuthn/FIDO2 or other accessible identity-assurance workflow\\\hline
+Representative access & Not implemented & Not implemented & Jurisdiction-specific authority, scope, expiry, revocation, identification, and abuse safeguards\\\hline
+API gateway & Frontend calls the reference REST API & Flask REST API connects the frontend to the Hardhat EVM & Authenticated, rate-limited, monitored, TLS-protected production service with durable storage\\\hline
+Transaction finality & Displays local-EVM hashes or explicit fallback identifiers; mode was not an accessibility outcome & Local-EVM transactions confirmed when available; fallback behavior is separately identified & Deployment-specific confirmation, reorganization, outage, and retry handling\\\hline
+Accessibility evidence & Selected Cycle~1 implementation issues addressed and technically verified in Cycle~2; 12 standalone axe-core state reports and screenshots retained & No live screen-reader or disabled-user validation & Whole-artifact WCAG~2.2, assistive-technology, alternative-input, and disabled-participant evaluation with production authentication and wallet components\\\hline
+Security assurance & No independent assurance & Final 28-test suite, Slither, authorized logger, pause policy, and single-record API enforcement; no independent audit, fuzzing, or adversarial testing & Independent audit, property-based fuzzing, failure injection, adversarial testing, dependency migration, and multi-node evaluation\\\hline
+\end{longtable}
+\end{center}
+{\footnotesize The UI prototype was the subject of the ten-expert feasibility assessment. The local-EVM backend illustrates technical feasibility only. Neither component is production-ready.}
+\suppsubsection{S9.1 Condensed Implementation Status}{supp-s9-1}
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|X|p{2.8cm}|p{4.0cm}|p{2.8cm}|}
+\hline
+\textbf{Component} & \textbf{Implemented} & \textbf{Retained evidence} & \textbf{Production-ready} \\\hline
+UI prototype & Yes & Cycle~1 expert-inspected workflow plus final 12-state axe-core and manual-browser verification (Cycle~2) & No \\\hline
+Local-EVM backend & Yes & Final 28-test suite, local integration verification, and Slither~0.11.5 static analysis & No \\\hline
+Real biometric authentication & No & Simulated entry only & No \\\hline
+Guardian delegation & No & Framework recommendation & No \\\hline
+Production record storage & No & Development identifiers only & No \\\hline
+Independent security audit & No & Static analysis only & No \\\hline
+\end{tabularx}
+\end{center}
+
+\suppsubsection{S9.2 Cycle~1 Artifact Metadata}{supp-s9-2}
+\begin{center}\footnotesize
+\begin{tabularx}{\textwidth}{|p{4.0cm}|X|}
+\hline
+\textbf{Required item} & \textbf{Available record} \\\hline
+Frontend version & Cycle~1 commit hash or release tag not archived. \\\hline
+Backend version & Cycle~1 commit hash or release tag not archived. The Cycle~2 code/evidence snapshot is commit \texttt{360eaa2a26b2f2b4fef98c0667f87db09e5e5120}. \\\hline
+Evaluation date & Exact session dates not recorded. The retained Cycle~1 automated reports are dated 29~June and 12~July 2026, which places the cycle before the 15~July Cycle~2 verification. \\\hline
+Backend mode by session & Not logged; the interface could use the local EVM when available or the explicit fallback otherwise. \\\hline
+Deployment URL & The Cycle~1 reference URL was not archived as a versioned release and is not treated as a stable artifact identifier. \\\hline
+Evaluator environment & Per-session browser, operating system, and assistive-technology versions not preserved; E10 comments identify NVDA without version. \\\hline
+\end{tabularx}
+\end{center}
+
+{\footnotesize These missing identifiers prevent exact reconstruction of the Cycle~1 artifact. The deposited repository is the Cycle~2 build.}
+
+\medskip
+\noindent\textbf{Artifact availability.} Zenodo DOI \url{https://doi.org/10.5281/zenodo.21345578} identifies the earlier v1.0.0 release published on 13 July 2026. Inspection of the Zenodo record shows that its single archive predates the 15 July verification and therefore does not contain the final 28-test output, 15 July Slither JSON, live axe evidence, or the Cycle~2 verification report. It is not cited as the archive of the final evidence package. Before publication, a new versioned Zenodo release must deposit the exact Cycle~2 source and these retained reports; its version DOI should then replace this provisional availability statement.
+
+\suppsection{S10. Final Cycle~2 Engineering Verification}{supp-s10}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{|p{3.5cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Item} & \textbf{Retained verification record}\\\hline
+Date and source identity & 15 July 2026. Cycle~2 code/evidence commit \texttt{360eaa2a26b2f2b4fef98c0667f87db09e5e5120}.\\\hline
+Accessibility tools and states & Standalone axe-core~4.10.0 evaluated landing, dashboard, record selection, review, countdown, confirmation success, audit-dialog open, revocation-dialog open, expanded FAQ, record-loading failure, audit-loading failure, and transaction failure. Lighthouse~13.4.0 with embedded axe-core~4.12.1 remains a separate Cycle~2 initial-state artifact.\\\hline
+Standalone axe-core result & Twelve retained reports recorded zero violations; five reports contain incomplete items retained for manual review. The intermediate axe-core~4.8.2 dialog finding is preserved separately as pre-final-fix evidence.\\\hline
+Manual browser checks & Principal keyboard workflow, wizard-transition focus, audit and revocation dialog focus containment/restoration and Escape handling, affected target dimensions, visible/programmatic error presentation, and 320-CSS-pixel reflow passed the recorded checks.\\\hline
+Contract tests & The final Hardhat suite contained 28 tests, all of which passed; retained output includes authorized logger, gateway administration, pause-policy, cancellation/revocation-while-paused, and post-unpause cases.\\\hline
+Static analysis & Slither~0.11.5: six low \texttt{timestamp} findings and 35 informational \texttt{naming-convention} findings; no high- or medium-severity detector findings were reported.\\\hline
+Final security source status & Logger restricted to owner/authorized gateway; initiation and confirmation blocked while paused with cancellation and revocation retained; state-changing API requests require exactly one record.\\\hline
+Residual limitations & No live screen-reader, alternative-input, or disabled-participant evaluation; no whole-artifact WCAG conformance determination; no property-based fuzzing, dynamic failure injection, adversarial testing, multi-node evaluation, production key management, or independent audit.\\\hline
+Evidence inventory & Twelve axe JSON files and screenshots under \texttt{results/wcag/final-state-verification/}; \texttt{results/hardhat-test-output.txt}; \texttt{results/slither-report.json}; \texttt{results/slither-summary.txt}; \texttt{results/gas-report.txt}; Lighthouse JSON; verification matrices; source; README; environment example; artifact manifest; and the final verification report.\\\hline
+\end{tabularx}
+\end{center}
+
+\end{document}

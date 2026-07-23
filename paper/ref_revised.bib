@@ -204,6 +204,23 @@
   url={https://www.w3.org/TR/WCAG21/}
 }
 
+@techreport{wcag22,
+  title={{Web Content Accessibility Guidelines (WCAG) 2.2}},
+  author={{World Wide Web Consortium}},
+  institution={W3C},
+  type={W3C Recommendation},
+  year={2024},
+  url={https://www.w3.org/TR/WCAG22/}
+}
+
+@techreport{edpb2025blockchain,
+  title={Guidelines 02/2025 on processing of personal data through blockchain technologies},
+  author={{European Data Protection Board}},
+  institution={EDPB},
+  year={2025},
+  url={https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-022025-processing-personal-data-through_en}
+}
+
 %21 — WHO disability statistics
 @misc{who2023disability,
   title={Disability and Health},
@@ -419,6 +436,17 @@
   year={2004}
 }
 
+@article{peffers2007dsrm,
+  title={A design science research methodology for information systems research},
+  author={Peffers, Ken and Tuunanen, Tuure and Rothenberger, Marcus A. and Chatterjee, Samir},
+  journal={Journal of Management Information Systems},
+  volume={24},
+  number={3},
+  pages={45--77},
+  year={2007},
+  doi={10.2753/MIS0742-1222240302}
+}
+
 %42 — Nosek et al. 2018 preregistration
 @article{nosek2018preregistration,
   title={The preregistration revolution},
@@ -441,23 +469,65 @@
   year={2006}
 }
 
+@misc{gdpr2016,
+  author = {{European Parliament and Council of the European Union}},
+  title = {Regulation ({EU}) 2016/679 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data ({General Data Protection Regulation})},
+  year = {2016},
+  howpublished = {Official Journal of the European Union, L 119, pp. 1--88},
+  url = {https://eur-lex.europa.eu/eli/reg/2016/679/oj}
+}
+
+@techreport{en301549,
+  author = {{European Telecommunications Standards Institute}},
+  title = {{ETSI EN} 301 549 {V}3.2.1: Accessibility requirements for {ICT} products and services},
+  institution = {ETSI},
+  number = {EN 301 549 V3.2.1},
+  year = {2021},
+  month = mar,
+  url = {https://www.etsi.org/deliver/etsi_en/301500_301599/301549/03.02.01_60/en_301549v030201p.pdf}
+}
+
 @misc{section508,
   author = {{U.S. Access Board}},
   title = {Information and Communication Technology ({ICT}) Standards and Guidelines: Final Rule (Section 508 Refresh), 36 {CFR} Parts 1193 and 1194},
   year = {2017},
-  howpublished = {Federal Register, Vol. 82, No. 11},
-  note = {United States}
+  howpublished = {Federal Register, vol. 82, no. 11, pp. 5790--5841},
+  url = {https://www.access-board.gov/ict/preamble.html}
 }
-% ^ REGRESSION: \cite{section508} existed in v13.tex (confirmed via Sami_corrected_v13.bbl,
-%   \bibitem{section508} present there) but the \cite{} command is now MISSING from v14.tex,
-%   even though the prose still says "Section 508" at three locations (Section VI-A/P3;
-%   Section VI-B/Stage 2; Algorithm 1, Stage 2 condition). Re-insert \cite{section508} at
-%   those three points.
 
-@misc{en301549,
-  author = {{ETSI}},
-  title = {{EN} 301 549 {V}3.2.1: Accessibility requirements for {ICT} products and services},
-  year = {2021},
-  howpublished = {European Telecommunications Standards Institute},
-  note = {Harmonised European Standard}
+@misc{hipaa1996,
+  author = {{United States Congress}},
+  title = {Health Insurance Portability and Accountability Act of 1996},
+  year = {1996},
+  howpublished = {Public Law 104-191, 110 Stat. 1936},
+  url = {https://www.govinfo.gov/app/details/PLAW-104publ191}
+}
+
+
+%% --- added: verified 2026-07-16 ---
+
+@inproceedings{zhou2023accessible,
+  title={Iterative Design of an Accessible Crypto Wallet for Blind Users},
+  author={Zhou, Zhixuan and Sharma, Tanusree and Emano, Luke and Das, Sauvik and Wang, Yang},
+  booktitle={Proceedings of the Nineteenth Symposium on Usable Privacy and Security (SOUPS 2023)},
+  pages={381--398},
+  address={Anaheim, CA, USA},
+  publisher={USENIX Association},
+  isbn={978-1-939133-36-6},
+  year={2023}
+}
+
+@article{leimstadtner2024value,
+  title={Designing Value-Centered Consent Interfaces: A Mixed-Methods Approach to Support Patient Values in Data-Sharing Decisions},
+  author={Leimst{\"a}dtner, David and S{\"o}rries, Peter and M{\"u}ller-Birn, Claudia},
+  journal={arXiv preprint arXiv:2407.03808},
+  year={2024}
+}
+
+@article{charles2024dynamic,
+  title={Blockchain-based dynamic consent and its applications for patient-centric research and health information sharing: Protocol for an integrative review},
+  author={Charles, Wendy M and van der Waal, Mark B and Flach, Joost and Bisschop, Arno and van der Waal, Raymond X and Es-Sbai, Hadil and McLeod, Christopher J},
+  journal={JMIR Research Protocols},
+  year={2024},
+  doi={10.2196/50339}
 }
